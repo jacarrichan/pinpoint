@@ -1,5 +1,7 @@
 package com.navercorp.pinpoint.plugin.dubbo.interceptor;
 
+import com.alibaba.dubbo.common.Constants;
+import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.rpc.Invoker;
 import com.alibaba.dubbo.rpc.RpcContext;
 import com.alibaba.dubbo.rpc.RpcInvocation;
@@ -55,12 +57,21 @@ public class DubboProviderInterceptor extends SpanSimpleAroundInterceptor {
     protected void doInBeforeTrace(SpanRecorder recorder, Object target, Object[] args) {
         RpcInvocation invocation = (RpcInvocation) args[0];
         RpcContext rpcContext = RpcContext.getContext();
+        Invoker invoker = invocation.getInvoker();
+        URL url = invoker.getUrl();
+        String group=url.getParameter(Constants.GROUP_KEY);
+
 
         // You have to record a service type within Server range.
         recorder.recordServiceType(DubboConstants.DUBBO_PROVIDER_SERVICE_TYPE);
 
-        // Record rpc name, client address, server address.
-        recorder.recordRpcName(invocation.getInvoker().getInterface().getSimpleName() + ":" + invocation.getMethodName());
+        // Record rpcName name, client address, server address.
+        StringBuilder rpcName = new StringBuilder();
+        rpcName.append(invoker.getInterface().getSimpleName()).append(":").append(invocation.getMethodName());
+        if(null != group){
+            rpcName.append("(").append(group).append(")");
+        }
+        recorder.recordRpcName(rpcName.toString());
         recorder.recordEndPoint(rpcContext.getLocalAddressString());
         recorder.recordRemoteAddress(rpcContext.getRemoteAddressString());
 
