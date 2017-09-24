@@ -52,7 +52,7 @@
         <module>bootstrap-core</module>
         <module>bootstrap-core-optional</module>
         <module>bootstrap</module>
-        <module>collector</module>
+        <!--<module>collector</module>-->
         <module>commons</module>
         <module>commons-hbase</module>
         <module>commons-server</module>
@@ -64,8 +64,8 @@
         <module>rpc</module>
         <module>thrift</module>
         <module>test</module>
-        <module>web</module>
-        <module>hbase</module>
+        <!--<module>web</module>-->
+        <!--<module>hbase</module>-->
     </modules>
 
     <properties>
