@@ -17,8 +17,6 @@
 package com.navercorp.pinpoint.bootstrap.context;
 
 import com.navercorp.pinpoint.bootstrap.config.ProfilerConfig;
-import com.navercorp.pinpoint.bootstrap.plugin.jdbc.JdbcContext;
-import com.navercorp.pinpoint.common.annotations.InterfaceAudience;
 
 /**
  * @author emeroad
@@ -36,25 +34,25 @@ public interface TraceContext {
      */
     Trace currentRawTraceObject();
 
-    Trace continueTraceObject(TraceId traceId);
+//    Trace continueTraceObject(TraceId traceId);
 
-    Trace continueTraceObject(Trace trace);
+//    Trace continueTraceObject(Trace trace);
 
     Trace newTraceObject();
 
     /**
      * internal experimental api
      */
-    @InterfaceAudience.LimitedPrivate("vert.x")
-    Trace newAsyncTraceObject();
+//    @InterfaceAudience.LimitedPrivate("vert.x")
+//    Trace newAsyncTraceObject();
 
     /**
      * internal experimental api
      */
-    @InterfaceAudience.LimitedPrivate("vert.x")
-    Trace continueAsyncTraceObject(TraceId traceId);
+//    @InterfaceAudience.LimitedPrivate("vert.x")
+//    Trace continueAsyncTraceObject(TraceId traceId);
 
-    Trace continueAsyncTraceObject(AsyncTraceId traceId, int asyncId, long startTime);
+//    Trace continueAsyncTraceObject(AsyncTraceId traceId, int asyncId, long startTime);
 
     Trace removeTraceObject();
 
@@ -70,18 +68,20 @@ public interface TraceContext {
 
     String getServerType();
 
-    int cacheApi(MethodDescriptor methodDescriptor);
+//    int cacheApi(MethodDescriptor methodDescriptor);
 
-    int cacheString(String value);
+//    int cacheString(String value);
 
     // TODO extract jdbc related methods
+/*
     ParsingResult parseSql(String sql);
+*/
 
-    boolean cacheSql(ParsingResult parsingResult);
+//    boolean cacheSql(ParsingResult parsingResult);
 
     TraceId createTraceId(String transactionId, long parentSpanID, long spanID, short flags);
 
-    Trace disableSampling();
+//    Trace disableSampling();
 
     ProfilerConfig getProfilerConfig();
 
@@ -89,6 +89,6 @@ public interface TraceContext {
 
     int getAsyncId();
 
-    JdbcContext getJdbcContext();
+//    JdbcContext getJdbcContext();
 
 }

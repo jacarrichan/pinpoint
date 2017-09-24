@@ -53,7 +53,7 @@ public abstract class SpanEventSimpleAroundInterceptorForPlugin implements Aroun
 
         prepareBeforeTrace(target, args);
 
-        final Trace trace = traceContext.currentTraceObject();
+        final Trace trace = null;//traceContext.currentTraceObject();
         if (trace == null) {
             return;
         }
@@ -86,7 +86,7 @@ public abstract class SpanEventSimpleAroundInterceptorForPlugin implements Aroun
 
         prepareAfterTrace(target, args, result, throwable);
 
-        final Trace trace = traceContext.currentTraceObject();
+        final Trace trace = null;//traceContext.currentTraceObject();
         if (trace == null) {
             return;
         }

@@ -19,7 +19,6 @@ package com.navercorp.pinpoint.profiler.plugin;
 import com.navercorp.pinpoint.bootstrap.config.ProfilerConfig;
 import com.navercorp.pinpoint.bootstrap.plugin.ApplicationTypeDetector;
 import com.navercorp.pinpoint.bootstrap.plugin.ProfilerPluginSetupContext;
-import com.navercorp.pinpoint.bootstrap.plugin.jdbc.JdbcUrlParserV2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +32,7 @@ public class DefaultProfilerPluginSetupContext implements ProfilerPluginSetupCon
     private final ProfilerConfig profilerConfig;
 
     private final List<ApplicationTypeDetector> serverTypeDetectors = new ArrayList<ApplicationTypeDetector>();
-    private final List<JdbcUrlParserV2> jdbcUrlParserList = new ArrayList<JdbcUrlParserV2>();
+//    private final List<JdbcUrlParserV2> jdbcUrlParserList = new ArrayList<JdbcUrlParserV2>();
 
     public DefaultProfilerPluginSetupContext(ProfilerConfig profilerConfig) {
         if (profilerConfig == null) {
@@ -63,6 +62,7 @@ public class DefaultProfilerPluginSetupContext implements ProfilerPluginSetupCon
         return serverTypeDetectors;
     }
 
+/*
     @Override
     public void addJdbcUrlParser(JdbcUrlParserV2 jdbcUrlParser) {
         if (jdbcUrlParser == null) {
@@ -75,5 +75,6 @@ public class DefaultProfilerPluginSetupContext implements ProfilerPluginSetupCon
     public List<JdbcUrlParserV2> getJdbcUrlParserList() {
         return jdbcUrlParserList;
     }
+*/
 
 }

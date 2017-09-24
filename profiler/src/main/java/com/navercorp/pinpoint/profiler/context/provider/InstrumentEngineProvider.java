@@ -21,12 +21,10 @@ import com.google.inject.Provider;
 import com.navercorp.pinpoint.bootstrap.AgentOption;
 import com.navercorp.pinpoint.bootstrap.config.DefaultProfilerConfig;
 import com.navercorp.pinpoint.bootstrap.config.ProfilerConfig;
-import com.navercorp.pinpoint.profiler.instrument.InstrumentEngine;
-
 import com.navercorp.pinpoint.profiler.instrument.ASMEngine;
+import com.navercorp.pinpoint.profiler.instrument.InstrumentEngine;
 import com.navercorp.pinpoint.profiler.instrument.JavassistEngine;
 import com.navercorp.pinpoint.profiler.interceptor.registry.InterceptorRegistryBinder;
-import com.navercorp.pinpoint.profiler.metadata.ApiMetaDataService;
 import com.navercorp.pinpoint.profiler.objectfactory.ObjectBinderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,12 +41,12 @@ public class InstrumentEngineProvider implements Provider<InstrumentEngine> {
     private final ProfilerConfig profilerConfig;
     private final AgentOption agentOption;
     private final InterceptorRegistryBinder interceptorRegistryBinder;
-    private final Provider<ApiMetaDataService> apiMetaDataServiceProvider;
+//    private final Provider<ApiMetaDataService> apiMetaDataServiceProvider;
     private final ObjectBinderFactory objectBinderFactory;
     private final Instrumentation instrumentation;
 
     @Inject
-    public InstrumentEngineProvider(ProfilerConfig profilerConfig, Instrumentation instrumentation, ObjectBinderFactory objectBinderFactory, AgentOption agentOption, InterceptorRegistryBinder interceptorRegistryBinder, Provider<ApiMetaDataService> apiMetaDataServiceProvider) {
+    public InstrumentEngineProvider(ProfilerConfig profilerConfig, Instrumentation instrumentation, ObjectBinderFactory objectBinderFactory, AgentOption agentOption, InterceptorRegistryBinder interceptorRegistryBinder/*, Provider<ApiMetaDataService> apiMetaDataServiceProvider*/) {
         if (profilerConfig == null) {
             throw new NullPointerException("profilerConfig must not be null");
         }
@@ -64,27 +62,27 @@ public class InstrumentEngineProvider implements Provider<InstrumentEngine> {
         if (interceptorRegistryBinder == null) {
             throw new NullPointerException("interceptorRegistryBinder must not be null");
         }
-        if (apiMetaDataServiceProvider == null) {
+/*        if (apiMetaDataServiceProvider == null) {
             throw new NullPointerException("apiMetaDataServiceProvider must not be null");
-        }
+        }*/
 
         this.profilerConfig = profilerConfig;
         this.instrumentation = instrumentation;
         this.objectBinderFactory = objectBinderFactory;
         this.agentOption = agentOption;
         this.interceptorRegistryBinder = interceptorRegistryBinder;
-        this.apiMetaDataServiceProvider = apiMetaDataServiceProvider;
+//        this.apiMetaDataServiceProvider = apiMetaDataServiceProvider;
     }
 
     public InstrumentEngine get() {
         final String instrumentEngine = profilerConfig.getProfileInstrumentEngine().toUpperCase();
         if (DefaultProfilerConfig.INSTRUMENT_ENGINE_ASM.equals(instrumentEngine)) {
             logger.info("ASM InstrumentEngine.");
-            return new ASMEngine(instrumentation, objectBinderFactory, interceptorRegistryBinder, apiMetaDataServiceProvider, agentOption.getBootstrapJarPaths());
+            return new ASMEngine(instrumentation, objectBinderFactory, interceptorRegistryBinder, /*apiMetaDataServiceProvider, */agentOption.getBootstrapJarPaths());
 
         } else if (DefaultProfilerConfig.INSTRUMENT_ENGINE_JAVASSIST.equals(instrumentEngine)) {
             logger.info("JAVASSIST InstrumentEngine.");
-            return new JavassistEngine(instrumentation, objectBinderFactory, interceptorRegistryBinder, apiMetaDataServiceProvider, agentOption.getBootstrapJarPaths());
+            return new JavassistEngine(instrumentation, objectBinderFactory, interceptorRegistryBinder, /*apiMetaDataServiceProvider, */agentOption.getBootstrapJarPaths());
         } else {
             logger.warn("Unknown InstrumentEngine:{}", instrumentEngine);
 

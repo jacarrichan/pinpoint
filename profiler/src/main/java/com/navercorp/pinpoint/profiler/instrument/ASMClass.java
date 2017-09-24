@@ -15,26 +15,14 @@
  */
 package com.navercorp.pinpoint.profiler.instrument;
 
-import com.navercorp.pinpoint.bootstrap.instrument.ClassFilter;
-import com.navercorp.pinpoint.bootstrap.instrument.InstrumentClass;
-import com.navercorp.pinpoint.bootstrap.instrument.InstrumentContext;
-import com.navercorp.pinpoint.bootstrap.instrument.InstrumentException;
-import com.navercorp.pinpoint.bootstrap.instrument.InstrumentMethod;
-import com.navercorp.pinpoint.bootstrap.instrument.MethodFilter;
-import com.navercorp.pinpoint.bootstrap.instrument.MethodFilters;
-import com.navercorp.pinpoint.bootstrap.instrument.NotFoundInstrumentException;
-import com.navercorp.pinpoint.bootstrap.interceptor.annotation.TargetConstructor;
-import com.navercorp.pinpoint.bootstrap.interceptor.annotation.TargetConstructors;
-import com.navercorp.pinpoint.bootstrap.interceptor.annotation.TargetFilter;
-import com.navercorp.pinpoint.bootstrap.interceptor.annotation.TargetMethod;
-import com.navercorp.pinpoint.bootstrap.interceptor.annotation.TargetMethods;
+import com.navercorp.pinpoint.bootstrap.instrument.*;
+import com.navercorp.pinpoint.bootstrap.interceptor.annotation.*;
 import com.navercorp.pinpoint.bootstrap.interceptor.scope.ExecutionPolicy;
 import com.navercorp.pinpoint.bootstrap.interceptor.scope.InterceptorScope;
 import com.navercorp.pinpoint.bootstrap.plugin.ObjectFactory;
 import com.navercorp.pinpoint.common.util.Asserts;
 import com.navercorp.pinpoint.exception.PinpointException;
 import com.navercorp.pinpoint.profiler.interceptor.registry.InterceptorRegistryBinder;
-import com.navercorp.pinpoint.profiler.metadata.ApiMetaDataService;
 import com.navercorp.pinpoint.profiler.objectfactory.AutoBindingObjectFactory;
 import com.navercorp.pinpoint.profiler.objectfactory.InterceptorArgumentProvider;
 import com.navercorp.pinpoint.profiler.objectfactory.ObjectBinderFactory;
@@ -59,33 +47,35 @@ public class ASMClass implements InstrumentClass {
     private final ObjectBinderFactory objectBinderFactory;
     private final InstrumentContext pluginContext;
     private final InterceptorRegistryBinder interceptorRegistryBinder;
-    private final ApiMetaDataService apiMetaDataService;
+//    private final ApiMetaDataService apiMetaDataService;
     private final ClassLoader classLoader;
 
     private final ASMClassNodeAdapter classNode;
     private boolean modified = false;
     private String name;
 
-    public ASMClass(ObjectBinderFactory objectBinderFactory, final InstrumentContext pluginContext, final InterceptorRegistryBinder interceptorRegistryBinder, ApiMetaDataService apiMetaDataService, final ClassLoader classLoader, final ClassNode classNode) {
-        this(objectBinderFactory, pluginContext, interceptorRegistryBinder, apiMetaDataService, classLoader, new ASMClassNodeAdapter(pluginContext, classLoader, classNode));
+    public ASMClass(ObjectBinderFactory objectBinderFactory, final InstrumentContext pluginContext, final InterceptorRegistryBinder interceptorRegistryBinder,/* ApiMetaDataService apiMetaDataService,*/ final ClassLoader classLoader, final ClassNode classNode) {
+        this(objectBinderFactory, pluginContext, interceptorRegistryBinder, /*apiMetaDataService, */classLoader, new ASMClassNodeAdapter(pluginContext, classLoader, classNode));
     }
 
-    public ASMClass(ObjectBinderFactory objectBinderFactory, final InstrumentContext pluginContext, final InterceptorRegistryBinder interceptorRegistryBinder, ApiMetaDataService apiMetaDataService, final ClassLoader classLoader, final ASMClassNodeAdapter classNode) {
+    public ASMClass(ObjectBinderFactory objectBinderFactory, final InstrumentContext pluginContext, final InterceptorRegistryBinder interceptorRegistryBinder, /*ApiMetaDataService apiMetaDataService,*/ final ClassLoader classLoader, final ASMClassNodeAdapter classNode) {
         if (objectBinderFactory == null) {
             throw new NullPointerException("objectBinderFactory must not be null");
         }
 
-//        if (pluginContext == null) {
-//            throw new NullPointerException("pluginContext must not be null");
-//        }
+/*
+        if (pluginContext == null) {
+            throw new NullPointerException("pluginContext must not be null");
+        }
         if (apiMetaDataService == null) {
             throw new NullPointerException("apiMetaDataService must not be null");
         }
+*/
 
         this.objectBinderFactory = objectBinderFactory;
         this.pluginContext = pluginContext;
         this.interceptorRegistryBinder = interceptorRegistryBinder;
-        this.apiMetaDataService = apiMetaDataService;
+//        this.apiMetaDataService = apiMetaDataService;
         this.classLoader = classLoader;
         this.classNode = classNode;
         // for performance.
@@ -133,7 +123,7 @@ public class ASMClass implements InstrumentClass {
             return null;
         }
 
-        return new ASMMethod(this.objectBinderFactory, this.pluginContext, this.interceptorRegistryBinder, apiMetaDataService, this, methodNode);
+        return new ASMMethod(this.objectBinderFactory, this.pluginContext, this.interceptorRegistryBinder, /*apiMetaDataService,*/ this, methodNode);
     }
 
     @Override
@@ -149,7 +139,7 @@ public class ASMClass implements InstrumentClass {
 
         final List<InstrumentMethod> candidateList = new ArrayList<InstrumentMethod>();
         for (ASMMethodNodeAdapter methodNode : this.classNode.getDeclaredMethods()) {
-            final InstrumentMethod method = new ASMMethod(this.objectBinderFactory, this.pluginContext, this.interceptorRegistryBinder, apiMetaDataService, this, methodNode);
+            final InstrumentMethod method = new ASMMethod(this.objectBinderFactory, this.pluginContext, this.interceptorRegistryBinder,/* apiMetaDataService,*/ this, methodNode);
             if (methodFilter.accept(method)) {
                 candidateList.add(method);
             }
@@ -233,7 +223,7 @@ public class ASMClass implements InstrumentClass {
 
         final ASMMethodNodeAdapter methodNode = this.classNode.addDelegatorMethod(superMethodNode);
         setModified(true);
-        return new ASMMethod(this.objectBinderFactory, this.pluginContext, this.interceptorRegistryBinder, apiMetaDataService, this, methodNode);
+        return new ASMMethod(this.objectBinderFactory, this.pluginContext, this.interceptorRegistryBinder, /*apiMetaDataService,*/ this, methodNode);
     }
 
     @Override
@@ -574,7 +564,7 @@ public class ASMClass implements InstrumentClass {
     public List<InstrumentClass> getNestedClasses(ClassFilter filter) {
         final List<InstrumentClass> nestedClasses = new ArrayList<InstrumentClass>();
         for (ASMClassNodeAdapter innerClassNode : this.classNode.getInnerClasses()) {
-            final ASMNestedClass nestedClass = new ASMNestedClass(objectBinderFactory, this.pluginContext, this.interceptorRegistryBinder, apiMetaDataService, this.classLoader, innerClassNode);
+            final ASMNestedClass nestedClass = new ASMNestedClass(objectBinderFactory, this.pluginContext, this.interceptorRegistryBinder, /*apiMetaDataService,*/ this.classLoader, innerClassNode);
             if (filter.accept(nestedClass)) {
                 nestedClasses.add(nestedClass);
             }

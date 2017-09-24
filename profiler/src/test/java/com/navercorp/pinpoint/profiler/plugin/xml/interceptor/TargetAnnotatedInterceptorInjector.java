@@ -14,21 +14,13 @@
  */
 package com.navercorp.pinpoint.profiler.plugin.xml.interceptor;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import com.navercorp.pinpoint.bootstrap.config.ProfilerConfig;
 import com.navercorp.pinpoint.bootstrap.context.TraceContext;
 import com.navercorp.pinpoint.bootstrap.instrument.InstrumentClass;
 import com.navercorp.pinpoint.bootstrap.instrument.InstrumentContext;
 import com.navercorp.pinpoint.bootstrap.instrument.MethodFilter;
 import com.navercorp.pinpoint.bootstrap.interceptor.Interceptor;
-import com.navercorp.pinpoint.bootstrap.interceptor.annotation.TargetConstructor;
-import com.navercorp.pinpoint.bootstrap.interceptor.annotation.TargetConstructors;
-import com.navercorp.pinpoint.bootstrap.interceptor.annotation.TargetFilter;
-import com.navercorp.pinpoint.bootstrap.interceptor.annotation.TargetMethod;
-import com.navercorp.pinpoint.bootstrap.interceptor.annotation.TargetMethods;
+import com.navercorp.pinpoint.bootstrap.interceptor.annotation.*;
 import com.navercorp.pinpoint.bootstrap.interceptor.scope.ExecutionPolicy;
 import com.navercorp.pinpoint.bootstrap.plugin.ObjectFactory;
 import com.navercorp.pinpoint.bootstrap.plugin.monitor.DataSourceMonitorRegistry;
@@ -36,13 +28,11 @@ import com.navercorp.pinpoint.exception.PinpointException;
 import com.navercorp.pinpoint.profiler.metadata.ApiMetaDataService;
 import com.navercorp.pinpoint.profiler.objectfactory.AutoBindingObjectFactory;
 import com.navercorp.pinpoint.profiler.objectfactory.InterceptorArgumentProvider;
-import com.navercorp.pinpoint.profiler.plugin.xml.transformer.ClassCookBook;
-import com.navercorp.pinpoint.profiler.plugin.xml.transformer.ClassRecipe;
-import com.navercorp.pinpoint.profiler.plugin.xml.transformer.ConstructorTransformer;
-import com.navercorp.pinpoint.profiler.plugin.xml.transformer.DedicatedMethodTransformer;
-import com.navercorp.pinpoint.profiler.plugin.xml.transformer.FilteringMethodTransformer;
-import com.navercorp.pinpoint.profiler.plugin.xml.transformer.MethodRecipe;
-import com.navercorp.pinpoint.profiler.plugin.xml.transformer.MethodTransformer;
+import com.navercorp.pinpoint.profiler.plugin.xml.transformer.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Jongho Moon
@@ -163,7 +153,7 @@ public class TargetAnnotatedInterceptorInjector implements ClassRecipe {
             throw new PinpointException("type of @TargetFilter is null: " + interceptorClassName);
         }
 
-        final InterceptorArgumentProvider interceptorArgumentProvider = new InterceptorArgumentProvider(dataSourceMonitorRegistry, apiMetaDataService, targetClass);
+        final InterceptorArgumentProvider interceptorArgumentProvider = new InterceptorArgumentProvider(dataSourceMonitorRegistry, /*apiMetaDataService,*/ targetClass);
         AutoBindingObjectFactory filterFactory = new AutoBindingObjectFactory(profilerConfig, traceContext, pluginContext, classLoader, interceptorArgumentProvider);
         MethodFilter filter = (MethodFilter)filterFactory.createInstance(ObjectFactory.byConstructor(type, (Object[]) annotation.constructorArguments()));
         MethodRecipe recipe = annotation.singleton() ? new SharedAnnotatedInterceptorInjector(injector) : injector;

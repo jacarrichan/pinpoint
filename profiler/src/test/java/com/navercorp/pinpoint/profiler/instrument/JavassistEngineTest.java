@@ -82,7 +82,7 @@ public class JavassistEngineTest {
         Provider<ApiMetaDataService> apiMetaDataService = Providers.of(mock(ApiMetaDataService.class));
 
         InterceptorRegistryBinder binder = new TestInterceptorRegistryBinder();
-        return new JavassistEngine(instrumentation, objectBinderFactory, binder, apiMetaDataService, null);
+        return new JavassistEngine(instrumentation, objectBinderFactory, binder,/* apiMetaDataService,*/ null);
     }
 
     public byte[] getTransformByteCode()  {

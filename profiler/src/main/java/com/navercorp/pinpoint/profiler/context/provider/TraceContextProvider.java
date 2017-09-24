@@ -21,15 +21,11 @@ import com.google.inject.Provider;
 import com.navercorp.pinpoint.bootstrap.config.ProfilerConfig;
 import com.navercorp.pinpoint.bootstrap.context.ServerMetaDataHolder;
 import com.navercorp.pinpoint.bootstrap.context.TraceContext;
-import com.navercorp.pinpoint.bootstrap.plugin.jdbc.JdbcContext;
 import com.navercorp.pinpoint.profiler.AgentInformation;
-import com.navercorp.pinpoint.profiler.context.id.AsyncIdGenerator;
 import com.navercorp.pinpoint.profiler.context.DefaultTraceContext;
 import com.navercorp.pinpoint.profiler.context.TraceFactory;
+import com.navercorp.pinpoint.profiler.context.id.AsyncIdGenerator;
 import com.navercorp.pinpoint.profiler.context.id.TraceIdFactory;
-import com.navercorp.pinpoint.profiler.metadata.ApiMetaDataService;
-import com.navercorp.pinpoint.profiler.metadata.SqlMetaDataService;
-import com.navercorp.pinpoint.profiler.metadata.StringMetaDataService;
 
 /**
  * @author Woonduk Kang(emeroad)
@@ -42,10 +38,12 @@ public class TraceContextProvider implements Provider<TraceContext> {
     private final TraceFactory traceFactory;
 
     private final ServerMetaDataHolder serverMetaDataHolder;
-    private final ApiMetaDataService apiMetaDataService;
+/*
+   private final ApiMetaDataService apiMetaDataService;
     private final StringMetaDataService stringMetaDataService;
     private final SqlMetaDataService sqlMetaDataService;
-    private final JdbcContext jdbcContext;
+    */
+//    private final JdbcContext jdbcContext;
     private final AsyncIdGenerator asyncIdGenerator;
 
     @Inject
@@ -54,11 +52,11 @@ public class TraceContextProvider implements Provider<TraceContext> {
                                 TraceIdFactory traceIdFactory,
                                 TraceFactory traceFactory,
                                 AsyncIdGenerator asyncIdGenerator,
-                                ServerMetaDataHolder serverMetaDataHolder,
+                                ServerMetaDataHolder serverMetaDataHolder/*,
                                 ApiMetaDataService apiMetaDataService,
                                 StringMetaDataService stringMetaDataService,
-                                SqlMetaDataService sqlMetaDataService,
-                                JdbcContext jdbcContext) {
+                                SqlMetaDataService sqlMetaDataService*/
+    ) {
         if (profilerConfig == null) {
             throw new NullPointerException("profilerConfig must not be null");
         }
@@ -77,7 +75,7 @@ public class TraceContextProvider implements Provider<TraceContext> {
         if (serverMetaDataHolder == null) {
             throw new NullPointerException("serverMetaDataHolder must not be null");
         }
-        if (apiMetaDataService == null) {
+/*        if (apiMetaDataService == null) {
             throw new NullPointerException("apiMetaDataService must not be null");
         }
         if (stringMetaDataService == null) {
@@ -88,7 +86,7 @@ public class TraceContextProvider implements Provider<TraceContext> {
         }
         if (jdbcContext == null) {
             throw new NullPointerException("jdbcContext must not be null");
-        }
+        }*/
         this.profilerConfig = profilerConfig;
         this.agentInformationProvider = agentInformationProvider;
 
@@ -96,17 +94,17 @@ public class TraceContextProvider implements Provider<TraceContext> {
         this.traceFactory = traceFactory;
         this.asyncIdGenerator = asyncIdGenerator;
         this.serverMetaDataHolder = serverMetaDataHolder;
-        this.apiMetaDataService = apiMetaDataService;
-        this.stringMetaDataService = stringMetaDataService;
-        this.sqlMetaDataService = sqlMetaDataService;
-        this.jdbcContext = jdbcContext;
+//        this.apiMetaDataService = apiMetaDataService;
+//        this.stringMetaDataService = stringMetaDataService;
+//        this.sqlMetaDataService = sqlMetaDataService;
+//        this.jdbcContext = jdbcContext;
     }
 
 
     @Override
     public TraceContext get() {
         AgentInformation agentInformation = this.agentInformationProvider.get();
-        return new DefaultTraceContext(profilerConfig, agentInformation, traceIdFactory, traceFactory, asyncIdGenerator,
-                serverMetaDataHolder, apiMetaDataService, stringMetaDataService, sqlMetaDataService, jdbcContext);
+        return new DefaultTraceContext(profilerConfig, agentInformation, traceIdFactory,traceFactory, asyncIdGenerator,
+                serverMetaDataHolder);
     }
 }

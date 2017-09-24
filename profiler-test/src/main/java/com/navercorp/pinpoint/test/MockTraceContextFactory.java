@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 
 package com.navercorp.pinpoint.test;
 
@@ -56,9 +57,11 @@ import com.navercorp.pinpoint.profiler.sender.LoggingDataSender;
 import com.navercorp.pinpoint.profiler.util.RuntimeMXBeanUtils;
 
 
+*/
 /**
  * @author emeroad
- */
+ *//*
+
 public class MockTraceContextFactory {
 
     private static final boolean TRACE_ACTIVE_THREAD = true;
@@ -195,3 +198,4 @@ public class MockTraceContextFactory {
         return traceContext;
     }
 }
+*/

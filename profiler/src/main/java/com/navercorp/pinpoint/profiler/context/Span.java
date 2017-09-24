@@ -16,23 +16,18 @@
 
 package com.navercorp.pinpoint.profiler.context;
 
-import com.navercorp.pinpoint.bootstrap.context.FrameAttachment;
-import com.navercorp.pinpoint.bootstrap.context.SpanId;
-import com.navercorp.pinpoint.bootstrap.context.TraceId;
-import com.navercorp.pinpoint.common.util.TransactionIdUtils;
-import com.navercorp.pinpoint.thrift.dto.TIntStringValue;
-import com.navercorp.pinpoint.thrift.dto.TSpan;
-
 /**
  * Span represent RPC
  *
  * @author netspider
  * @author emeroad
  */
+public class Span extends TSpan {
+/*
 public class Span extends TSpan implements FrameAttachment {
     private boolean timeRecording = true;
     private Object frameObject;
-    
+
     public Span() {
     }
 
@@ -127,5 +122,5 @@ public class Span extends TSpan implements FrameAttachment {
         final Object delete = this.frameObject;
         this.frameObject = null;
         return delete;
-    }
+    }*/
 }

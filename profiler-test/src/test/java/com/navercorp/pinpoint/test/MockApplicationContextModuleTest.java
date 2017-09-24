@@ -25,12 +25,10 @@ import com.navercorp.pinpoint.bootstrap.config.DefaultProfilerConfig;
 import com.navercorp.pinpoint.bootstrap.config.ProfilerConfig;
 import com.navercorp.pinpoint.common.service.DefaultAnnotationKeyRegistryService;
 import com.navercorp.pinpoint.common.service.DefaultServiceTypeRegistryService;
-import com.navercorp.pinpoint.profiler.AgentInfoSender;
 import com.navercorp.pinpoint.profiler.ClassFileTransformerDispatcher;
 import com.navercorp.pinpoint.profiler.context.module.ApplicationContext;
 import com.navercorp.pinpoint.profiler.context.module.DefaultApplicationContext;
 import com.navercorp.pinpoint.profiler.interceptor.registry.InterceptorRegistryBinder;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.net.URL;
@@ -94,9 +92,9 @@ public class MockApplicationContextModuleTest {
 
         Injector injector = applicationContext.getInjector();
         // singleton check
-        AgentInfoSender instance1 = injector.getInstance(AgentInfoSender.class);
-        AgentInfoSender instance2 = injector.getInstance(AgentInfoSender.class);
-        Assert.assertSame(instance1, instance2);
+//        AgentInfoSender instance1 = injector.getInstance(AgentInfoSender.class);
+//        AgentInfoSender instance2 = injector.getInstance(AgentInfoSender.class);
+//        Assert.assertSame(instance1, instance2);
 
         ClassFileTransformerDispatcher instance4 = injector.getInstance(ClassFileTransformerDispatcher.class);
     }

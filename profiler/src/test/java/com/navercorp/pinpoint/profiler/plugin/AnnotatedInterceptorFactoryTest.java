@@ -16,38 +16,36 @@
 
 package com.navercorp.pinpoint.profiler.plugin;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import com.navercorp.pinpoint.bootstrap.config.ProfilerConfig;
+import com.navercorp.pinpoint.bootstrap.context.MethodDescriptor;
+import com.navercorp.pinpoint.bootstrap.context.TraceContext;
+import com.navercorp.pinpoint.bootstrap.instrument.InstrumentClass;
 import com.navercorp.pinpoint.bootstrap.instrument.InstrumentContext;
+import com.navercorp.pinpoint.bootstrap.instrument.InstrumentMethod;
+import com.navercorp.pinpoint.bootstrap.interceptor.Interceptor;
+import com.navercorp.pinpoint.bootstrap.plugin.ObjectFactory;
 import com.navercorp.pinpoint.bootstrap.plugin.monitor.DataSourceMonitorRegistry;
+import com.navercorp.pinpoint.exception.PinpointException;
 import com.navercorp.pinpoint.profiler.instrument.ScopeInfo;
-import com.navercorp.pinpoint.profiler.metadata.ApiMetaDataService;
+import com.navercorp.pinpoint.profiler.interceptor.factory.AnnotatedInterceptorFactory;
+import com.navercorp.pinpoint.profiler.plugin.TestInterceptors.TestInterceptor0;
+import com.navercorp.pinpoint.profiler.plugin.TestInterceptors.TestInterceptor1;
+import com.navercorp.pinpoint.profiler.plugin.TestInterceptors.TestInterceptor2;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import com.navercorp.pinpoint.bootstrap.context.MethodDescriptor;
-import com.navercorp.pinpoint.bootstrap.context.TraceContext;
-import com.navercorp.pinpoint.bootstrap.instrument.InstrumentClass;
-import com.navercorp.pinpoint.bootstrap.instrument.InstrumentMethod;
-import com.navercorp.pinpoint.bootstrap.interceptor.Interceptor;
-import com.navercorp.pinpoint.bootstrap.plugin.ObjectFactory;
-import com.navercorp.pinpoint.exception.PinpointException;
-import com.navercorp.pinpoint.profiler.interceptor.factory.AnnotatedInterceptorFactory;
-import com.navercorp.pinpoint.profiler.plugin.TestInterceptors.TestInterceptor0;
-import com.navercorp.pinpoint.profiler.plugin.TestInterceptors.TestInterceptor1;
-import com.navercorp.pinpoint.profiler.plugin.TestInterceptors.TestInterceptor2;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class AnnotatedInterceptorFactoryTest {
     private final ProfilerConfig profilerConfig = mock(ProfilerConfig.class);
     private final DataSourceMonitorRegistry dataSourceMonitorRegistry = mock(DataSourceMonitorRegistry.class);
-    private final ApiMetaDataService apiMetaDataService = mock(ApiMetaDataService.class);
+//    private final ApiMetaDataService apiMetaDataService = mock(ApiMetaDataService.class);
     private final InstrumentContext pluginContext = mock(InstrumentContext.class);
     private final TraceContext traceContext = mock(TraceContext.class);
     private final InstrumentClass instrumentClass = mock(InstrumentClass.class);
@@ -72,7 +70,7 @@ public class AnnotatedInterceptorFactoryTest {
     }
 
     private AnnotatedInterceptorFactory newAnnotatedInterceptorFactory() {
-        return new AnnotatedInterceptorFactory(profilerConfig, traceContext, dataSourceMonitorRegistry, apiMetaDataService, pluginContext, false);
+        return new AnnotatedInterceptorFactory(profilerConfig, traceContext, dataSourceMonitorRegistry, /*apiMetaDataService, */pluginContext, false);
     }
 
     private ScopeInfo newEmptyScopeInfo() {

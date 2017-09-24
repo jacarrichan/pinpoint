@@ -11,6 +11,22 @@
     <name>pinpoint-profiler</name>
     <packaging>jar</packaging>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>**/pinpoint.config</exclude>
+                        <exclude>**/log4j.xml</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
     <dependencies>
         <dependency>
             <groupId>com.navercorp.pinpoint</groupId>
@@ -24,13 +40,13 @@
                     <groupId>org.apache.thrift</groupId>
                     <artifactId>libthrift</artifactId>
                 </exclusion>
-                 <exclusion>
+                <exclusion>
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-api</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>com.navercorp.pinpoint</groupId>
             <artifactId>pinpoint-thrift</artifactId>
             <exclusions>
@@ -43,7 +59,7 @@
                     <artifactId>slf4j-api</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>com.navercorp.pinpoint</groupId>
             <artifactId>pinpoint-bootstrap-core</artifactId>
@@ -52,10 +68,13 @@
             <groupId>com.navercorp.pinpoint</groupId>
             <artifactId>pinpoint-bootstrap</artifactId>
         </dependency>
+        <!--
         <dependency>
             <groupId>com.navercorp.pinpoint</groupId>
             <artifactId>pinpoint-rpc</artifactId>
         </dependency>
+        -->
+
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
@@ -109,6 +128,7 @@
             <groupId>org.ow2.asm</groupId>
             <artifactId>asm-debug-all</artifactId>
         </dependency>
+<!--
 
         <dependency>
             <groupId>org.apache.thrift</groupId>
@@ -132,6 +152,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
+-->
 
 
         <!-- Logging depedencies -->
@@ -155,6 +176,7 @@
         </dependency>
 
         <!-- serving performance metrics -->
+        <!--
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-core</artifactId>
@@ -163,6 +185,7 @@
             <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-jvm</artifactId>
         </dependency>
+        -->
         <!--<dependency> -->
         <!--<groupId>io.dropwizard.metrics</groupId> -->
         <!--<artifactId>metrics-json</artifactId> -->
@@ -180,20 +203,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>**/pinpoint.config</exclude>
-                        <exclude>**/log4j.xml</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 </project>

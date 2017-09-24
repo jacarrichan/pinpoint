@@ -14,11 +14,10 @@
  */
 package com.navercorp.pinpoint.profiler.instrument.interceptor;
 
-import java.lang.reflect.Method;
-
 import com.navercorp.pinpoint.bootstrap.instrument.InstrumentClass;
 import com.navercorp.pinpoint.bootstrap.instrument.InstrumentMethod;
-import com.navercorp.pinpoint.profiler.metadata.ApiMetaDataService;
+
+import java.lang.reflect.Method;
 
 /**
  * @author Jongho Moon
@@ -34,8 +33,8 @@ public class InvokeAfterCodeGenerator extends InvokeCodeGenerator {
     private final boolean localVarsInitialized;
     private final boolean catchClause;
 
-    public InvokeAfterCodeGenerator(int interceptorId, InterceptorDefinition interceptorDefinition, InstrumentClass targetClass, InstrumentMethod targetMethod, ApiMetaDataService apiMetaDataService, boolean localVarsInitialized, boolean catchClause) {
-        super(interceptorId, interceptorDefinition, targetMethod, apiMetaDataService);
+    public InvokeAfterCodeGenerator(int interceptorId, InterceptorDefinition interceptorDefinition, InstrumentClass targetClass, InstrumentMethod targetMethod,/* ApiMetaDataService apiMetaDataService,*/ boolean localVarsInitialized, boolean catchClause) {
+        super(interceptorId, interceptorDefinition, targetMethod/*, apiMetaDataService*/);
         this.interceptorDefinition = interceptorDefinition;
         this.interceptorId = interceptorId;
         this.targetClass = targetClass;
@@ -129,7 +128,8 @@ public class InvokeAfterCodeGenerator extends InvokeCodeGenerator {
     }
 
     private void appendApiIdAwareAfterArguments(CodeBuilder builder) {
-        builder.format("%1$s, %2$d, %3$s, %4$s, %5$s", getTarget(), getApiId(), getArguments(), getReturnValue(), getException());
+        builder.format("%1$s, %2$d, %3$s, %4$s, %5$s", getTarget(), "", getArguments(), getReturnValue(), getException());
+//        builder.format("%1$s, %2$d, %3$s, %4$s, %5$s", getTarget(), getApiId(), getArguments(), getReturnValue(), getException());
     }
 
     private void appendCustomAfterArguments(CodeBuilder builder) {

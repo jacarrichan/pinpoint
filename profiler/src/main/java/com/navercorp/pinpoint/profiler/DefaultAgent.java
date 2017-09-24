@@ -27,13 +27,10 @@ import com.navercorp.pinpoint.bootstrap.logging.PLoggerFactory;
 import com.navercorp.pinpoint.common.service.ServiceTypeRegistryService;
 import com.navercorp.pinpoint.profiler.context.module.ApplicationContext;
 import com.navercorp.pinpoint.profiler.context.module.DefaultApplicationContext;
-import com.navercorp.pinpoint.profiler.util.SystemPropertyDumper;
 import com.navercorp.pinpoint.profiler.interceptor.registry.DefaultInterceptorRegistryBinder;
 import com.navercorp.pinpoint.profiler.interceptor.registry.InterceptorRegistryBinder;
 import com.navercorp.pinpoint.profiler.logging.Slf4jLoggerBinder;
-
-import com.navercorp.pinpoint.rpc.ClassPreLoader;
-
+import com.navercorp.pinpoint.profiler.util.SystemPropertyDumper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,7 +59,7 @@ public class DefaultAgent implements Agent {
 
     static {
         // Preload classes related to pinpoint-rpc module.
-        ClassPreLoader.preload();
+//        ClassPreLoader.preload();
     }
 
     public DefaultAgent(AgentOption agentOption) {

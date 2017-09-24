@@ -18,13 +18,11 @@
 package com.navercorp.pinpoint.test.javasssit.accessor;
 
 import com.navercorp.pinpoint.bootstrap.config.DefaultProfilerConfig;
-import com.navercorp.pinpoint.bootstrap.context.DatabaseInfo;
 import com.navercorp.pinpoint.bootstrap.instrument.InstrumentClass;
 import com.navercorp.pinpoint.bootstrap.instrument.InstrumentException;
 import com.navercorp.pinpoint.bootstrap.instrument.Instrumentor;
 import com.navercorp.pinpoint.bootstrap.instrument.transformer.TransformCallback;
 import com.navercorp.pinpoint.bootstrap.logging.PLoggerFactory;
-import com.navercorp.pinpoint.bootstrap.plugin.jdbc.UnKnownDatabaseInfo;
 import com.navercorp.pinpoint.common.trace.ServiceType;
 import com.navercorp.pinpoint.profiler.logging.Slf4jLoggerBinder;
 import com.navercorp.pinpoint.test.MockApplicationContext;
@@ -37,6 +35,8 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.security.ProtectionDomain;
+
+//import com.navercorp.pinpoint.bootstrap.plugin.jdbc.UnKnownDatabaseInfo;
 
 /**
  * @author Woonduk Kang(emeroad)
@@ -123,12 +123,12 @@ public class AccessorInjectionTest {
         integerArrayTraceValue.getMethod("_$PINPOINT$_setTraceIntegerArray", Integer[].class).invoke(testObject, wrappedExpectedIntegers);
         Integer[] integers = (Integer[]) integerArrayTraceValue.getMethod("_$PINPOINT$_getTraceIntegerArray").invoke(testObject);
         Assert.assertArrayEquals(expectedIntegers, integers);
-
+/*
         Class<?> databaseTraceValue = loader.loadClass(DatabaseInfoTraceValue.class.getName());
         Assert.assertTrue("DatabaseInfoTraceValue implements fail", databaseTraceValue.isInstance(testObject));
         databaseTraceValue.getMethod("_$PINPOINT$_setTraceDatabaseInfo", DatabaseInfo.class).invoke(testObject, UnKnownDatabaseInfo.INSTANCE);
         Object databaseInfo = databaseTraceValue.getMethod("_$PINPOINT$_getTraceDatabaseInfo").invoke(testObject);
-        Assert.assertSame(UnKnownDatabaseInfo.INSTANCE, databaseInfo);
+        Assert.assertSame(UnKnownDatabaseInfo.INSTANCE, databaseInfo);*/
     }
 
     @Test

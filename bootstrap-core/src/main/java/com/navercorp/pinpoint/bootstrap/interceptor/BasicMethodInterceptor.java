@@ -54,7 +54,7 @@ public class BasicMethodInterceptor implements AroundInterceptor {
             logger.beforeInterceptor(target, args);
         }
 
-        Trace trace = traceContext.currentTraceObject();
+        Trace trace =null;// traceContext.currentTraceObject();
         if (trace == null) {
             return;
         }
@@ -69,7 +69,7 @@ public class BasicMethodInterceptor implements AroundInterceptor {
             logger.afterInterceptor(target, args);
         }
 
-        Trace trace = traceContext.currentTraceObject();
+        Trace trace = null;//traceContext.currentTraceObject();
         if (trace == null) {
             return;
         }

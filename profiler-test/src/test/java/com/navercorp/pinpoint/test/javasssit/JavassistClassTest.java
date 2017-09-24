@@ -109,7 +109,7 @@ public class JavassistClassTest {
         ObjectBinderFactory objectBinderFactory = mock(ObjectBinderFactory.class);
         Provider<ApiMetaDataService> apiMetaDataService = Providers.of(mock(ApiMetaDataService.class));
 
-        return new JavassistEngine(instrumentation, objectBinderFactory, new GlobalInterceptorRegistryBinder(), apiMetaDataService, null);
+        return new JavassistEngine(instrumentation, objectBinderFactory, new GlobalInterceptorRegistryBinder(), /*apiMetaDataService, */null);
     }
 
     @Test

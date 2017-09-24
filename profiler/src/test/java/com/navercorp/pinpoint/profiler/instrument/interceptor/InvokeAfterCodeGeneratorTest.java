@@ -16,8 +16,10 @@
 
 package com.navercorp.pinpoint.profiler.instrument.interceptor;
 
-import static org.mockito.Mockito.*;
-
+import com.navercorp.pinpoint.bootstrap.instrument.InstrumentClass;
+import com.navercorp.pinpoint.bootstrap.instrument.InstrumentMethod;
+import com.navercorp.pinpoint.bootstrap.interceptor.AroundInterceptor0;
+import com.navercorp.pinpoint.bootstrap.interceptor.AroundInterceptor3;
 import com.navercorp.pinpoint.profiler.metadata.ApiMetaDataService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -25,10 +27,7 @@ import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.navercorp.pinpoint.bootstrap.instrument.InstrumentClass;
-import com.navercorp.pinpoint.bootstrap.instrument.InstrumentMethod;
-import com.navercorp.pinpoint.bootstrap.interceptor.AroundInterceptor0;
-import com.navercorp.pinpoint.bootstrap.interceptor.AroundInterceptor3;
+import static org.mockito.Mockito.mock;
 
 /**
  * @author emeroad
@@ -54,7 +53,7 @@ public class InvokeAfterCodeGeneratorTest {
         ApiMetaDataService apiMetaDataService = mock(ApiMetaDataService.class);
 
 
-        final InvokeAfterCodeGenerator invokeAfterCodeGenerator = new InvokeAfterCodeGenerator(100, interceptorDefinition, mockClass, mockMethod, apiMetaDataService, false, true);
+        final InvokeAfterCodeGenerator invokeAfterCodeGenerator = new InvokeAfterCodeGenerator(100, interceptorDefinition, mockClass, mockMethod, /*apiMetaDataService,*/ false, true);
         final String generate = invokeAfterCodeGenerator.generate();
 
         logger.debug("testGenerate_AroundInterceptor3_catchClause:{}", generate);
@@ -82,7 +81,7 @@ public class InvokeAfterCodeGeneratorTest {
 
         ApiMetaDataService apiMetaDataService = mock(ApiMetaDataService.class);
 
-        final InvokeAfterCodeGenerator invokeAfterCodeGenerator = new InvokeAfterCodeGenerator(100, interceptorDefinition, mockClass, mockMethod, apiMetaDataService, false, false);
+        final InvokeAfterCodeGenerator invokeAfterCodeGenerator = new InvokeAfterCodeGenerator(100, interceptorDefinition, mockClass, mockMethod,/* apiMetaDataService,*/ false, false);
         final String generate = invokeAfterCodeGenerator.generate();
 
         logger.debug("testGenerate_AroundInterceptor3_NoCatchClause:{}", generate);
@@ -111,7 +110,7 @@ public class InvokeAfterCodeGeneratorTest {
         ApiMetaDataService apiMetaDataService = mock(ApiMetaDataService.class);
 
 
-        final InvokeAfterCodeGenerator invokeAfterCodeGenerator = new InvokeAfterCodeGenerator(100, interceptorDefinition, mockClass, mockMethod, apiMetaDataService, false, true);
+        final InvokeAfterCodeGenerator invokeAfterCodeGenerator = new InvokeAfterCodeGenerator(100, interceptorDefinition, mockClass, mockMethod, /*apiMetaDataService,*/ false, true);
         final String generate = invokeAfterCodeGenerator.generate();
 
         logger.debug("testGenerate_AroundInterceptor3_methodParam2:{}", generate);
@@ -139,7 +138,7 @@ public class InvokeAfterCodeGeneratorTest {
 
         ApiMetaDataService apiMetaDataService = mock(ApiMetaDataService.class);
 
-        final InvokeAfterCodeGenerator invokeAfterCodeGenerator = new InvokeAfterCodeGenerator(100, interceptorDefinition, mockClass, mockMethod, apiMetaDataService, false, true);
+        final InvokeAfterCodeGenerator invokeAfterCodeGenerator = new InvokeAfterCodeGenerator(100, interceptorDefinition, mockClass, mockMethod, /*apiMetaDataService,*/ false, true);
         final String generate = invokeAfterCodeGenerator.generate();
 
         logger.debug("testGenerate_AroundInterceptor3_methodParam4:{}", generate);
@@ -169,7 +168,7 @@ public class InvokeAfterCodeGeneratorTest {
 
         ApiMetaDataService apiMetaDataService = mock(ApiMetaDataService.class);
 
-        final InvokeAfterCodeGenerator invokeAfterCodeGenerator = new InvokeAfterCodeGenerator(100, interceptorDefinition, mockClass, mockMethod, apiMetaDataService, false, true);
+        final InvokeAfterCodeGenerator invokeAfterCodeGenerator = new InvokeAfterCodeGenerator(100, interceptorDefinition, mockClass, mockMethod, /*apiMetaDataService, */false, true);
         final String generate = invokeAfterCodeGenerator.generate();
 
         logger.debug("testGenerate_AroundInterceptor0:{}", generate);

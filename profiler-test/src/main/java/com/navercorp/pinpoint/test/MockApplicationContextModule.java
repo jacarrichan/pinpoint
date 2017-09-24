@@ -20,16 +20,10 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 import com.google.inject.util.Providers;
 import com.navercorp.pinpoint.bootstrap.context.ServerMetaDataHolder;
-import com.navercorp.pinpoint.profiler.context.module.SpanDataSender;
-import com.navercorp.pinpoint.profiler.context.module.StatDataSender;
-import com.navercorp.pinpoint.profiler.context.storage.StorageFactory;
 import com.navercorp.pinpoint.profiler.plugin.PluginContextLoadResult;
-import com.navercorp.pinpoint.profiler.sender.DataSender;
-import com.navercorp.pinpoint.profiler.sender.EnhancedDataSender;
 import com.navercorp.pinpoint.profiler.util.RuntimeMXBeanUtils;
 import com.navercorp.pinpoint.rpc.client.PinpointClient;
 import com.navercorp.pinpoint.rpc.client.PinpointClientFactory;
-import org.apache.thrift.TBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,6 +41,7 @@ public class MockApplicationContextModule extends AbstractModule {
 
     @Override
     protected void configure() {
+/*
 
         final DataSender spanDataSender = newUdpSpanDataSender();
         logger.debug("spanDataSender:{}", spanDataSender);
@@ -59,13 +54,16 @@ public class MockApplicationContextModule extends AbstractModule {
         StorageFactory storageFactory = newStorageFactory(spanDataSender);
         logger.debug("spanFactory:{}", spanDataSender);
         bind(StorageFactory.class).toInstance(storageFactory);
+*/
 
         bind(PinpointClientFactory.class).toProvider(Providers.of((PinpointClientFactory)null));
         bind(PinpointClient.class).toProvider(Providers.of((PinpointClient)null));
+/*
 
         EnhancedDataSender enhancedDataSender = newTcpDataSender();
         logger.debug("enhancedDataSender:{}", enhancedDataSender);
         bind(EnhancedDataSender.class).toInstance(enhancedDataSender);
+*/
 
         ServerMetaDataHolder serverMetaDataHolder = newServerMetaDataHolder();
         logger.debug("serverMetaDataHolder:{}", serverMetaDataHolder);
@@ -75,6 +73,7 @@ public class MockApplicationContextModule extends AbstractModule {
         bind(PluginContextLoadResult.class).toProvider(MockPluginContextLoadResultProvider.class).in(Scopes.SINGLETON);
     }
 
+/*
 
     protected DataSender newUdpStatDataSender() {
         DataSender dataSender = new ListenableDataSender<TBase<?, ?>>("StatDataSender");
@@ -96,6 +95,7 @@ public class MockApplicationContextModule extends AbstractModule {
         StorageFactory storageFactory = new SimpleSpanStorageFactory(spanDataSender);
         return storageFactory;
     }
+*/
 
     protected ServerMetaDataHolder newServerMetaDataHolder() {
         List<String> vmArgs = RuntimeMXBeanUtils.getVmArgs();

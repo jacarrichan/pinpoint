@@ -15,12 +15,10 @@
  */
 package com.navercorp.pinpoint.profiler.instrument;
 
-import com.google.inject.Provider;
 import com.navercorp.pinpoint.bootstrap.instrument.InstrumentClass;
 import com.navercorp.pinpoint.bootstrap.instrument.InstrumentContext;
 import com.navercorp.pinpoint.bootstrap.instrument.NotFoundInstrumentException;
 import com.navercorp.pinpoint.profiler.interceptor.registry.InterceptorRegistryBinder;
-import com.navercorp.pinpoint.profiler.metadata.ApiMetaDataService;
 import com.navercorp.pinpoint.profiler.objectfactory.ObjectBinderFactory;
 import com.navercorp.pinpoint.profiler.util.JavaAssistUtils;
 import org.objectweb.asm.ClassReader;
@@ -42,10 +40,10 @@ public class ASMEngine implements InstrumentEngine {
     private final Instrumentation instrumentation;
     private final ObjectBinderFactory objectBinderFactory;
     private final InterceptorRegistryBinder interceptorRegistryBinder;
-    private final Provider<ApiMetaDataService> apiMetaDataService;
+//    private final Provider<ApiMetaDataService> apiMetaDataService;
 
 
-    public ASMEngine(Instrumentation instrumentation, ObjectBinderFactory objectBinderFactory, final InterceptorRegistryBinder interceptorRegistryBinder, Provider<ApiMetaDataService> apiMetaDataService, final List<String> bootStrapJars) {
+    public ASMEngine(Instrumentation instrumentation, ObjectBinderFactory objectBinderFactory, final InterceptorRegistryBinder interceptorRegistryBinder, /*Provider<ApiMetaDataService> apiMetaDataService,*/ final List<String> bootStrapJars) {
         if (instrumentation == null) {
             throw new NullPointerException("instrumentation must not be null");
         }
@@ -55,14 +53,14 @@ public class ASMEngine implements InstrumentEngine {
         if (interceptorRegistryBinder == null) {
             throw new NullPointerException("interceptorRegistryBinder must not be null");
         }
-        if (apiMetaDataService == null) {
+/*        if (apiMetaDataService == null) {
             throw new NullPointerException("apiMetaDataService must not be null");
-        }
+        }*/
 
         this.instrumentation = instrumentation;
         this.objectBinderFactory = objectBinderFactory;
         this.interceptorRegistryBinder = interceptorRegistryBinder;
-        this.apiMetaDataService = apiMetaDataService;
+//        this.apiMetaDataService = apiMetaDataService;
 
     }
 
@@ -78,8 +76,8 @@ public class ASMEngine implements InstrumentEngine {
                 if (classNode == null) {
                     return null;
                 }
-                ApiMetaDataService apiMetaDataService = this.apiMetaDataService.get();
-                return new ASMClass(objectBinderFactory, instrumentContext, interceptorRegistryBinder, apiMetaDataService, classLoader, classNode);
+//                ApiMetaDataService apiMetaDataService = this.apiMetaDataService.get();
+                return new ASMClass(objectBinderFactory, instrumentContext, interceptorRegistryBinder, /*apiMetaDataService, */classLoader, classNode);
             }
 
             // Use ASM tree api.
@@ -87,8 +85,8 @@ public class ASMEngine implements InstrumentEngine {
             final ClassNode classNode = new ClassNode();
             classReader.accept(classNode, 0);
 
-            ApiMetaDataService apiMetaDataService = this.apiMetaDataService.get();
-            return new ASMClass(objectBinderFactory, instrumentContext, interceptorRegistryBinder, apiMetaDataService, classLoader, classNode);
+//            ApiMetaDataService apiMetaDataService = this.apiMetaDataService.get();
+            return new ASMClass(objectBinderFactory, instrumentContext, interceptorRegistryBinder, /*apiMetaDataService, */classLoader, classNode);
         } catch (Exception e) {
             throw new NotFoundInstrumentException(e);
         }

@@ -16,17 +16,14 @@
 
 package com.navercorp.pinpoint.profiler.context;
 
-import com.navercorp.pinpoint.bootstrap.context.FrameAttachment;
-import com.navercorp.pinpoint.thrift.dto.TIntStringValue;
-import com.navercorp.pinpoint.thrift.dto.TSpanEvent;
-
 /**
  * Span represent RPC
  *
  * @author netspider
  * @author emeroad
  */
-public class SpanEvent extends TSpanEvent implements FrameAttachment {
+public class SpanEvent extends TSpanEvent{
+/*public class SpanEvent extends TSpanEvent implements FrameAttachment {
 
     private final Span span;
     private int stackId;
@@ -114,5 +111,5 @@ public class SpanEvent extends TSpanEvent implements FrameAttachment {
         final Object delete = this.frameObject;
         this.frameObject = null;
         return delete;
-    }
+    }*/
 }

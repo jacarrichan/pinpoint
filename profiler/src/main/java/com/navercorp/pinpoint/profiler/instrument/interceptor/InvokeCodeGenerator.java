@@ -14,40 +14,40 @@
  */
 package com.navercorp.pinpoint.profiler.instrument.interceptor;
 
-import java.lang.reflect.Modifier;
-
-import com.navercorp.pinpoint.bootstrap.context.MethodDescriptor;
 import com.navercorp.pinpoint.bootstrap.instrument.InstrumentMethod;
-import com.navercorp.pinpoint.bootstrap.interceptor.*;
+import com.navercorp.pinpoint.bootstrap.interceptor.InterceptorInvokerHelper;
 import com.navercorp.pinpoint.bootstrap.interceptor.registry.InterceptorRegistry;
-import com.navercorp.pinpoint.profiler.metadata.ApiMetaDataService;
 import com.navercorp.pinpoint.profiler.util.JavaAssistUtils;
+
+import java.lang.reflect.Modifier;
 
 /**
  * @author Jongho Moon
  *
  */
 public class InvokeCodeGenerator {
-    protected final ApiMetaDataService apiMetaDataService;
+//    protected final ApiMetaDataService apiMetaDataService;
     protected final InterceptorDefinition interceptorDefinition;
     protected final InstrumentMethod targetMethod;
     protected final int interceptorId;
 
-    public InvokeCodeGenerator(int interceptorId, InterceptorDefinition interceptorDefinition, InstrumentMethod targetMethod, ApiMetaDataService apiMetaDataService) {
+    public InvokeCodeGenerator(int interceptorId, InterceptorDefinition interceptorDefinition, InstrumentMethod targetMethod/*, ApiMetaDataService apiMetaDataService*/) {
         if (interceptorDefinition == null) {
             throw new NullPointerException("interceptorDefinition must not be null");
         }
         if (targetMethod == null) {
             throw new NullPointerException("targetMethod must not be null");
         }
+/*
         if (apiMetaDataService == null) {
             throw new NullPointerException("apiMetaDataService must not be null");
         }
+*/
 
         this.interceptorDefinition = interceptorDefinition;
         this.targetMethod = targetMethod;
         this.interceptorId = interceptorId;
-        this.apiMetaDataService = apiMetaDataService;
+//        this.apiMetaDataService = apiMetaDataService;
 
     }
 
@@ -72,12 +72,12 @@ public class InvokeCodeGenerator {
 
         return "$args";
     }
-    
+/*
     protected int getApiId() {
         final MethodDescriptor descriptor = targetMethod.getDescriptor();
         final int apiId = apiMetaDataService.cacheApi(descriptor);
         return apiId;
-    }
+    }*/
     
     protected String getInterceptorInvokerHelperClassName() {
         return InterceptorInvokerHelper.class.getName();

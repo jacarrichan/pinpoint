@@ -59,7 +59,7 @@ public class ASMClassTest {
     private final DataSourceMonitorRegistryService dataSourceMonitorRegistryService = mock(DataSourceMonitorRegistryService.class);
     private final Provider<ApiMetaDataService> apiMetaDataService = Providers.of(mock(ApiMetaDataService.class));
     private final InstrumentContext pluginContext = mock(InstrumentContext.class);
-    private final ObjectBinderFactory objectBinderFactory = new ObjectBinderFactory(profilerConfig, traceContextProvider, dataSourceMonitorRegistryService, apiMetaDataService);
+    private final ObjectBinderFactory objectBinderFactory = new ObjectBinderFactory(profilerConfig, traceContextProvider, dataSourceMonitorRegistryService/*, apiMetaDataService*/);
 
     @Before
     public void setUp() {
@@ -592,6 +592,6 @@ public class ASMClassTest {
     private ASMClass getClass(final String targetClassName) throws Exception {
         ClassNode classNode = ASMClassNodeLoader.get(targetClassName);
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        return new ASMClass(objectBinderFactory, pluginContext, interceptorRegistryBinder, apiMetaDataService.get(), classLoader, classNode);
+        return new ASMClass(objectBinderFactory, pluginContext, interceptorRegistryBinder,/* apiMetaDataService.get(),*/ classLoader, classNode);
     }
 }

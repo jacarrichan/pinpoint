@@ -20,7 +20,7 @@ import com.navercorp.pinpoint.bootstrap.config.ProfilerConfig;
 import com.navercorp.pinpoint.bootstrap.instrument.DynamicTransformTrigger;
 import com.navercorp.pinpoint.profiler.instrument.InstrumentEngine;
 import com.navercorp.pinpoint.bootstrap.plugin.ApplicationTypeDetector;
-import com.navercorp.pinpoint.bootstrap.plugin.jdbc.JdbcUrlParserV2;
+//import com.navercorp.pinpoint.bootstrap.plugin.jdbc.JdbcUrlParserV2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -103,7 +103,7 @@ public class DefaultPluginContextLoadResult implements PluginContextLoadResult {
         return registeredDetectors;
     }
 
-    @Override
+/*    @Override
     public List<JdbcUrlParserV2> getJdbcUrlParserList() {
         final List<JdbcUrlParserV2> result = new ArrayList<JdbcUrlParserV2>();
 
@@ -113,6 +113,6 @@ public class DefaultPluginContextLoadResult implements PluginContextLoadResult {
         }
 
         return result;
-    }
+    }*/
 
 }

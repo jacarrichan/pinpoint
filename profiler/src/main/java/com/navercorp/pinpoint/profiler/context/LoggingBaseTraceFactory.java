@@ -16,10 +16,8 @@
 
 package com.navercorp.pinpoint.profiler.context;
 
-import com.navercorp.pinpoint.bootstrap.context.AsyncTraceId;
 import com.navercorp.pinpoint.bootstrap.context.Trace;
 import com.navercorp.pinpoint.bootstrap.context.TraceId;
-import com.navercorp.pinpoint.common.annotations.InterfaceAudience;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,7 +70,7 @@ public class LoggingBaseTraceFactory implements BaseTraceFactory {
         return baseTraceFactory.continueTraceObject(trace);
     }
 
-    @Override
+  /*  @Override
     @InterfaceAudience.LimitedPrivate("vert.x")
     public Trace continueAsyncTraceObject(TraceId traceId) {
         if (logger.isDebugEnabled()) {
@@ -91,19 +89,19 @@ public class LoggingBaseTraceFactory implements BaseTraceFactory {
 
         return baseTraceFactory.continueAsyncTraceObject(traceId, asyncId, startTime);
     }
-
+*/
     @Override
     public Trace newTraceObject() {
         logger.debug("newTraceObject()");
 
         return baseTraceFactory.newTraceObject();
     }
-
+/*
     @Override
     @InterfaceAudience.LimitedPrivate("vert.x")
     public Trace newAsyncTraceObject() {
         logger.debug("newAsyncTraceObject()");
 
         return baseTraceFactory.newAsyncTraceObject();
-    }
+    }*/
 }

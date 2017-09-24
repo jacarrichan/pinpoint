@@ -16,16 +16,15 @@
 
 package com.navercorp.pinpoint.test;
 
+import com.navercorp.pinpoint.profiler.context.Span;
+import com.navercorp.pinpoint.profiler.context.SpanEvent;
+import org.apache.thrift.TBase;
+
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.thrift.TBase;
-
-import com.navercorp.pinpoint.profiler.context.Span;
-import com.navercorp.pinpoint.profiler.context.SpanEvent;
 
 /**
  * @author Jongho Moon
@@ -122,7 +121,7 @@ public class OrderedSpanRecorder implements ListenableDataSender.Listener, Itera
         long startTime = span.getStartTime();
         long spanId = span.getSpanId();
 
-        insertItem(new Item(span, startTime, spanId, ROOT_SEQUENCE));
+//        insertItem(new Item(span, startTime, spanId, ROOT_SEQUENCE));
     }
 
     private void insertItem(Item item) {
@@ -137,10 +136,10 @@ public class OrderedSpanRecorder implements ListenableDataSender.Listener, Itera
     }
 
     private void handleSpanEvent(SpanEvent event) {
-        Span span = event.getSpan();
+/*        Span span = event.getSpan();
         int asyncId = event.isSetAsyncId() ? event.getAsyncId() : ASYNC_ID_NOT_SET;
         insertItem(new Item(event, span.getStartTime() + event.getStartElapsed(), span.getSpanId(), event.getSequence(), asyncId));
-    }
+ */   }
 
     public synchronized TBase<?, ?> pop() {
         if (list.isEmpty()) {

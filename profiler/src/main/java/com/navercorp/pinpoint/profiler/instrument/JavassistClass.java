@@ -16,36 +16,10 @@
 
 package com.navercorp.pinpoint.profiler.instrument;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import com.navercorp.pinpoint.bootstrap.instrument.*;
-import com.navercorp.pinpoint.bootstrap.interceptor.scope.InterceptorScope;
-import com.navercorp.pinpoint.profiler.metadata.ApiMetaDataService;
-import com.navercorp.pinpoint.profiler.objectfactory.ObjectBinderFactory;
-import javassist.CannotCompileException;
-import javassist.ClassPool;
-import javassist.CtBehavior;
-import javassist.CtClass;
-import javassist.CtConstructor;
-import javassist.CtField;
-import javassist.CtMethod;
-import javassist.CtNewMethod;
-import javassist.Modifier;
-import javassist.NotFoundException;
-import javassist.bytecode.MethodInfo;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.navercorp.pinpoint.bootstrap.interceptor.annotation.TargetConstructor;
-import com.navercorp.pinpoint.bootstrap.interceptor.annotation.TargetConstructors;
-import com.navercorp.pinpoint.bootstrap.interceptor.annotation.TargetFilter;
-import com.navercorp.pinpoint.bootstrap.interceptor.annotation.TargetMethod;
-import com.navercorp.pinpoint.bootstrap.interceptor.annotation.TargetMethods;
+import com.navercorp.pinpoint.bootstrap.interceptor.annotation.*;
 import com.navercorp.pinpoint.bootstrap.interceptor.scope.ExecutionPolicy;
+import com.navercorp.pinpoint.bootstrap.interceptor.scope.InterceptorScope;
 import com.navercorp.pinpoint.bootstrap.plugin.ObjectFactory;
 import com.navercorp.pinpoint.common.util.Asserts;
 import com.navercorp.pinpoint.exception.PinpointException;
@@ -56,7 +30,17 @@ import com.navercorp.pinpoint.profiler.instrument.aspect.AspectWeaverClass;
 import com.navercorp.pinpoint.profiler.interceptor.registry.InterceptorRegistryBinder;
 import com.navercorp.pinpoint.profiler.objectfactory.AutoBindingObjectFactory;
 import com.navercorp.pinpoint.profiler.objectfactory.InterceptorArgumentProvider;
+import com.navercorp.pinpoint.profiler.objectfactory.ObjectBinderFactory;
 import com.navercorp.pinpoint.profiler.util.JavaAssistUtils;
+import javassist.*;
+import javassist.bytecode.MethodInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author emeroad
@@ -72,7 +56,7 @@ public class JavassistClass implements InstrumentClass {
     private final InstrumentContext pluginContext;
 
     private final InterceptorRegistryBinder interceptorRegistryBinder;
-    private final ApiMetaDataService apiMetaDataService;
+//    private final ApiMetaDataService apiMetaDataService;
     private final ClassLoader classLoader;
 
     private final CtClass ctClass;
@@ -81,21 +65,21 @@ public class JavassistClass implements InstrumentClass {
     private static final String GETTER_PREFIX = "_$PINPOINT$_get";
 
 
-    public JavassistClass(ObjectBinderFactory objectBinderFactory, InstrumentContext pluginContext, InterceptorRegistryBinder interceptorRegistryBinder, ApiMetaDataService apiMetaDataService, ClassLoader classLoader, CtClass ctClass) {
+    public JavassistClass(ObjectBinderFactory objectBinderFactory, InstrumentContext pluginContext, InterceptorRegistryBinder interceptorRegistryBinder, /*ApiMetaDataService apiMetaDataService,*/ ClassLoader classLoader, CtClass ctClass) {
         if (objectBinderFactory == null) {
             throw new NullPointerException("objectBinderFactory must not be null");
         }
         if (pluginContext == null) {
             throw new NullPointerException("pluginContext must not be null");
         }
-        if (apiMetaDataService == null) {
+/*        if (apiMetaDataService == null) {
             throw new NullPointerException("apiMetaDataService must not be null");
-        }
+        }*/
         this.objectBinderFactory = objectBinderFactory;
         this.pluginContext = pluginContext;
         this.ctClass = ctClass;
         this.interceptorRegistryBinder = interceptorRegistryBinder;
-        this.apiMetaDataService = apiMetaDataService;
+//        this.apiMetaDataService = apiMetaDataService;
         this.classLoader = classLoader;
     }
 
@@ -150,7 +134,7 @@ public class JavassistClass implements InstrumentClass {
         if (method == null) {
             return null;
         }
-        return new JavassistMethod(objectBinderFactory, pluginContext, interceptorRegistryBinder, apiMetaDataService, this, method);
+        return new JavassistMethod(objectBinderFactory, pluginContext, interceptorRegistryBinder,/* apiMetaDataService,*/ this, method);
     }
 
     @Override
@@ -166,7 +150,7 @@ public class JavassistClass implements InstrumentClass {
         final CtMethod[] declaredMethod = ctClass.getDeclaredMethods();
         final List<InstrumentMethod> candidateList = new ArrayList<InstrumentMethod>(declaredMethod.length);
         for (CtMethod ctMethod : declaredMethod) {
-            final InstrumentMethod method = new JavassistMethod(objectBinderFactory, pluginContext, interceptorRegistryBinder, apiMetaDataService, this, ctMethod);
+            final InstrumentMethod method = new JavassistMethod(objectBinderFactory, pluginContext, interceptorRegistryBinder, /*apiMetaDataService,*/ this, ctMethod);
             if (methodFilter.accept(method)) {
                 candidateList.add(method);
             }
@@ -196,7 +180,7 @@ public class JavassistClass implements InstrumentClass {
             return null;
         }
 
-        return new JavassistMethod(objectBinderFactory, pluginContext, interceptorRegistryBinder, apiMetaDataService, this, constructor);
+        return new JavassistMethod(objectBinderFactory, pluginContext, interceptorRegistryBinder, /*apiMetaDataService,*/ this, constructor);
     }
 
     @Override
@@ -316,7 +300,7 @@ public class JavassistClass implements InstrumentClass {
             CtMethod delegatorMethod = CtNewMethod.delegator(superMethod, ctClass);
             ctClass.addMethod(delegatorMethod);
 
-            return new JavassistMethod(objectBinderFactory, pluginContext, interceptorRegistryBinder, apiMetaDataService, this, delegatorMethod);
+            return new JavassistMethod(objectBinderFactory, pluginContext, interceptorRegistryBinder, /*apiMetaDataService,*/ this, delegatorMethod);
         } catch (NotFoundException ex) {
             throw new InstrumentException(getName() + "don't have super class(" + getSuperClass() + "). Cause:" + ex.getMessage(), ex);
         } catch (CannotCompileException ex) {
@@ -725,7 +709,7 @@ public class JavassistClass implements InstrumentClass {
         }
 
         for (CtClass nested : nestedClasses) {
-            final InstrumentClass clazz = new JavassistClass(objectBinderFactory, pluginContext, interceptorRegistryBinder, apiMetaDataService, classLoader, nested);
+            final InstrumentClass clazz = new JavassistClass(objectBinderFactory, pluginContext, interceptorRegistryBinder,/* apiMetaDataService,*/ classLoader, nested);
             if (filter.accept(clazz)) {
                 list.add(clazz);
             }

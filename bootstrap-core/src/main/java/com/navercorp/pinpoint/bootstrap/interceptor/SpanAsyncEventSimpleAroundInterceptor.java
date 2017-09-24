@@ -49,7 +49,7 @@ public abstract class SpanAsyncEventSimpleAroundInterceptor implements AroundInt
         this.traceContext = traceContext;
         this.methodDescriptor = methodDescriptor;
 
-        traceContext.cacheApi(asyncMethodDescriptor);
+//        traceContext.cacheApi(asyncMethodDescriptor);
     }
 
     @Override
@@ -64,7 +64,7 @@ public abstract class SpanAsyncEventSimpleAroundInterceptor implements AroundInt
             return;
         }
 
-        Trace trace = traceContext.currentRawTraceObject();
+        Trace trace = null;//traceContext.currentRawTraceObject();
         if (trace == null) {
             // create async trace;
             trace = createAsyncTrace(asyncTraceId);
@@ -107,7 +107,7 @@ public abstract class SpanAsyncEventSimpleAroundInterceptor implements AroundInt
             return;
         }
 
-        Trace trace = traceContext.currentTraceObject();
+        Trace trace = null ;//traceContext.currentTraceObject();
         if (trace == null) {
             return;
         }
@@ -145,7 +145,7 @@ public abstract class SpanAsyncEventSimpleAroundInterceptor implements AroundInt
     }
 
     private Trace createAsyncTrace(AsyncTraceId asyncTraceId) {
-        final Trace trace = traceContext.continueAsyncTraceObject(asyncTraceId, asyncTraceId.getAsyncId(), asyncTraceId.getSpanStartTime());
+        final Trace trace = null;//traceContext.continueAsyncTraceObject(asyncTraceId, asyncTraceId.getAsyncId(), asyncTraceId.getSpanStartTime());
         if (trace == null) {
             if (logger.isWarnEnabled()) {
                 logger.warn("Failed to continue async trace. 'result is null'");
@@ -179,7 +179,7 @@ public abstract class SpanAsyncEventSimpleAroundInterceptor implements AroundInt
         if (isDebug) {
             logger.debug("Delete async trace {}.", trace);
         }
-        traceContext.removeTraceObject();
+//        traceContext.removeTraceObject();
         trace.close();
     }
 

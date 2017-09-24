@@ -43,11 +43,11 @@ public class ASMNestedClass implements InstrumentClass {
     private final ASMClass aClass;
 
     public ASMNestedClass(ObjectBinderFactory objectBinderFactory, final InstrumentContext pluginContext, final InterceptorRegistryBinder interceptorRegistryBinder, ApiMetaDataService apiMetaDataService, final ClassLoader classLoader, final ClassNode classNode) {
-        this.aClass = new ASMClass(objectBinderFactory, pluginContext, interceptorRegistryBinder, apiMetaDataService, classLoader, classNode);
+        this.aClass = new ASMClass(objectBinderFactory, pluginContext, interceptorRegistryBinder, /*apiMetaDataService,*/ classLoader, classNode);
     }
 
-    public ASMNestedClass(ObjectBinderFactory objectBinderFactory, final InstrumentContext pluginContext, final InterceptorRegistryBinder interceptorRegistryBinder, ApiMetaDataService apiMetaDataService, final ClassLoader classLoader, final ASMClassNodeAdapter classNodeAdapter) {
-        this.aClass = new ASMClass(objectBinderFactory, pluginContext, interceptorRegistryBinder, apiMetaDataService, classLoader, classNodeAdapter);
+    public ASMNestedClass(ObjectBinderFactory objectBinderFactory, final InstrumentContext pluginContext, final InterceptorRegistryBinder interceptorRegistryBinder,/* ApiMetaDataService apiMetaDataService,*/ final ClassLoader classLoader, final ASMClassNodeAdapter classNodeAdapter) {
+        this.aClass = new ASMClass(objectBinderFactory, pluginContext, interceptorRegistryBinder, /*apiMetaDataService, */classLoader, classNodeAdapter);
     }
 
     public ClassLoader getClassLoader() {

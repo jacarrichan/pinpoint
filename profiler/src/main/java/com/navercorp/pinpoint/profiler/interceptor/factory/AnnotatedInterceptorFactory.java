@@ -19,51 +19,13 @@ package com.navercorp.pinpoint.profiler.interceptor.factory;
 import com.navercorp.pinpoint.bootstrap.config.ProfilerConfig;
 import com.navercorp.pinpoint.bootstrap.context.TraceContext;
 import com.navercorp.pinpoint.bootstrap.instrument.InstrumentClass;
-import com.navercorp.pinpoint.bootstrap.instrument.InstrumentMethod;
 import com.navercorp.pinpoint.bootstrap.instrument.InstrumentContext;
-import com.navercorp.pinpoint.bootstrap.interceptor.ApiIdAwareAroundInterceptor;
-import com.navercorp.pinpoint.bootstrap.interceptor.AroundInterceptor;
-import com.navercorp.pinpoint.bootstrap.interceptor.AroundInterceptor0;
-import com.navercorp.pinpoint.bootstrap.interceptor.AroundInterceptor1;
-import com.navercorp.pinpoint.bootstrap.interceptor.AroundInterceptor2;
-import com.navercorp.pinpoint.bootstrap.interceptor.AroundInterceptor3;
-import com.navercorp.pinpoint.bootstrap.interceptor.AroundInterceptor4;
-import com.navercorp.pinpoint.bootstrap.interceptor.AroundInterceptor5;
-import com.navercorp.pinpoint.bootstrap.interceptor.ExceptionHandleApiIdAwareAroundInterceptor;
-import com.navercorp.pinpoint.bootstrap.interceptor.ExceptionHandleAroundInterceptor;
-import com.navercorp.pinpoint.bootstrap.interceptor.ExceptionHandleAroundInterceptor0;
-import com.navercorp.pinpoint.bootstrap.interceptor.ExceptionHandleAroundInterceptor1;
-import com.navercorp.pinpoint.bootstrap.interceptor.ExceptionHandleAroundInterceptor2;
-import com.navercorp.pinpoint.bootstrap.interceptor.ExceptionHandleAroundInterceptor3;
-import com.navercorp.pinpoint.bootstrap.interceptor.ExceptionHandleAroundInterceptor4;
-import com.navercorp.pinpoint.bootstrap.interceptor.ExceptionHandleAroundInterceptor5;
-import com.navercorp.pinpoint.bootstrap.interceptor.ExceptionHandleStaticAroundInterceptor;
-import com.navercorp.pinpoint.bootstrap.interceptor.Interceptor;
-import com.navercorp.pinpoint.bootstrap.interceptor.StaticAroundInterceptor;
-import com.navercorp.pinpoint.bootstrap.interceptor.scope.ExceptionHandleScopedApiIdAwareAroundInterceptor;
-import com.navercorp.pinpoint.bootstrap.interceptor.scope.ExceptionHandleScopedInterceptor;
-import com.navercorp.pinpoint.bootstrap.interceptor.scope.ExceptionHandleScopedInterceptor0;
-import com.navercorp.pinpoint.bootstrap.interceptor.scope.ExceptionHandleScopedInterceptor1;
-import com.navercorp.pinpoint.bootstrap.interceptor.scope.ExceptionHandleScopedInterceptor2;
-import com.navercorp.pinpoint.bootstrap.interceptor.scope.ExceptionHandleScopedInterceptor3;
-import com.navercorp.pinpoint.bootstrap.interceptor.scope.ExceptionHandleScopedInterceptor4;
-import com.navercorp.pinpoint.bootstrap.interceptor.scope.ExceptionHandleScopedInterceptor5;
-import com.navercorp.pinpoint.bootstrap.interceptor.scope.ExceptionHandleScopedStaticAroundInterceptor;
-import com.navercorp.pinpoint.bootstrap.interceptor.scope.ExecutionPolicy;
-import com.navercorp.pinpoint.bootstrap.interceptor.scope.ScopedApiIdAwareAroundInterceptor;
-import com.navercorp.pinpoint.bootstrap.interceptor.scope.ScopedInterceptor;
-import com.navercorp.pinpoint.bootstrap.interceptor.scope.ScopedInterceptor0;
-import com.navercorp.pinpoint.bootstrap.interceptor.scope.ScopedInterceptor1;
-import com.navercorp.pinpoint.bootstrap.interceptor.scope.ScopedInterceptor2;
-import com.navercorp.pinpoint.bootstrap.interceptor.scope.ScopedInterceptor3;
-import com.navercorp.pinpoint.bootstrap.interceptor.scope.ScopedInterceptor4;
-import com.navercorp.pinpoint.bootstrap.interceptor.scope.ScopedInterceptor5;
-import com.navercorp.pinpoint.bootstrap.interceptor.scope.ScopedStaticAroundInterceptor;
-import com.navercorp.pinpoint.bootstrap.interceptor.scope.InterceptorScope;
+import com.navercorp.pinpoint.bootstrap.instrument.InstrumentMethod;
+import com.navercorp.pinpoint.bootstrap.interceptor.*;
+import com.navercorp.pinpoint.bootstrap.interceptor.scope.*;
 import com.navercorp.pinpoint.bootstrap.plugin.ObjectFactory;
 import com.navercorp.pinpoint.bootstrap.plugin.monitor.DataSourceMonitorRegistry;
 import com.navercorp.pinpoint.profiler.instrument.ScopeInfo;
-import com.navercorp.pinpoint.profiler.metadata.ApiMetaDataService;
 import com.navercorp.pinpoint.profiler.objectfactory.AutoBindingObjectFactory;
 import com.navercorp.pinpoint.profiler.objectfactory.InterceptorArgumentProvider;
 
@@ -75,11 +37,11 @@ public class AnnotatedInterceptorFactory implements InterceptorFactory {
     private final ProfilerConfig profilerConfig;
     private final TraceContext traceContext;
     private final DataSourceMonitorRegistry dataSourceMonitorRegistry;
-    private final ApiMetaDataService apiMetaDataService;
+//    private final ApiMetaDataService apiMetaDataService;
     private final InstrumentContext pluginContext;
     private final boolean exceptionHandle;
 
-    public AnnotatedInterceptorFactory(ProfilerConfig profilerConfig, TraceContext traceContext, DataSourceMonitorRegistry dataSourceMonitorRegistry, ApiMetaDataService apiMetaDataService, InstrumentContext pluginContext, boolean exceptionHandle) {
+    public AnnotatedInterceptorFactory(ProfilerConfig profilerConfig, TraceContext traceContext, DataSourceMonitorRegistry dataSourceMonitorRegistry,/* ApiMetaDataService apiMetaDataService,*/ InstrumentContext pluginContext, boolean exceptionHandle) {
         if (profilerConfig == null) {
             throw new NullPointerException("profilerConfig must not be null");
         }
@@ -89,16 +51,16 @@ public class AnnotatedInterceptorFactory implements InterceptorFactory {
         if (dataSourceMonitorRegistry == null) {
             throw new NullPointerException("dataSourceMonitorRegistry must not be null");
         }
-        if (apiMetaDataService == null) {
+/*        if (apiMetaDataService == null) {
             throw new NullPointerException("apiMetaDataService must not be null");
-        }
+        }*/
         if (pluginContext == null) {
             throw new NullPointerException("pluginContext must not be null");
         }
         this.profilerConfig = profilerConfig;
         this.traceContext = traceContext;
         this.dataSourceMonitorRegistry = dataSourceMonitorRegistry;
-        this.apiMetaDataService = apiMetaDataService;
+//        this.apiMetaDataService = apiMetaDataService;
         this.pluginContext = pluginContext;
         this.exceptionHandle = exceptionHandle;
     }
@@ -109,7 +71,7 @@ public class AnnotatedInterceptorFactory implements InterceptorFactory {
         AutoBindingObjectFactory factory = new AutoBindingObjectFactory(profilerConfig, traceContext, pluginContext, classLoader);
         ObjectFactory objectFactory = ObjectFactory.byConstructor(interceptorClassName, providedArguments);
         final InterceptorScope interceptorScope = scopeInfo.getInterceptorScope();
-        InterceptorArgumentProvider interceptorArgumentProvider = new InterceptorArgumentProvider(dataSourceMonitorRegistry, apiMetaDataService, scopeInfo.getInterceptorScope(), target, targetMethod);
+        InterceptorArgumentProvider interceptorArgumentProvider = new InterceptorArgumentProvider(dataSourceMonitorRegistry, /*apiMetaDataService, */scopeInfo.getInterceptorScope(), target, targetMethod);
 
         Interceptor interceptor = (Interceptor) factory.createInstance(objectFactory, interceptorArgumentProvider);
 

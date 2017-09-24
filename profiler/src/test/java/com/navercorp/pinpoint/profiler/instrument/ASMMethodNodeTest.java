@@ -74,7 +74,7 @@ public class ASMMethodNodeTest {
 
         final MethodNode methodNode = ASMClassNodeLoader.get(targetClassName, methodName);
 
-        ASMMethod method = new ASMMethod(objectBinderFactory, pluginContext, apiMetaDataService, interceptorRegistryBinder, declaringClass, methodNode);
+        ASMMethod method = new ASMMethod(objectBinderFactory, pluginContext, /*apiMetaDataService,*/ interceptorRegistryBinder, declaringClass, methodNode);
         assertEquals(methodName, method.getName());
         assertEquals(1, method.getParameterTypes().length);
         assertEquals("int", method.getParameterTypes()[0]);
@@ -104,7 +104,7 @@ public class ASMMethodNodeTest {
             public void handle(ClassNode classNode) {
                 List<MethodNode> methodNodes = classNode.methods;
                 for(MethodNode methodNode : methodNodes) {
-                    ASMMethod method = new ASMMethod(objectBinderFactory, pluginContext, apiMetaDataService, interceptorRegistryBinder, declaringClass, methodNode);
+                    ASMMethod method = new ASMMethod(objectBinderFactory, pluginContext, /*apiMetaDataService,*/ interceptorRegistryBinder, declaringClass, methodNode);
                     try {
                         method.addInterceptor(interceptorId);
                     } catch (InstrumentException e) {

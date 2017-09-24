@@ -14,6 +14,7 @@
     <modules>
         <module>httpclient3</module>
         <module>httpclient4</module>
+        <!--
         <module>ning-asynchttpclient</module>
         <module>gson</module>
         <module>jackson</module>
@@ -42,7 +43,9 @@
         <module>okhttp</module>
         <module>log4j</module>
         <module>logback</module>
+        -->
         <module>dubbo</module>
+        <!--
         <module>cassandra</module>
         <module>activemq-client</module>
         <module>cxf</module>
@@ -50,6 +53,7 @@
         <module>jboss</module>
         <module>vertx</module>
         <module>resin</module>
+        -->
     </modules>
 
     <dependencies>

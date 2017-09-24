@@ -16,21 +16,14 @@
 
 package com.navercorp.pinpoint.profiler.context;
 
-import com.navercorp.pinpoint.bootstrap.context.AsyncState;
-import com.navercorp.pinpoint.bootstrap.context.AsyncTraceId;
 import com.navercorp.pinpoint.bootstrap.context.Trace;
 import com.navercorp.pinpoint.bootstrap.context.TraceId;
 import com.navercorp.pinpoint.bootstrap.sampler.Sampler;
-import com.navercorp.pinpoint.common.annotations.InterfaceAudience;
 import com.navercorp.pinpoint.profiler.context.id.AsyncIdGenerator;
-import com.navercorp.pinpoint.profiler.context.id.AtomicIdGenerator;
 import com.navercorp.pinpoint.profiler.context.id.IdGenerator;
-import com.navercorp.pinpoint.profiler.context.id.ListenableAsyncState;
 import com.navercorp.pinpoint.profiler.context.id.TraceIdFactory;
-import com.navercorp.pinpoint.profiler.context.recorder.RecorderFactory;
-import com.navercorp.pinpoint.profiler.context.storage.AsyncStorage;
-import com.navercorp.pinpoint.profiler.context.storage.Storage;
-import com.navercorp.pinpoint.profiler.context.storage.StorageFactory;
+
+//import com.navercorp.pinpoint.profiler.context.recorder.RecorderFactory;
 
 
 /**
@@ -41,7 +34,7 @@ public class DefaultBaseTraceFactory implements BaseTraceFactory {
 
     private final CallStackFactory callStackFactory;
 
-    private final StorageFactory storageFactory;
+//    private final StorageFactory storageFactory;
     private final Sampler sampler;
 
     private final IdGenerator idGenerator;
@@ -49,17 +42,17 @@ public class DefaultBaseTraceFactory implements BaseTraceFactory {
 
     private final TraceIdFactory traceIdFactory;
     private final SpanFactory spanFactory;
-    private final RecorderFactory recorderFactory;
+//    private final RecorderFactory recorderFactory;
 
 
-    public DefaultBaseTraceFactory(CallStackFactory callStackFactory, StorageFactory storageFactory, Sampler sampler, TraceIdFactory traceIdFactory, IdGenerator idGenerator, AsyncIdGenerator asyncIdGenerator,
-                                   SpanFactory spanFactory, RecorderFactory recorderFactory) {
+    public DefaultBaseTraceFactory(CallStackFactory callStackFactory,/* StorageFactory storageFactory,*/ Sampler sampler, TraceIdFactory traceIdFactory, IdGenerator idGenerator, AsyncIdGenerator asyncIdGenerator,
+                                   SpanFactory spanFactory) {
         if (callStackFactory == null) {
             throw new NullPointerException("callStackFactory must not be null");
         }
-        if (storageFactory == null) {
+/*        if (storageFactory == null) {
             throw new NullPointerException("storageFactory must not be null");
-        }
+        }*/
         if (sampler == null) {
             throw new NullPointerException("sampler must not be null");
         }
@@ -75,20 +68,20 @@ public class DefaultBaseTraceFactory implements BaseTraceFactory {
         if (spanFactory == null) {
             throw new NullPointerException("spanFactory must not be null");
         }
-        if (recorderFactory == null) {
-            throw new NullPointerException("recorderFactory must not be null");
-        }
+//        if (recorderFactory == null) {
+//            throw new NullPointerException("recorderFactory must not be null");
+//        }
 
 
         this.callStackFactory = callStackFactory;
-        this.storageFactory = storageFactory;
+//        this.storageFactory = storageFactory;
         this.sampler = sampler;
         this.traceIdFactory = traceIdFactory;
         this.idGenerator = idGenerator;
         this.asyncIdGenerator = asyncIdGenerator;
 
         this.spanFactory = spanFactory;
-        this.recorderFactory = recorderFactory;
+//        this.recorderFactory = recorderFactory;
     }
 
 
@@ -98,10 +91,10 @@ public class DefaultBaseTraceFactory implements BaseTraceFactory {
         // TODO need to modify how to bind a datasender
         // always set true because the decision of sampling has been  made on previous nodes
         // TODO need to consider as a target to sample in case Trace object has a sampling flag (true) marked on previous node.
-        final Storage storage = storageFactory.createStorage();
+//        final Storage storage = storageFactory.createStorage();
         final long localTransactionId = this.idGenerator.nextContinuedTransactionId();
 
-        final Trace trace = new DefaultTrace(callStackFactory, storage, traceId, localTransactionId, asyncIdGenerator, true, spanFactory, recorderFactory);
+        final Trace trace = new DefaultTrace(callStackFactory,/* storage,*/ traceId, localTransactionId, asyncIdGenerator, true, spanFactory);
         return trace;
     }
 
@@ -117,12 +110,12 @@ public class DefaultBaseTraceFactory implements BaseTraceFactory {
         // TODO need to modify how to inject a datasender
         final boolean sampling = sampler.isSampling();
         if (sampling) {
-            final Storage storage = storageFactory.createStorage();
+//            final Storage storage = storageFactory.createStorage();
 
             final TraceId traceId = traceIdFactory.newTraceId();
             final long localTransactionId = traceId.getTransactionSequence();
 
-            final Trace trace = new DefaultTrace(callStackFactory, storage, traceId, localTransactionId, asyncIdGenerator, true, spanFactory, recorderFactory);
+            final Trace trace = new DefaultTrace(callStackFactory, /*storage,*/ traceId, localTransactionId, asyncIdGenerator, true, spanFactory);
 
             return trace;
         } else {
@@ -132,6 +125,7 @@ public class DefaultBaseTraceFactory implements BaseTraceFactory {
 
 
 
+/*
     // internal async trace.
     @Override
     public Trace continueAsyncTraceObject(AsyncTraceId traceId, int asyncId, long startTime) {
@@ -140,7 +134,7 @@ public class DefaultBaseTraceFactory implements BaseTraceFactory {
         final Storage storage = storageFactory.createStorage();
         final Storage asyncStorage = new AsyncStorage(storage);
         final Trace trace = new DefaultTrace(callStackFactory, asyncStorage, parentTraceId, AtomicIdGenerator.UNTRACKED_ID, asyncIdGenerator, true,
-                spanFactory, recorderFactory);
+                spanFactory);
 
         final AsyncTrace asyncTrace = new AsyncTrace(trace, asyncId, traceId.nextAsyncSequence(), startTime);
 
@@ -155,13 +149,14 @@ public class DefaultBaseTraceFactory implements BaseTraceFactory {
         final Storage storage = storageFactory.createStorage();
         final long localTransactionId = this.idGenerator.nextContinuedTransactionId();
         final DefaultTrace trace = new DefaultTrace(callStackFactory, storage, traceId, localTransactionId, asyncIdGenerator, true,
-                spanFactory, recorderFactory);
+                spanFactory);
 
         final SpanAsyncStateListener asyncStateListener = new SpanAsyncStateListener(trace.getSpan(), storageFactory.createStorage());
         final ListenableAsyncState stateListener = new ListenableAsyncState(asyncStateListener);
         final AsyncTrace asyncTrace = new AsyncTrace(trace, stateListener);
 
         return asyncTrace;
+        return  null;
     }
 
     // entry point async trace.
@@ -177,7 +172,7 @@ public class DefaultBaseTraceFactory implements BaseTraceFactory {
             final long localTransactionId = traceId.getTransactionSequence();
 
             final DefaultTrace trace = new DefaultTrace(callStackFactory, storage, traceId, localTransactionId, asyncIdGenerator, true,
-                    spanFactory, recorderFactory);
+                    spanFactory);
 
             final SpanAsyncStateListener asyncStateListener = new SpanAsyncStateListener(trace.getSpan(), storageFactory.createStorage());
             final AsyncState closer = new ListenableAsyncState(asyncStateListener);
@@ -188,6 +183,7 @@ public class DefaultBaseTraceFactory implements BaseTraceFactory {
             return newDisableTrace();
         }
     }
+*/
 
     private Trace newDisableTrace() {
         final long nextDisabledId = this.idGenerator.nextDisabledId();

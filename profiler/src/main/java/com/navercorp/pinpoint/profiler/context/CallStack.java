@@ -64,11 +64,11 @@ public class CallStack {
         }
 
         checkExtend(index + 1);
-        spanEvent.setSequence(sequence++);
+//        spanEvent.setSequence(sequence++);
         stack[index++] = spanEvent;
         if(latestStackIndex != index) {
             latestStackIndex = index;
-            spanEvent.setDepth(latestStackIndex);
+//            spanEvent.setDepth(latestStackIndex);
         }
 
         return index;
@@ -87,7 +87,7 @@ public class CallStack {
     public SpanEvent pop() {
         if(isOverflow() && overflowIndex > 0) {
             overflowIndex--;
-            return new SpanEvent(span);
+//            return new SpanEvent(span);
         }
         
         final SpanEvent spanEvent = peek();
@@ -105,7 +105,7 @@ public class CallStack {
         }
         
         if(isOverflow() && overflowIndex > 0) {
-            return new SpanEvent(span);
+//            return new SpanEvent(span);
         }
 
         return stack[index - 1];

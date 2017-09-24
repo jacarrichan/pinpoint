@@ -16,26 +16,14 @@
 
 package com.navercorp.pinpoint.test.junit4;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.navercorp.pinpoint.common.server.bo.SpanFactory;
-import com.navercorp.pinpoint.profiler.sender.DataSender;
-import com.navercorp.pinpoint.test.ListenableDataSender;
-import com.navercorp.pinpoint.test.MockApplicationContext;
-import com.navercorp.pinpoint.test.ResettableServerMetaDataHolder;
-import com.navercorp.pinpoint.test.TestableServerMetaDataListener;
-
-import org.apache.thrift.TBase;
-import org.junit.runner.RunWith;
-
 import com.navercorp.pinpoint.bootstrap.context.ServerMetaData;
 import com.navercorp.pinpoint.bootstrap.context.ServerMetaDataHolder;
-import com.navercorp.pinpoint.common.server.bo.SpanBo;
-import com.navercorp.pinpoint.common.server.bo.SpanEventBo;
-import com.navercorp.pinpoint.profiler.context.Span;
-import com.navercorp.pinpoint.profiler.context.SpanEvent;
+import com.navercorp.pinpoint.test.MockApplicationContext;
+import com.navercorp.pinpoint.test.ResettableServerMetaDataHolder;
 import com.navercorp.pinpoint.test.TBaseRecorder;
+import com.navercorp.pinpoint.test.TestableServerMetaDataListener;
+import org.apache.thrift.TBase;
+import org.junit.runner.RunWith;
 
 /**
  * @author hyungil.jeong
@@ -46,7 +34,7 @@ public abstract class BasePinpointTest {
     private volatile TBaseRecorder<? extends TBase<?, ?>> tBaseRecorder;
     private volatile ServerMetaDataHolder serverMetaDataHolder;
     private final TestableServerMetaDataListener listener = new TestableServerMetaDataListener();
-    private final SpanFactory spanFactory = new SpanFactory();
+/*    private final SpanFactory spanFactory = new SpanFactory();
 
     protected List<SpanEventBo> getCurrentSpanEvents() {
         List<SpanEventBo> spanEvents = new ArrayList<SpanEventBo>();
@@ -69,7 +57,7 @@ public abstract class BasePinpointTest {
             }
         }
         return rootSpans;
-    }
+    }*/
     
     protected ServerMetaData getServerMetaData() {
         return this.listener.getServerMetaData();
@@ -85,7 +73,7 @@ public abstract class BasePinpointTest {
 
     public void setup(TestContext testContext) {
         MockApplicationContext mockApplicationContext = testContext.getMockApplicationContext();
-
+/*
         DataSender spanDataSender = mockApplicationContext.getSpanDataSender();
         if (spanDataSender instanceof ListenableDataSender) {
             ListenableDataSender listenableDataSender = (ListenableDataSender) spanDataSender;
@@ -99,7 +87,7 @@ public abstract class BasePinpointTest {
                 }
             });
             setTBaseRecorder(tBaseRecord);
-        }
+        }*/
 
         ServerMetaDataHolder serverMetaDataHolder = mockApplicationContext.getTraceContext().getServerMetaDataHolder();
         if (serverMetaDataHolder instanceof ResettableServerMetaDataHolder) {

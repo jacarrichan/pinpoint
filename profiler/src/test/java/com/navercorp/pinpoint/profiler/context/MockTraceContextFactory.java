@@ -17,35 +17,17 @@
 
 package com.navercorp.pinpoint.profiler.context;
 
-import com.google.inject.util.Providers;
 import com.navercorp.pinpoint.bootstrap.config.ProfilerConfig;
 import com.navercorp.pinpoint.bootstrap.context.ServerMetaDataHolder;
-import com.navercorp.pinpoint.bootstrap.context.TraceContext;
 import com.navercorp.pinpoint.bootstrap.sampler.Sampler;
 import com.navercorp.pinpoint.common.trace.ServiceType;
 import com.navercorp.pinpoint.profiler.AgentInformation;
-import com.navercorp.pinpoint.profiler.context.active.ActiveTraceRepository;
-import com.navercorp.pinpoint.profiler.context.active.DefaultActiveTraceRepository;
 import com.navercorp.pinpoint.profiler.context.id.AsyncIdGenerator;
 import com.navercorp.pinpoint.profiler.context.id.AtomicIdGenerator;
 import com.navercorp.pinpoint.profiler.context.id.DefaultAsyncIdGenerator;
-import com.navercorp.pinpoint.profiler.context.id.DefaultTraceIdFactory;
-import com.navercorp.pinpoint.profiler.context.id.TraceIdFactory;
-import com.navercorp.pinpoint.profiler.context.monitor.DisabledJdbcContext;
-import com.navercorp.pinpoint.profiler.context.provider.TraceFactoryProvider;
-import com.navercorp.pinpoint.profiler.context.recorder.DefaultRecorderFactory;
-import com.navercorp.pinpoint.profiler.context.recorder.RecorderFactory;
 import com.navercorp.pinpoint.profiler.context.storage.LogStorageFactory;
 import com.navercorp.pinpoint.profiler.context.storage.StorageFactory;
-import com.navercorp.pinpoint.profiler.metadata.ApiMetaDataService;
-import com.navercorp.pinpoint.profiler.metadata.DefaultApiMetaDataService;
-import com.navercorp.pinpoint.profiler.metadata.DefaultSqlMetaDataService;
-import com.navercorp.pinpoint.profiler.metadata.DefaultStringMetaDataService;
-import com.navercorp.pinpoint.profiler.metadata.SqlMetaDataService;
-import com.navercorp.pinpoint.profiler.metadata.StringMetaDataService;
 import com.navercorp.pinpoint.profiler.sampler.SamplerFactory;
-import com.navercorp.pinpoint.profiler.sender.EnhancedDataSender;
-import com.navercorp.pinpoint.profiler.sender.LoggingDataSender;
 import com.navercorp.pinpoint.profiler.util.RuntimeMXBeanUtils;
 
 /**
@@ -62,10 +44,11 @@ public class MockTraceContextFactory {
 
     private final AtomicIdGenerator idGenerator;
     private final Sampler sampler;
-    private final ActiveTraceRepository activeTraceRepository;
+//    private final ActiveTraceRepository activeTraceRepository;
 
     private final ServerMetaDataHolder serverMetaDataHolder;
 
+/*
     private final EnhancedDataSender enhancedDataSender;
 
     private final ApiMetaDataService apiMetaDataService;
@@ -78,6 +61,7 @@ public class MockTraceContextFactory {
         MockTraceContextFactory mockTraceContextFactory = newTestTraceContextFactory(profilerConfig);
         return mockTraceContextFactory.getTraceContext();
     }
+*/
 
     public static MockTraceContextFactory newTestTraceContextFactory(ProfilerConfig profilerConfig) {
 
@@ -96,7 +80,7 @@ public class MockTraceContextFactory {
 
         this.idGenerator = new AtomicIdGenerator();
 
-        this.activeTraceRepository = newActiveTraceRepository();
+//        this.activeTraceRepository = newActiveTraceRepository();
 
         final AsyncIdGenerator asyncIdGenerator = new DefaultAsyncIdGenerator();
         this.serverMetaDataHolder = new DefaultServerMetaDataHolder(RuntimeMXBeanUtils.getVmArgs());
@@ -105,7 +89,7 @@ public class MockTraceContextFactory {
         final String agentId = agentInformation.getAgentId();
         final long agentStartTime = agentInformation.getStartTime();
         final ServiceType agentServiceType = agentInformation.getServerType();
-        this.enhancedDataSender = new LoggingDataSender();
+/*        this.enhancedDataSender = new LoggingDataSender();
 
         this.apiMetaDataService = new DefaultApiMetaDataService(agentId, agentStartTime, enhancedDataSender);
         this.stringMetaDataService = new DefaultStringMetaDataService(agentId, agentStartTime, enhancedDataSender);
@@ -127,7 +111,7 @@ public class MockTraceContextFactory {
                 traceIdFactory, traceFactory, asyncIdGenerator, serverMetaDataHolder,
                 apiMetaDataService, stringMetaDataService, sqlMetaDataService,
                 DisabledJdbcContext.INSTANCE
-        );
+        );*/
     }
 
     private Sampler createSampler(ProfilerConfig profilerConfig, SamplerFactory samplerFactory) {
@@ -137,12 +121,14 @@ public class MockTraceContextFactory {
     }
 
 
+/*
     private static ActiveTraceRepository newActiveTraceRepository() {
         if (TRACE_ACTIVE_THREAD) {
             return new DefaultActiveTraceRepository();
         }
         return null;
     }
+*/
 
     public AgentInformation getAgentInformation() {
         return agentInformation;
@@ -160,15 +146,18 @@ public class MockTraceContextFactory {
         return sampler;
     }
 
+/*
     public ActiveTraceRepository getActiveTraceRepository() {
         return activeTraceRepository;
     }
 
+*/
 
     public ServerMetaDataHolder getServerMetaDataHolder() {
         return serverMetaDataHolder;
     }
 
+/*
     public EnhancedDataSender getEnhancedDataSender() {
         return enhancedDataSender;
     }
@@ -188,4 +177,6 @@ public class MockTraceContextFactory {
     public TraceContext getTraceContext() {
         return traceContext;
     }
+*/
+
 }

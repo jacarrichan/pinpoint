@@ -17,7 +17,7 @@
 package com.navercorp.pinpoint.profiler.plugin;
 
 import com.navercorp.pinpoint.bootstrap.plugin.ApplicationTypeDetector;
-import com.navercorp.pinpoint.bootstrap.plugin.jdbc.JdbcUrlParserV2;
+//import com.navercorp.pinpoint.bootstrap.plugin.jdbc.JdbcUrlParserV2;
 
 import java.lang.instrument.ClassFileTransformer;
 import java.util.List;
@@ -31,6 +31,6 @@ public interface PluginContextLoadResult {
 
     List<ApplicationTypeDetector> getApplicationTypeDetectorList();
 
-    List<JdbcUrlParserV2> getJdbcUrlParserList();
+//    List<JdbcUrlParserV2> getJdbcUrlParserList();
 
 }

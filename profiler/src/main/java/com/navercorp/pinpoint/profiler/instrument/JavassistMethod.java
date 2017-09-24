@@ -60,7 +60,7 @@ public class JavassistMethod implements InstrumentMethod {
     private final InstrumentContext pluginContext;
 
     private final InterceptorRegistryBinder interceptorRegistryBinder;
-    private final ApiMetaDataService apiMetaDataService;
+//    private final ApiMetaDataService apiMetaDataService;
 
     private final CtBehavior behavior;
     private final InstrumentClass declaringClass;
@@ -73,7 +73,7 @@ public class JavassistMethod implements InstrumentMethod {
     private static final ScopeFactory scopeFactory = new ScopeFactory();
 
 
-    public JavassistMethod(ObjectBinderFactory objectBinderFactory, InstrumentContext pluginContext, InterceptorRegistryBinder interceptorRegistryBinder, ApiMetaDataService apiMetaDataService, InstrumentClass declaringClass, CtBehavior behavior) {
+    public JavassistMethod(ObjectBinderFactory objectBinderFactory, InstrumentContext pluginContext, InterceptorRegistryBinder interceptorRegistryBinder/*, ApiMetaDataService apiMetaDataService*/, InstrumentClass declaringClass, CtBehavior behavior) {
         if (objectBinderFactory == null) {
             throw new NullPointerException("objectBinderFactory must not be null");
         }
@@ -84,7 +84,7 @@ public class JavassistMethod implements InstrumentMethod {
         this.objectBinderFactory = objectBinderFactory;
         this.pluginContext = pluginContext;
         this.interceptorRegistryBinder = interceptorRegistryBinder;
-        this.apiMetaDataService = apiMetaDataService;
+//        this.apiMetaDataService = apiMetaDataService;
         this.behavior = behavior;
         this.declaringClass = declaringClass;
         
@@ -308,7 +308,7 @@ public class JavassistMethod implements InstrumentMethod {
             return;
         }
 
-        InvokeAfterCodeGenerator catchGenerator = new InvokeAfterCodeGenerator(interceptorId, interceptorDefinition, declaringClass, this, apiMetaDataService, localVarsInitialized, true);
+        InvokeAfterCodeGenerator catchGenerator = new InvokeAfterCodeGenerator(interceptorId, interceptorDefinition, declaringClass, this,/* apiMetaDataService,*/ localVarsInitialized, true);
         String catchCode = catchGenerator.generate();
         
         if (isDebug) {
@@ -319,7 +319,7 @@ public class JavassistMethod implements InstrumentMethod {
         insertCatch(originalCodeOffset, catchCode, throwable, "$e");
 
 
-        InvokeAfterCodeGenerator afterGenerator = new InvokeAfterCodeGenerator(interceptorId, interceptorDefinition, declaringClass, this, apiMetaDataService, localVarsInitialized, false);
+        InvokeAfterCodeGenerator afterGenerator = new InvokeAfterCodeGenerator(interceptorId, interceptorDefinition, declaringClass, this/*, apiMetaDataService*/, localVarsInitialized, false);
         final String afterCode = afterGenerator.generate();
 
         if (isDebug) {
@@ -348,7 +348,7 @@ public class JavassistMethod implements InstrumentMethod {
             return -1;
         }
 
-        final InvokeBeforeCodeGenerator generator = new InvokeBeforeCodeGenerator(interceptorId, interceptorDefinition, declaringClass, this, apiMetaDataService);
+        final InvokeBeforeCodeGenerator generator = new InvokeBeforeCodeGenerator(interceptorId, interceptorDefinition, declaringClass, this/*, apiMetaDataService*/);
         final String beforeCode = generator.generate();
 
         if (isDebug) {

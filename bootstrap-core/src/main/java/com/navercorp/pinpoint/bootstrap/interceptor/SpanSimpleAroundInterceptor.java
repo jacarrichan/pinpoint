@@ -76,14 +76,14 @@ public abstract class SpanSimpleAroundInterceptor implements AroundInterceptor {
             logger.afterInterceptor(target, args, result, throwable);
         }
 
-        final Trace trace = traceContext.currentRawTraceObject();
+        final Trace trace = null;//traceContext.currentRawTraceObject();
         if (trace == null) {
             return;
         }
         
         // TODO STATDISABLE this logic was added to disable statistics tracing
         if (!trace.canSampled()) {
-            traceContext.removeTraceObject();
+//            traceContext.removeTraceObject();
             return;
         }
         // ------------------------------------------------------
@@ -95,7 +95,7 @@ public abstract class SpanSimpleAroundInterceptor implements AroundInterceptor {
                 logger.warn("AFTER. Caused:{}", th.getMessage(), th);
             }
         } finally {
-            traceContext.removeTraceObject();
+//            traceContext.removeTraceObject();
             deleteTrace(trace, target, args, result, throwable);
         }
     }

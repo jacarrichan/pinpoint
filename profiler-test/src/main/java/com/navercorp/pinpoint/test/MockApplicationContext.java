@@ -16,19 +16,11 @@
 
 package com.navercorp.pinpoint.test;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
-
 import com.google.inject.Module;
 import com.google.inject.util.Modules;
-import com.navercorp.pinpoint.bootstrap.config.DefaultProfilerConfig;
-import com.navercorp.pinpoint.profiler.context.module.DefaultApplicationContext;
-
 import com.navercorp.pinpoint.bootstrap.AgentOption;
 import com.navercorp.pinpoint.bootstrap.DefaultAgentOption;
+import com.navercorp.pinpoint.bootstrap.config.DefaultProfilerConfig;
 import com.navercorp.pinpoint.bootstrap.config.ProfilerConfig;
 import com.navercorp.pinpoint.bootstrap.plugin.test.ExpectedAnnotation;
 import com.navercorp.pinpoint.common.service.DefaultAnnotationKeyRegistryService;
@@ -36,8 +28,15 @@ import com.navercorp.pinpoint.common.service.DefaultServiceTypeRegistryService;
 import com.navercorp.pinpoint.common.trace.ServiceType;
 import com.navercorp.pinpoint.profiler.context.Span;
 import com.navercorp.pinpoint.profiler.context.SpanEvent;
+import com.navercorp.pinpoint.profiler.context.module.DefaultApplicationContext;
 import com.navercorp.pinpoint.profiler.interceptor.registry.InterceptorRegistryBinder;
 import com.navercorp.pinpoint.thrift.dto.TAnnotation;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author emeroad
@@ -102,9 +101,9 @@ public class MockApplicationContext extends DefaultApplicationContext {
     public static String toString(Span span) {
         StringBuilder builder = new StringBuilder();
         builder.append('(');
-        builder.append(span.getServiceType());
+//        builder.append(span.getServiceType());
         builder.append(", [");
-        appendAnnotations(builder, span.getAnnotations());
+//        appendAnnotations(builder, span.getAnnotations());
         builder.append("])");
         
         return builder.toString();
@@ -113,9 +112,9 @@ public class MockApplicationContext extends DefaultApplicationContext {
     public static String toString(SpanEvent span) {
         StringBuilder builder = new StringBuilder();
         builder.append('(');
-        builder.append(span.getServiceType());
+//        builder.append(span.getServiceType());
         builder.append(", [");
-        appendAnnotations(builder, span.getAnnotations());
+//        appendAnnotations(builder, span.getAnnotations());
         builder.append("])");
         
         return builder.toString();

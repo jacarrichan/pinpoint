@@ -28,8 +28,8 @@ public class InvokeBeforeCodeGenerator extends InvokeCodeGenerator {
     private final int interceptorId;
     private final InstrumentClass targetClass;
     
-    public InvokeBeforeCodeGenerator(int interceptorId, InterceptorDefinition interceptorDefinition, InstrumentClass targetClass, InstrumentMethod targetMethod, ApiMetaDataService apiMetaDataService) {
-        super(interceptorId, interceptorDefinition, targetMethod, apiMetaDataService);
+    public InvokeBeforeCodeGenerator(int interceptorId, InterceptorDefinition interceptorDefinition, InstrumentClass targetClass, InstrumentMethod targetMethod/*, ApiMetaDataService apiMetaDataService*/) {
+        super(interceptorId, interceptorDefinition, targetMethod/*, apiMetaDataService*/);
         
         this.interceptorId = interceptorId;
         this.targetClass = targetClass;
@@ -91,7 +91,8 @@ public class InvokeBeforeCodeGenerator extends InvokeCodeGenerator {
     }
 
     private void appendApiIdAwareBeforeArguments(CodeBuilder builder) {
-        builder.format("%1$s, %2$d, %3$s", getTarget(), getApiId(), getArguments());
+        builder.format("%1$s, %2$d, %3$s", getTarget(), "", getArguments());
+//        builder.format("%1$s, %2$d, %3$s", getTarget(), getApiId(), getArguments());
     }
 
     private void appendCustomBeforeArguments(CodeBuilder builder) {
