@@ -14,3 +14,9 @@ out/
 /src/main/webapp/lib/js/**/*.js
 /src/main/webapp/lib/js/**/*.map
 /src/main/webapp/lib/css/**/*.css
+*.jar
+target
+.settings
+*.class
+.classpath
+.project
