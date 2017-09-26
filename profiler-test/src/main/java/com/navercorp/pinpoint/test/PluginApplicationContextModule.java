@@ -60,11 +60,12 @@ public class PluginApplicationContextModule extends AbstractModule {
         bind(PinpointClient.class).toProvider(Providers.of((PinpointClient)null));
         EnhancedDataSender enhancedDataSender = newTcpDataSender();
         logger.debug("enhancedDataSender:{}", enhancedDataSender);
-        bind(EnhancedDataSender.class).toInstance(enhancedDataSender);*/
+        bind(EnhancedDataSender.class).toInstance(enhancedDataSender);
 
         ServerMetaDataHolder serverMetaDataHolder = newServerMetaDataHolder();
         logger.debug("serverMetaDataHolder:{}", serverMetaDataHolder);
         bind(ServerMetaDataHolder.class).toInstance(serverMetaDataHolder);
+        */
 
     }
 

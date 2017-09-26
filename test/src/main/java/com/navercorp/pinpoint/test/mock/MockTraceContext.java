@@ -18,7 +18,6 @@ package com.navercorp.pinpoint.test.mock;
 
 import com.navercorp.pinpoint.bootstrap.config.DefaultProfilerConfig;
 import com.navercorp.pinpoint.bootstrap.config.ProfilerConfig;
-import com.navercorp.pinpoint.bootstrap.context.ServerMetaDataHolder;
 import com.navercorp.pinpoint.bootstrap.context.Trace;
 import com.navercorp.pinpoint.bootstrap.context.TraceContext;
 import com.navercorp.pinpoint.bootstrap.context.TraceId;
@@ -128,11 +127,11 @@ public class MockTraceContext implements TraceContext {
         return config;
     }
 
+/*
     @Override
     public ServerMetaDataHolder getServerMetaDataHolder() {
         return null;
     }
-/*
 
     @Override
     public Trace newAsyncTraceObject() {

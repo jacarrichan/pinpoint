@@ -27,13 +27,16 @@
         <dependency>
             <groupId>com.navercorp.pinpoint</groupId>
             <artifactId>pinpoint-profiler-test</artifactId>
+            <scope>test</scope>
         </dependency>
-<!--        <dependency>
+        <!--
+       <dependency>
             <groupId>com.navercorp.pinpoint</groupId>
             <artifactId>pinpoint-profiler-optional</artifactId>
             <scope>runtime</scope>
             <type>pom</type>
-        </dependency>-->
+        </dependency>
+        -->
 
         <!-- plug-ins -->
         <dependency>

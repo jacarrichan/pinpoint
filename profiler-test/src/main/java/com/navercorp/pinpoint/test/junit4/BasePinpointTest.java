@@ -19,7 +19,6 @@ package com.navercorp.pinpoint.test.junit4;
 import com.navercorp.pinpoint.bootstrap.context.ServerMetaData;
 import com.navercorp.pinpoint.bootstrap.context.ServerMetaDataHolder;
 import com.navercorp.pinpoint.test.MockApplicationContext;
-import com.navercorp.pinpoint.test.ResettableServerMetaDataHolder;
 import com.navercorp.pinpoint.test.TestableServerMetaDataListener;
 import org.junit.runner.RunWith;
 
@@ -87,7 +86,7 @@ public abstract class BasePinpointTest {
                 }
             });
             setTBaseRecorder(tBaseRecord);
-        }*/
+        }
 
         ServerMetaDataHolder serverMetaDataHolder = mockApplicationContext.getTraceContext().getServerMetaDataHolder();
         if (serverMetaDataHolder instanceof ResettableServerMetaDataHolder) {
@@ -95,5 +94,6 @@ public abstract class BasePinpointTest {
             this.setServerMetaDataHolder(resettableServerMetaDataHolder);
         }
         this.serverMetaDataHolder.addListener(this.listener);
+        */
     }
 }
