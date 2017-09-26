@@ -43,9 +43,7 @@
         <module>okhttp</module>
         <module>log4j</module>
         <module>logback</module>
-        -->
         <module>dubbo</module>
-        <!--
         <module>cassandra</module>
         <module>activemq-client</module>
         <module>cxf</module>
@@ -67,7 +65,7 @@
             <artifactId>pinpoint-httpclient4-plugin</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
+ <!--       <dependency>
             <groupId>com.navercorp.pinpoint</groupId>
             <artifactId>pinpoint-ning-asynchttpclient-plugin</artifactId>
             <version>${project.version}</version>
@@ -246,7 +244,7 @@
             <groupId>com.navercorp.pinpoint</groupId>
             <artifactId>pinpoint-resin-plugin</artifactId>
             <version>${project.version}</version>
-        </dependency>
+        </dependency>-->
     </dependencies>
 
 </project>

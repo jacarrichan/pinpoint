@@ -21,7 +21,6 @@ import com.google.inject.Scopes;
 import com.google.inject.TypeLiteral;
 import com.navercorp.pinpoint.bootstrap.AgentOption;
 import com.navercorp.pinpoint.bootstrap.config.ProfilerConfig;
-import com.navercorp.pinpoint.bootstrap.context.ServerMetaDataHolder;
 import com.navercorp.pinpoint.bootstrap.context.TraceContext;
 import com.navercorp.pinpoint.bootstrap.instrument.DynamicTransformTrigger;
 import com.navercorp.pinpoint.bootstrap.sampler.Sampler;
@@ -89,11 +88,13 @@ public class ApplicationContextModule extends AbstractModule {
         bind(listString).annotatedWith(BootstrapJarPaths.class).toInstance(agentOption.getBootstrapJarPaths());
 
         bindAgentInformation(agentOption.getAgentId(), agentOption.getApplicationName());
+/*
 
-//        bindDataTransferComponent();
+        bindDataTransferComponent();
 
         bind(ServerMetaDataHolder.class).toProvider(ServerMetaDataHolderProvider.class).in(Scopes.SINGLETON);
-//        bind(StorageFactory.class).toProvider(StorageFactoryProvider.class).in(Scopes.SINGLETON);
+        bind(StorageFactory.class).toProvider(StorageFactoryProvider.class).in(Scopes.SINGLETON);
+*/
 
         bindServiceComponent();
 

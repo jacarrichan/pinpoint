@@ -30,13 +30,11 @@ import com.navercorp.pinpoint.profiler.context.Span;
 import com.navercorp.pinpoint.profiler.context.SpanEvent;
 import com.navercorp.pinpoint.profiler.context.module.DefaultApplicationContext;
 import com.navercorp.pinpoint.profiler.interceptor.registry.InterceptorRegistryBinder;
-import com.navercorp.pinpoint.thrift.dto.TAnnotation;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author emeroad
@@ -119,7 +117,7 @@ public class MockApplicationContext extends DefaultApplicationContext {
         
         return builder.toString();
     }
-
+/*
     private static void appendAnnotations(StringBuilder builder, List<TAnnotation> annotations) {
         boolean first = true;
         
@@ -139,7 +137,7 @@ public class MockApplicationContext extends DefaultApplicationContext {
     private static String toString(TAnnotation a) {
         return a.getKey() + "=" + a.getValue().getFieldValue();
     }
-    
+    */
     public static String toString(short serviceCode, ExpectedAnnotation...annotations) {
         StringBuilder builder = new StringBuilder();
         builder.append('(');

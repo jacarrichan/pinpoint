@@ -28,12 +28,12 @@
             <groupId>com.navercorp.pinpoint</groupId>
             <artifactId>pinpoint-profiler-test</artifactId>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>com.navercorp.pinpoint</groupId>
             <artifactId>pinpoint-profiler-optional</artifactId>
             <scope>runtime</scope>
             <type>pom</type>
-        </dependency>
+        </dependency>-->
 
         <!-- plug-ins -->
         <dependency>
@@ -50,11 +50,11 @@
         </dependency>
 
         <!-- tools -->
-        <dependency>
+<!--        <dependency>
             <groupId>com.navercorp.pinpoint</groupId>
             <artifactId>pinpoint-tools</artifactId>
             <scope>runtime</scope>
-        </dependency>
+        </dependency>-->
 
         <!-- for tests -->
         <dependency>
