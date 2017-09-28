@@ -85,7 +85,7 @@ public interface TraceContext {
 
     ProfilerConfig getProfilerConfig();
 
-    ServerMetaDataHolder getServerMetaDataHolder();
+//    ServerMetaDataHolder getServerMetaDataHolder();
 
     int getAsyncId();
 

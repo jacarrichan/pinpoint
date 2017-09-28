@@ -18,14 +18,9 @@ package com.navercorp.pinpoint.test.mock;
 
 import com.navercorp.pinpoint.bootstrap.config.DefaultProfilerConfig;
 import com.navercorp.pinpoint.bootstrap.config.ProfilerConfig;
-import com.navercorp.pinpoint.bootstrap.context.AsyncTraceId;
-import com.navercorp.pinpoint.bootstrap.context.MethodDescriptor;
-import com.navercorp.pinpoint.bootstrap.context.ParsingResult;
-import com.navercorp.pinpoint.bootstrap.context.ServerMetaDataHolder;
 import com.navercorp.pinpoint.bootstrap.context.Trace;
 import com.navercorp.pinpoint.bootstrap.context.TraceContext;
 import com.navercorp.pinpoint.bootstrap.context.TraceId;
-import com.navercorp.pinpoint.bootstrap.plugin.jdbc.JdbcContext;
 
 /**
  * @author emeroad
@@ -56,10 +51,12 @@ public class MockTraceContext implements TraceContext {
         return trace;
     }
 
+/*
     @Override
     public Trace continueTraceObject(TraceId traceID) {
         return trace;
     }
+*/
 
     @Override
     public Trace newTraceObject() {
@@ -91,6 +88,7 @@ public class MockTraceContext implements TraceContext {
         return null;
     }
 
+/*
     @Override
     public int cacheApi(MethodDescriptor methodDescriptor) {
         return 0;
@@ -110,23 +108,26 @@ public class MockTraceContext implements TraceContext {
     public boolean cacheSql(ParsingResult parsingResult) {
         return false;
     }
+*/
 
     @Override
     public TraceId createTraceId(String transactionId, long parentSpanID, long spanID, short flags) {
         return null;
     }
 
+/*
     @Override
     public Trace disableSampling() {
         return null;
     }
+*/
 
     @Override
     public ProfilerConfig getProfilerConfig() {
         return config;
     }
 
-    @Override
+  /*  @Override
     public ServerMetaDataHolder getServerMetaDataHolder() {
         return null;
     }
@@ -145,26 +146,30 @@ public class MockTraceContext implements TraceContext {
     public Trace continueAsyncTraceObject(AsyncTraceId traceId, int asyncId, long startTime) {
         return null;
     }
-
+*/
     @Override
     public int getAsyncId() {
         return 0;
     }
 
+/*
     @Override
     public Trace continueTraceObject(Trace trace) {
         return null;
     }
+*/
 
     @Override
     public Trace removeTraceObject() {
         return null;
     }
 
+/*
     @Override
     public JdbcContext getJdbcContext() {
-//        return new
+        return new
         return null;
     }
+*/
 
 }

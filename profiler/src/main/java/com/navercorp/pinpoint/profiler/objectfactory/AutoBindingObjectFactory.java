@@ -14,22 +14,20 @@
  */
 package com.navercorp.pinpoint.profiler.objectfactory;
 
+import com.navercorp.pinpoint.bootstrap.config.ProfilerConfig;
+import com.navercorp.pinpoint.bootstrap.instrument.InstrumentContext;
+import com.navercorp.pinpoint.bootstrap.plugin.ObjectFactory;
+import com.navercorp.pinpoint.bootstrap.plugin.ObjectFactory.ByConstructor;
+import com.navercorp.pinpoint.bootstrap.plugin.ObjectFactory.ByStaticFactoryMethod;
+import com.navercorp.pinpoint.exception.PinpointException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import com.navercorp.pinpoint.bootstrap.config.ProfilerConfig;
-import com.navercorp.pinpoint.bootstrap.context.TraceContext;
-import com.navercorp.pinpoint.bootstrap.instrument.InstrumentContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.navercorp.pinpoint.bootstrap.plugin.ObjectFactory;
-import com.navercorp.pinpoint.bootstrap.plugin.ObjectFactory.ByConstructor;
-import com.navercorp.pinpoint.bootstrap.plugin.ObjectFactory.ByStaticFactoryMethod;
-import com.navercorp.pinpoint.exception.PinpointException;
 
 /**
  * @author Jongho Moon
@@ -43,27 +41,27 @@ public class AutoBindingObjectFactory {
     private final ClassLoader classLoader;
     private final List<ArgumentProvider> commonProviders;
 
-    public AutoBindingObjectFactory(ProfilerConfig profilerConfig, TraceContext traceContext, InstrumentContext pluginContext, ClassLoader classLoader, ArgumentProvider... argumentProviders) {
+    public AutoBindingObjectFactory(ProfilerConfig profilerConfig, /*TraceContext traceContext,*/ InstrumentContext pluginContext, ClassLoader classLoader, ArgumentProvider... argumentProviders) {
         if (profilerConfig == null) {
             throw new NullPointerException("profilerConfig must not be null");
         }
-        if (traceContext == null) {
+/*        if (traceContext == null) {
             throw new NullPointerException("traceContext must not be null");
-        }
+        }*/
         if (pluginContext == null) {
             throw new NullPointerException("pluginContext must not be null");
         }
         this.pluginContext = pluginContext;
         this.classLoader = classLoader;
-        this.commonProviders = newArgumentProvider(profilerConfig, traceContext, pluginContext, argumentProviders);
+        this.commonProviders = newArgumentProvider(profilerConfig, /*traceContext,*/ pluginContext, argumentProviders);
     }
 
-    private List<ArgumentProvider> newArgumentProvider(ProfilerConfig profilerConfig, TraceContext traceContext, InstrumentContext pluginContext, ArgumentProvider[] argumentProviders) {
+    private List<ArgumentProvider> newArgumentProvider(ProfilerConfig profilerConfig, /*TraceContext traceContext,*/ InstrumentContext pluginContext, ArgumentProvider[] argumentProviders) {
         final List<ArgumentProvider> commonProviders = new ArrayList<ArgumentProvider>();
         for (ArgumentProvider argumentProvider : argumentProviders) {
             commonProviders.add(argumentProvider);
         }
-        ProfilerPluginArgumentProvider profilerPluginArgumentProvider = new ProfilerPluginArgumentProvider(profilerConfig, traceContext, pluginContext);
+        ProfilerPluginArgumentProvider profilerPluginArgumentProvider = new ProfilerPluginArgumentProvider(profilerConfig,/* traceContext,*/ pluginContext);
         commonProviders.add(profilerPluginArgumentProvider);
         return commonProviders;
     }

@@ -17,7 +17,6 @@
 package com.navercorp.pinpoint.profiler.context;
 
 import com.navercorp.pinpoint.bootstrap.config.ProfilerConfig;
-import com.navercorp.pinpoint.bootstrap.context.ServerMetaDataHolder;
 import com.navercorp.pinpoint.bootstrap.context.Trace;
 import com.navercorp.pinpoint.bootstrap.context.TraceContext;
 import com.navercorp.pinpoint.bootstrap.context.TraceId;
@@ -47,21 +46,23 @@ public class DefaultTraceContext implements TraceContext {
 
     private final ProfilerConfig profilerConfig;
 
+/*
     private final ServerMetaDataHolder serverMetaDataHolder;
 
-//    private final JdbcContext jdbcContext;
+    private final JdbcContext jdbcContext;
+*/
 
     private final AsyncIdGenerator asyncIdGenerator;
 
     public DefaultTraceContext(ProfilerConfig profilerConfig, final AgentInformation agentInformation,
                                TraceIdFactory traceIdFactory,
                                TraceFactory traceFactory,
-                               AsyncIdGenerator asyncIdGenerator,
-                               ServerMetaDataHolder serverMetaDataHolder
-//                               ApiMetaDataService apiMetaDataService,
-//                               StringMetaDataService stringMetaDataService,
-//                               SqlMetaDataService sqlMetaDataService,
-//                               JdbcContext jdbcContext
+                               AsyncIdGenerator asyncIdGenerator/*,
+                               ServerMetaDataHolder serverMetaDataHolder,
+                               ApiMetaDataService apiMetaDataService,
+                               StringMetaDataService stringMetaDataService,
+                               SqlMetaDataService sqlMetaDataService,
+                               JdbcContext jdbcContext*/
     ) {
         if (profilerConfig == null) {
             throw new NullPointerException("profilerConfig must not be null");
@@ -90,7 +91,7 @@ public class DefaultTraceContext implements TraceContext {
         }*/
         this.profilerConfig = profilerConfig;
         this.agentInformation = agentInformation;
-        this.serverMetaDataHolder = serverMetaDataHolder;
+//        this.serverMetaDataHolder = serverMetaDataHolder;
 
         this.traceIdFactory = traceIdFactory;
         this.traceFactory = traceFactory;
@@ -244,12 +245,12 @@ public class DefaultTraceContext implements TraceContext {
     public boolean cacheSql(ParsingResult parsingResult) {
         return this.sqlMetaDataService.cacheSql(parsingResult);
     }
-*/
 
     @Override
     public ServerMetaDataHolder getServerMetaDataHolder() {
         return this.serverMetaDataHolder;
     }
+*/
 
     @Override
     public int getAsyncId() {

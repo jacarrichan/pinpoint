@@ -21,7 +21,6 @@ import com.google.inject.Module;
 import com.google.inject.util.Modules;
 import com.navercorp.pinpoint.bootstrap.AgentOption;
 import com.navercorp.pinpoint.bootstrap.context.ServiceInfo;
-import com.navercorp.pinpoint.bootstrap.context.TraceContext;
 import com.navercorp.pinpoint.bootstrap.plugin.test.*;
 import com.navercorp.pinpoint.common.service.AnnotationKeyRegistryService;
 import com.navercorp.pinpoint.common.trace.AnnotationKey;
@@ -737,8 +736,8 @@ public class PluginTestAgent extends DefaultAgent implements PluginTestVerifier 
     @Override
     public void initialize(boolean createTraceObject) {
         if (createTraceObject) {
-            final TraceContext traceContext = getTraceContext();
-            traceContext.newTraceObject();
+/*            final TraceContext traceContext = getTraceContext();
+            traceContext.newTraceObject();*/
         }
 
         getRecorder().clear();
@@ -749,19 +748,21 @@ public class PluginTestAgent extends DefaultAgent implements PluginTestVerifier 
     @Override
     public void cleanUp(boolean detachTraceObject) {
         if (detachTraceObject) {
-            final TraceContext traceContext = getTraceContext();
-            traceContext.removeTraceObject();
+/*            final TraceContext traceContext = getTraceContext();
+            traceContext.removeTraceObject();*/
         }
 
         getRecorder().clear();
         getTestTcpDataSender().clear();
         ignoredServiceTypes.clear();
     }
+/*
 
     private TraceContext getTraceContext() {
         ApplicationContext applicationContext = getApplicationContext();
         return applicationContext.getTraceContext();
     }
+*/
 
     @Override
     public void verifyIsLoggingTransactionInfo(LoggingInfo loggingInfo) {

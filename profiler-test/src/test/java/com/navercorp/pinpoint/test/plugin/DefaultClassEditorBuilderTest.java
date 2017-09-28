@@ -51,7 +51,7 @@ public class DefaultClassEditorBuilderTest {
         String[] parameterTypeNames = TypeUtils.toClassNames(parameterTypes);
         
         when(applicationContext.getInstrumentEngine()).thenReturn(instrumentEngine);
-        when(applicationContext.getTraceContext()).thenReturn(traceContext);
+//        when(applicationContext.getTraceContext()).thenReturn(traceContext);
         when(instrumentEngine.getClass(context, classLoader, className, classFileBuffer)).thenReturn(aClass);
         when(aClass.getDeclaredMethod(methodName, parameterTypeNames)).thenReturn(aMethod);
         when(aMethod.getName()).thenReturn(methodName);
