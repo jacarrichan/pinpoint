@@ -16,13 +16,11 @@
 
 package com.navercorp.pinpoint.plugin.tomcat.interceptor;
 
-import com.navercorp.pinpoint.bootstrap.context.ServerMetaDataHolder;
-import org.apache.catalina.util.ServerInfo;
-
 import com.navercorp.pinpoint.bootstrap.context.TraceContext;
 import com.navercorp.pinpoint.bootstrap.interceptor.AroundInterceptor;
 import com.navercorp.pinpoint.bootstrap.logging.PLogger;
 import com.navercorp.pinpoint.bootstrap.logging.PLoggerFactory;
+import org.apache.catalina.util.ServerInfo;
 
 /**
  * @author emeroad
@@ -51,8 +49,8 @@ public class StandardServiceStartInterceptor implements AroundInterceptor {
         }
 
         String serverInfo = ServerInfo.getServerInfo();
-        ServerMetaDataHolder holder = this.traceContext.getServerMetaDataHolder();
+/*        ServerMetaDataHolder holder = this.traceContext.getServerMetaDataHolder();
         holder.setServerName(serverInfo);
-        holder.notifyListeners();
+        holder.notifyListeners();*/
     }
 }

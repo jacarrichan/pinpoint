@@ -16,14 +16,8 @@
 
 package com.navercorp.pinpoint.plugin.tomcat.interceptor;
 
-import java.util.Enumeration;
-
-import javax.servlet.http.HttpServletRequest;
-
-import com.navercorp.pinpoint.bootstrap.context.*;
-
-
 import com.navercorp.pinpoint.bootstrap.config.Filter;
+import com.navercorp.pinpoint.bootstrap.context.*;
 import com.navercorp.pinpoint.bootstrap.interceptor.AroundInterceptor;
 import com.navercorp.pinpoint.bootstrap.logging.PLogger;
 import com.navercorp.pinpoint.bootstrap.logging.PLoggerFactory;
@@ -33,12 +27,10 @@ import com.navercorp.pinpoint.bootstrap.util.NumberUtils;
 import com.navercorp.pinpoint.bootstrap.util.StringUtils;
 import com.navercorp.pinpoint.common.trace.AnnotationKey;
 import com.navercorp.pinpoint.common.trace.ServiceType;
-import com.navercorp.pinpoint.plugin.tomcat.AsyncAccessor;
-import com.navercorp.pinpoint.plugin.tomcat.ServletAsyncMethodDescriptor;
-import com.navercorp.pinpoint.plugin.tomcat.ServletSyncMethodDescriptor;
-import com.navercorp.pinpoint.plugin.tomcat.TomcatConfig;
-import com.navercorp.pinpoint.plugin.tomcat.TomcatConstants;
-import com.navercorp.pinpoint.plugin.tomcat.TraceAccessor;
+import com.navercorp.pinpoint.plugin.tomcat.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
 
 /**
  * @author emeroad
@@ -77,8 +69,8 @@ public class StandardHostValveInvokeInterceptor implements AroundInterceptor {
         this.isTraceRequestParam = tomcatConfig.isTomcatTraceRequestParam();
         this.excludeProfileMethodFilter = tomcatConfig.getTomcatExcludeProfileMethodFilter();
 
-        traceContext.cacheApi(SERVLET_ASYNCHRONOUS_API_TAG);
-        traceContext.cacheApi(SERVLET_SYNCHRONOUS_API_TAG);
+//        traceContext.cacheApi(SERVLET_ASYNCHRONOUS_API_TAG);
+//        traceContext.cacheApi(SERVLET_SYNCHRONOUS_API_TAG);
     }
 
     @Override
@@ -167,7 +159,7 @@ public class StandardHostValveInvokeInterceptor implements AroundInterceptor {
                 SpanRecorder recorder = trace.getSpanRecorder();
                 recorder.recordApi(SERVLET_ASYNCHRONOUS_API_TAG);
                 // attach current thread local.
-                traceContext.continueTraceObject(trace);
+//                traceContext.continueTraceObject(trace);
 
                 return trace;
             }
@@ -183,7 +175,7 @@ public class StandardHostValveInvokeInterceptor implements AroundInterceptor {
 
         // check sampling flag from client. If the flag is false, do not sample this request.
         final boolean sampling = samplingEnable(request);
-        if (!sampling) {
+/*        if (!sampling) {
             // Even if this transaction is not a sampling target, we have to create Trace object to mark 'not sampling'.
             // For example, if this transaction invokes rpc call, we can add parameter to tell remote node 'don't sample this transaction'
             final Trace trace = traceContext.disableSampling();
@@ -191,10 +183,10 @@ public class StandardHostValveInvokeInterceptor implements AroundInterceptor {
                 logger.debug("remotecall sampling flag found. skip trace requestUrl:{}, remoteAddr:{}", request.getRequestURI(), request.getRemoteAddr());
             }
             return trace;
-        }
+        }*/
 
         final TraceId traceId = populateTraceIdFromRequest(request);
-        if (traceId != null) {
+/*        if (traceId != null) {
             // TODO Maybe we should decide to trace or not even if the sampling flag is true to prevent too many requests are traced.
             final Trace trace = traceContext.continueTraceObject(traceId);
             if (trace.canSampled()) {
@@ -210,7 +202,7 @@ public class StandardHostValveInvokeInterceptor implements AroundInterceptor {
                 }
             }
             return trace;
-        } else {
+        } else*/ {
             final Trace trace = traceContext.newTraceObject();
             if (trace.canSampled()) {
                 SpanRecorder recorder = trace.getSpanRecorder();
