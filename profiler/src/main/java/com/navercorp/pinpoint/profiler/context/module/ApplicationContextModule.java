@@ -21,24 +21,23 @@ import com.google.inject.Scopes;
 import com.google.inject.TypeLiteral;
 import com.navercorp.pinpoint.bootstrap.AgentOption;
 import com.navercorp.pinpoint.bootstrap.config.ProfilerConfig;
-import com.navercorp.pinpoint.bootstrap.context.TraceContext;
 import com.navercorp.pinpoint.bootstrap.instrument.DynamicTransformTrigger;
-import com.navercorp.pinpoint.bootstrap.sampler.Sampler;
 import com.navercorp.pinpoint.common.service.ServiceTypeRegistryService;
 import com.navercorp.pinpoint.common.trace.ServiceType;
 import com.navercorp.pinpoint.profiler.AgentInformation;
 import com.navercorp.pinpoint.profiler.ClassFileTransformerDispatcher;
 import com.navercorp.pinpoint.profiler.DefaultDynamicTransformerRegistry;
 import com.navercorp.pinpoint.profiler.DynamicTransformerRegistry;
-import com.navercorp.pinpoint.profiler.context.*;
+import com.navercorp.pinpoint.profiler.context.DefaultSpanFactory;
+import com.navercorp.pinpoint.profiler.context.SpanFactory;
 import com.navercorp.pinpoint.profiler.context.id.*;
-import com.navercorp.pinpoint.profiler.context.monitor.DataSourceMonitorRegistryService;
 import com.navercorp.pinpoint.profiler.context.provider.*;
 import com.navercorp.pinpoint.profiler.instrument.InstrumentEngine;
 import com.navercorp.pinpoint.profiler.interceptor.registry.InterceptorRegistryBinder;
 import com.navercorp.pinpoint.profiler.objectfactory.ObjectBinderFactory;
 import com.navercorp.pinpoint.profiler.plugin.PluginContextLoadResult;
 
+import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.Instrumentation;
 import java.net.URL;
 import java.util.List;
@@ -88,34 +87,37 @@ public class ApplicationContextModule extends AbstractModule {
         bind(listString).annotatedWith(BootstrapJarPaths.class).toInstance(agentOption.getBootstrapJarPaths());
 
         bindAgentInformation(agentOption.getAgentId(), agentOption.getApplicationName());
-/*
 
+        /*
         bindDataTransferComponent();
 
         bind(ServerMetaDataHolder.class).toProvider(ServerMetaDataHolderProvider.class).in(Scopes.SINGLETON);
         bind(StorageFactory.class).toProvider(StorageFactoryProvider.class).in(Scopes.SINGLETON);
-*/
 
         bindServiceComponent();
 
         bind(DataSourceMonitorRegistryService.class).toProvider(DataSourceMonitorRegistryServiceProvider.class).in(Scopes.SINGLETON);
 
+        */
         bind(IdGenerator.class).to(AtomicIdGenerator.class).in(Scopes.SINGLETON);
         bind(AsyncIdGenerator.class).to(DefaultAsyncIdGenerator.class).in(Scopes.SINGLETON);
+        /*
         bind(TransactionCounter.class).to(DefaultTransactionCounter.class).in(Scopes.SINGLETON);
 
         bind(Sampler.class).toProvider(SamplerProvider.class).in(Scopes.SINGLETON);
-
         bind(TraceContext.class).toProvider(TraceContextProvider.class).in(Scopes.SINGLETON);
 
         bindTraceComponent();
 
-//        bind(ActiveTraceRepository.class).toProvider(ActiveTraceRepositoryProvider.class).in(Scopes.SINGLETON);
+        bind(ActiveTraceRepository.class).toProvider(ActiveTraceRepositoryProvider.class).in(Scopes.SINGLETON);
+        */
 
         bind(PluginContextLoadResult.class).toProvider(PluginContextLoadResultProvider.class).in(Scopes.SINGLETON);
 
-//        bind(JdbcContext.class).to(DefaultJdbcContext.class).in(Scopes.SINGLETON);
-//        bind(JdbcUrlParsingService.class).toProvider(JdbcUrlParsingServiceProvider.class).in(Scopes.SINGLETON);
+        /*
+        bind(JdbcContext.class).to(DefaultJdbcContext.class).in(Scopes.SINGLETON);
+        bind(JdbcUrlParsingService.class).toProvider(JdbcUrlParsingServiceProvider.class).in(Scopes.SINGLETON);
+        */
 
         bind(AgentInformation.class).toProvider(AgentInformationProvider.class).in(Scopes.SINGLETON);
 
@@ -124,25 +126,27 @@ public class ApplicationContextModule extends AbstractModule {
         bind(ClassFileTransformerDispatcher.class).toProvider(ClassFileTransformerDispatcherProvider.class).in(Scopes.SINGLETON);
         bind(DynamicTransformerRegistry.class).to(DefaultDynamicTransformerRegistry.class).in(Scopes.SINGLETON);
         bind(DynamicTransformTrigger.class).toProvider(DynamicTransformTriggerProvider.class).in(Scopes.SINGLETON);
-//        bind(ClassFileTransformer.class).toProvider(ClassFileTransformerWrapProvider.class).in(Scopes.SINGLETON);
+        bind(ClassFileTransformer.class).toProvider(ClassFileTransformerWrapProvider.class).in(Scopes.SINGLETON);
+        /*
+        bindAgentStatComponent();
 
-//        bindAgentStatComponent();
-
-//        bind(JvmInformation.class).toProvider(JvmInformationProvider.class).in(Scopes.SINGLETON);
-//        bind(AgentInfoSender.class).toProvider(AgentInfoSenderProvider.class).in(Scopes.SINGLETON);
-//        bind(AgentStatMonitor.class).to(DefaultAgentStatMonitor.class).in(Scopes.SINGLETON);
+        bind(JvmInformation.class).toProvider(JvmInformationProvider.class).in(Scopes.SINGLETON);
+        bind(AgentInfoSender.class).toProvider(AgentInfoSenderProvider.class).in(Scopes.SINGLETON);
+        bind(AgentStatMonitor.class).to(DefaultAgentStatMonitor.class).in(Scopes.SINGLETON);
+        */
     }
 
     private void bindTraceComponent() {
         bind(TraceIdFactory.class).to(DefaultTraceIdFactory.class).in(Scopes.SINGLETON);
-        bind(CallStackFactory.class).to(DefaultCallStackFactory.class).in(Scopes.SINGLETON);
+//        bind(CallStackFactory.class).to(DefaultCallStackFactory.class).in(Scopes.SINGLETON);
 
       bind(SpanFactory.class).to(DefaultSpanFactory.class).in(Scopes.SINGLETON);
-/*          bind(SpanChunkFactory.class).to(DefaultSpanChunkFactory.class).in(Scopes.SINGLETON);
+/*
+        bind(SpanChunkFactory.class).to(DefaultSpanChunkFactory.class).in(Scopes.SINGLETON);
 
         bind(RecorderFactory.class).to(DefaultRecorderFactory.class).in(Scopes.SINGLETON);
-*/
         bind(TraceFactory.class).toProvider(TraceFactoryProvider.class).in(Scopes.SINGLETON);
+*/
     }
 
     private void bindDataTransferComponent() {

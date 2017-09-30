@@ -153,8 +153,8 @@ public class TargetAnnotatedInterceptorInjector implements ClassRecipe {
             throw new PinpointException("type of @TargetFilter is null: " + interceptorClassName);
         }
 
-        final InterceptorArgumentProvider interceptorArgumentProvider = new InterceptorArgumentProvider(dataSourceMonitorRegistry, /*apiMetaDataService,*/ targetClass);
-        AutoBindingObjectFactory filterFactory = new AutoBindingObjectFactory(profilerConfig, traceContext, pluginContext, classLoader, interceptorArgumentProvider);
+        final InterceptorArgumentProvider interceptorArgumentProvider = new InterceptorArgumentProvider(/*dataSourceMonitorRegistry, apiMetaDataService,*/ targetClass);
+        AutoBindingObjectFactory filterFactory = new AutoBindingObjectFactory(profilerConfig, /*traceContext,*/ pluginContext, classLoader, interceptorArgumentProvider);
         MethodFilter filter = (MethodFilter)filterFactory.createInstance(ObjectFactory.byConstructor(type, (Object[]) annotation.constructorArguments()));
         MethodRecipe recipe = annotation.singleton() ? new SharedAnnotatedInterceptorInjector(injector) : injector;
         

@@ -16,11 +16,6 @@
 
 package com.navercorp.pinpoint.test.junit4;
 
-import java.lang.reflect.Method;
-
-
-import com.navercorp.pinpoint.test.MockApplicationContext;
-import org.junit.internal.runners.model.EachTestNotifier;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
@@ -30,10 +25,7 @@ import org.junit.runners.model.TestClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.navercorp.pinpoint.bootstrap.context.SpanRecorder;
-import com.navercorp.pinpoint.bootstrap.context.Trace;
-import com.navercorp.pinpoint.bootstrap.context.TraceContext;
-import com.navercorp.pinpoint.common.trace.ServiceType;
+import java.lang.reflect.Method;
 
 /**
  * @author hyungil.jeong
@@ -69,15 +61,17 @@ public final class PinpointJUnit4ClassRunner extends BlockJUnit4ClassRunner {
         beforeTestClass();
         return testContext.createTestClass(testClass);
     }
+/*
 
     private TraceContext getTraceContext() {
         MockApplicationContext mockApplicationContext = testContext.getMockApplicationContext();
         return mockApplicationContext.getTraceContext();
     }
+*/
 
     @Override
     protected void runChild(FrameworkMethod method, RunNotifier notifier) {
-        beginTracing(method);
+//        beginTracing(method);
         final Thread thread = Thread.currentThread();
         ClassLoader originalClassLoader = thread.getContextClassLoader();
         try {
@@ -85,10 +79,11 @@ public final class PinpointJUnit4ClassRunner extends BlockJUnit4ClassRunner {
             super.runChild(method, notifier);
         } finally {
             thread.setContextClassLoader(originalClassLoader);
-            endTracing(method, notifier);
+//            endTracing(method, notifier);
         }
     }
 
+/*
     private void beginTracing(FrameworkMethod method) {
         if (shouldCreateNewTraceObject(method)) {
             TraceContext traceContext = getTraceContext();
@@ -117,6 +112,7 @@ public final class PinpointJUnit4ClassRunner extends BlockJUnit4ClassRunner {
             }
         }
     }
+*/
 
     private boolean shouldCreateNewTraceObject(FrameworkMethod method) {
         IsRootSpan isRootSpan = method.getAnnotation(IsRootSpan.class);

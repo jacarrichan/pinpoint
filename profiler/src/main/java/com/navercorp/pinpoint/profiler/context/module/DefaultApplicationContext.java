@@ -22,7 +22,6 @@ import com.google.inject.Module;
 import com.google.inject.Stage;
 import com.navercorp.pinpoint.bootstrap.AgentOption;
 import com.navercorp.pinpoint.bootstrap.config.ProfilerConfig;
-import com.navercorp.pinpoint.bootstrap.context.TraceContext;
 import com.navercorp.pinpoint.bootstrap.instrument.DynamicTransformTrigger;
 import com.navercorp.pinpoint.common.service.ServiceTypeRegistryService;
 import com.navercorp.pinpoint.profiler.AgentInformation;
@@ -49,7 +48,7 @@ public class DefaultApplicationContext implements ApplicationContext {
 //    private final AgentInfoSender agentInfoSender;
 //    private final AgentStatMonitor agentStatMonitor;
 
-    private final TraceContext traceContext;
+//    private final TraceContext traceContext;
 
 //    private final PinpointClientFactory clientFactory;
 //    private final PinpointClient client;
@@ -99,23 +98,25 @@ public class DefaultApplicationContext implements ApplicationContext {
 //        ClassFileTransformer classFileTransformer = injector.getInstance(ClassFileTransformer.class);
         ClassFileTransformer classFileTransformer = wrap(classFileDispatcher);
         instrumentation.addTransformer(classFileTransformer, true);
-//
-//        this.spanDataSender = newUdpSpanDataSender();
-//        logger.info("spanDataSender:{}", spanDataSender);
-//
-//        this.statDataSender = newUdpStatDataSender();
-//        logger.info("statDataSender:{}", statDataSender);
 
-//        this.clientFactory = injector.getInstance(PinpointClientFactory.class);
-//        logger.info("clientFactory:{}", clientFactory);
-//
-//        this.client = injector.getInstance(PinpointClient.class);
-//        logger.info("client:{}", client);
+        /*
+        this.spanDataSender = newUdpSpanDataSender();
+        logger.info("spanDataSender:{}", spanDataSender);
 
-//        this.tcpDataSender = injector.getInstance(EnhancedDataSender.class);
-//        logger.info("tcpDataSender:{}", tcpDataSender);
+        this.statDataSender = newUdpStatDataSender();
+        logger.info("statDataSender:{}", statDataSender);
+
+        this.clientFactory = injector.getInstance(PinpointClientFactory.class);
+        logger.info("clientFactory:{}", clientFactory);
+
+        this.client = injector.getInstance(PinpointClient.class);
+        logger.info("client:{}", client);
+
+        this.tcpDataSender = injector.getInstance(EnhancedDataSender.class);
+        logger.info("tcpDataSender:{}", tcpDataSender);
 
         this.traceContext = injector.getInstance(TraceContext.class);
+        */
 
         this.agentInformation = injector.getInstance(AgentInformation.class);
         logger.info("agentInformation:{}", agentInformation);
@@ -137,17 +138,19 @@ public class DefaultApplicationContext implements ApplicationContext {
     protected Module newApplicationContextModule(AgentOption agentOption, InterceptorRegistryBinder interceptorRegistryBinder) {
         return new ApplicationContextModule(agentOption, profilerConfig, serviceTypeRegistryService, interceptorRegistryBinder);
     }
-//
-//    private DataSender newUdpStatDataSender() {
-//
-//        Key<DataSender> statDataSenderKey = Key.get(DataSender.class, StatDataSender.class);
-//        return injector.getInstance(statDataSenderKey);
-//    }
-//
-//    private DataSender newUdpSpanDataSender() {
-//        Key<DataSender> spanDataSenderKey = Key.get(DataSender.class, SpanDataSender.class);
-//        return injector.getInstance(spanDataSenderKey);
-//    }
+
+/*
+    private DataSender newUdpStatDataSender() {
+
+        Key<DataSender> statDataSenderKey = Key.get(DataSender.class, StatDataSender.class);
+        return injector.getInstance(statDataSenderKey);
+    }
+
+    private DataSender newUdpSpanDataSender() {
+        Key<DataSender> spanDataSenderKey = Key.get(DataSender.class, SpanDataSender.class);
+        return injector.getInstance(spanDataSenderKey);
+    }
+*/
 
     @Override
     public ProfilerConfig getProfilerConfig() {
@@ -158,14 +161,16 @@ public class DefaultApplicationContext implements ApplicationContext {
         return injector;
     }
 
+/*
     @Override
     public TraceContext getTraceContext() {
         return traceContext;
     }
 
-//    public DataSender getSpanDataSender() {
-//        return spanDataSender;
-//    }
+    public DataSender getSpanDataSender() {
+        return spanDataSender;
+    }
+*/
 
     public InstrumentEngine getInstrumentEngine() {
         return instrumentEngine;

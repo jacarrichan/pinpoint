@@ -71,10 +71,11 @@ public class TraceContextProvider implements Provider<TraceContext> {
         if (asyncIdGenerator == null) {
             throw new NullPointerException("asyncIdGenerator must not be null");
         }
- /*       if (serverMetaDataHolder == null) {
+        /*
+        if (serverMetaDataHolder == null) {
             throw new NullPointerException("serverMetaDataHolder must not be null");
         }
-        if (apiMetaDataService == null) {
+       if (apiMetaDataService == null) {
             throw new NullPointerException("apiMetaDataService must not be null");
         }
         if (stringMetaDataService == null) {

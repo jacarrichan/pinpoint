@@ -16,13 +16,11 @@
 
 package com.navercorp.pinpoint.plugin.tomcat.interceptor;
 
-import com.navercorp.pinpoint.bootstrap.context.ServerMetaDataHolder;
-import org.apache.catalina.connector.Connector;
-
 import com.navercorp.pinpoint.bootstrap.context.TraceContext;
 import com.navercorp.pinpoint.bootstrap.interceptor.AroundInterceptor;
 import com.navercorp.pinpoint.bootstrap.logging.PLogger;
 import com.navercorp.pinpoint.bootstrap.logging.PLoggerFactory;
+import org.apache.catalina.connector.Connector;
 
 /**
  * @author emeroad
@@ -50,9 +48,9 @@ public class ConnectorInitializeInterceptor implements AroundInterceptor {
         }
         if (target instanceof Connector) {
             final Connector connector = (Connector) target;
-            ServerMetaDataHolder holder = this.traceContext.getServerMetaDataHolder();
+/*            ServerMetaDataHolder holder = this.traceContext.getServerMetaDataHolder();
             holder.addConnector(connector.getProtocol(), connector.getPort());
-            holder.notifyListeners();
+            holder.notifyListeners();*/
         }
     }
 }

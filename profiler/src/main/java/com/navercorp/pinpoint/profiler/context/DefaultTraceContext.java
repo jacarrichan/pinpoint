@@ -46,9 +46,11 @@ public class DefaultTraceContext implements TraceContext {
 
     private final ProfilerConfig profilerConfig;
 
-//    private final ServerMetaDataHolder serverMetaDataHolder;
+/*
+    private final ServerMetaDataHolder serverMetaDataHolder;
 
-//    private final JdbcContext jdbcContext;
+    private final JdbcContext jdbcContext;
+*/
 
     private final AsyncIdGenerator asyncIdGenerator;
 
@@ -56,7 +58,7 @@ public class DefaultTraceContext implements TraceContext {
                                TraceIdFactory traceIdFactory,
                                TraceFactory traceFactory,
                                AsyncIdGenerator asyncIdGenerator/*,
-                               ServerMetaDataHolder serverMetaDataHolder
+                               ServerMetaDataHolder serverMetaDataHolder,
                                ApiMetaDataService apiMetaDataService,
                                StringMetaDataService stringMetaDataService,
                                SqlMetaDataService sqlMetaDataService,

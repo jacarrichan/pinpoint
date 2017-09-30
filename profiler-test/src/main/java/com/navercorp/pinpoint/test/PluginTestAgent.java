@@ -746,10 +746,10 @@ public class PluginTestAgent extends DefaultAgent implements PluginTestVerifier 
     private OrderedSpanRecorder getRecorder() {
         return this.pluginApplicationContextModule.getOrderedSpanRecorder();
     }
-*/
+
 
     private Object popSpan() {
-/*        while (true) {
+      while (true) {
             OrderedSpanRecorder recorder = getRecorder();
             Object obj = recorder.pop();
             if (obj == null) {
@@ -759,11 +759,10 @@ public class PluginTestAgent extends DefaultAgent implements PluginTestVerifier 
             if (!isIgnored(obj)) {
                 return obj;
             }
-        }*/
+        }
         return "";
     }
 
-/*
     @Override
     public void printCache(PrintStream out) {
 //        getRecorder().print(out);
@@ -798,13 +797,11 @@ public class PluginTestAgent extends DefaultAgent implements PluginTestVerifier 
         ignoredServiceTypes.clear();
     }
 
-    */
     private TraceContext getTraceContext() {
         ApplicationContext applicationContext = getApplicationContext();
         return applicationContext.getTraceContext();
     }
 
-/*
     @Override
     public void verifyIsLoggingTransactionInfo(LoggingInfo loggingInfo) {
         Object actual = popSpan();
@@ -832,7 +829,6 @@ public class PluginTestAgent extends DefaultAgent implements PluginTestVerifier 
 
 
     }
-*/
 
     private String getActual(Object actual) {
         if (actual == null) {
@@ -840,5 +836,6 @@ public class PluginTestAgent extends DefaultAgent implements PluginTestVerifier 
         }
         return actual.getClass().getName();
     }
+*/
 
 }

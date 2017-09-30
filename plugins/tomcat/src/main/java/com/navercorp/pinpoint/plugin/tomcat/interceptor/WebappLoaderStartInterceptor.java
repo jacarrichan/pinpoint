@@ -16,6 +16,16 @@
 
 package com.navercorp.pinpoint.plugin.tomcat.interceptor;
 
+import com.navercorp.pinpoint.bootstrap.context.TraceContext;
+import com.navercorp.pinpoint.bootstrap.interceptor.AroundInterceptor;
+import com.navercorp.pinpoint.bootstrap.logging.PLogger;
+import com.navercorp.pinpoint.bootstrap.logging.PLoggerFactory;
+import org.apache.catalina.Container;
+import org.apache.catalina.Context;
+import org.apache.catalina.Engine;
+import org.apache.catalina.Host;
+import org.apache.catalina.loader.WebappLoader;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URI;
@@ -25,18 +35,6 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import com.navercorp.pinpoint.bootstrap.context.ServerMetaDataHolder;
-import org.apache.catalina.Container;
-import org.apache.catalina.Context;
-import org.apache.catalina.Engine;
-import org.apache.catalina.Host;
-import org.apache.catalina.loader.WebappLoader;
-
-import com.navercorp.pinpoint.bootstrap.context.TraceContext;
-import com.navercorp.pinpoint.bootstrap.interceptor.AroundInterceptor;
-import com.navercorp.pinpoint.bootstrap.logging.PLogger;
-import com.navercorp.pinpoint.bootstrap.logging.PLoggerFactory;
 
 /**
  * @author hyungil.jeong
@@ -172,9 +170,9 @@ public class WebappLoaderStartInterceptor implements AroundInterceptor {
     }
     
     private void dispatchLibJars(String contextKey, List<String> libJars) {
-        ServerMetaDataHolder holder = this.traceContext.getServerMetaDataHolder();
+/*        ServerMetaDataHolder holder = this.traceContext.getServerMetaDataHolder();
         holder.addServiceInfo(contextKey, libJars);
-        holder.notifyListeners();
+        holder.notifyListeners();*/
     }
 
 }
