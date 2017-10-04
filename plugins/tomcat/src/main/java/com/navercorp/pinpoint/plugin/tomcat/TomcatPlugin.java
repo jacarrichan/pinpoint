@@ -163,6 +163,18 @@ public class TomcatPlugin implements ProfilerPlugin, TransformTemplateAware {
                 return null;
             }
         });
+        transformTemplate.transform("org.eclipse.jetty.server.handler.HandlerWrapper", new TransformCallback() {
+            @Override
+            public byte[] doInTransform(Instrumentor instrumentor, ClassLoader classLoader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws InstrumentException {
+                InstrumentClass target = instrumentor.getInstrumentClass(classLoader, className, classfileBuffer);
+                if (target != null) {
+                    target.weave("com.navercorp.pinpoint.plugin.tomcat.aspect.Jetty8ServerHandlerAspect");
+                    return target.toBytecode();
+                }
+
+                return null;
+            }
+        });
     }
 
     private void addStandardHostValveEditor() {
