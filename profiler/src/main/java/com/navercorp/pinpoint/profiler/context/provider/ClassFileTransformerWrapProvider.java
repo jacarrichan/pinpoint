@@ -51,7 +51,9 @@ public class ClassFileTransformerWrapProvider implements Provider<ClassFileTrans
 
     public ClassFileTransformer get() {
 
+        logger.debug("----{}",classFileTransformerDispatcherProvider);
         ClassFileTransformerDispatcher classFileTransformerDispatcher = classFileTransformerDispatcherProvider.get();
+        logger.debug("----{}",classFileTransformerDispatcher);
         final boolean enableBytecodeDump = profilerConfig.readBoolean(ASMBytecodeDumpService.ENABLE_BYTECODE_DUMP, ASMBytecodeDumpService.ENABLE_BYTECODE_DUMP_DEFAULT_VALUE);
         if (enableBytecodeDump) {
             logger.info("wrapBytecodeDumpTransformer");

@@ -17,27 +17,18 @@ package com.navercorp.pinpoint.plugin.tomcat;
 
 
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
-import java.util.Enumeration;
-import java.util.List;
-
+import com.navercorp.pinpoint.common.trace.ServiceType;
+import com.navercorp.pinpoint.test.junit4.BasePinpointTest;
 import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
 import org.apache.catalina.core.StandardHost;
 import org.junit.Before;
-import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.navercorp.pinpoint.bootstrap.context.Header;
-import com.navercorp.pinpoint.common.server.bo.SpanBo;
-import com.navercorp.pinpoint.common.server.bo.SpanEventBo;
-import com.navercorp.pinpoint.common.trace.ServiceType;
-import com.navercorp.pinpoint.common.util.TransactionIdUtils;
-import com.navercorp.pinpoint.test.junit4.BasePinpointTest;
-import com.navercorp.pinpoint.test.junit4.IsRootSpan;
+import java.util.Enumeration;
+
+import static org.mockito.Mockito.when;
 
 /**
  * @author hyungil.jeong
@@ -83,7 +74,7 @@ public class StandardHostValveInvokeModifierTest extends BasePinpointTest {
         when(mockRequest.getRemoteAddr()).thenReturn(REMOTE_ADDRESS);
         when(mockRequest.getParameterNames()).thenReturn(EMPTY_PARAM_KEYS);
     }
-
+/*
     @Test
     @IsRootSpan
     public void invokeShouldBeTraced() throws Exception {
@@ -156,4 +147,5 @@ public class StandardHostValveInvokeModifierTest extends BasePinpointTest {
         assertEquals(rootSpan.getParentSpanId(), sourceParentId);
     }
 
+*/
 }

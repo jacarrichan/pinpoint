@@ -20,19 +20,20 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.navercorp.pinpoint.bootstrap.config.ProfilerConfig;
 import com.navercorp.pinpoint.bootstrap.instrument.DynamicTransformTrigger;
-import com.navercorp.pinpoint.profiler.instrument.InstrumentEngine;
 import com.navercorp.pinpoint.profiler.ClassFileTransformerDispatcher;
 import com.navercorp.pinpoint.profiler.DefaultClassFileTransformerDispatcher;
 import com.navercorp.pinpoint.profiler.DynamicTransformerRegistry;
+import com.navercorp.pinpoint.profiler.instrument.InstrumentEngine;
 import com.navercorp.pinpoint.profiler.plugin.PluginContextLoadResult;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
  * @author Woonduk Kang(emeroad)
  */
 public class ClassFileTransformerDispatcherProvider implements Provider<ClassFileTransformerDispatcher> {
-
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final ProfilerConfig profilerConfig;
     private final PluginContextLoadResult pluginContextLoadResult;
     private final InstrumentEngine instrumentEngine;
@@ -66,6 +67,7 @@ public class ClassFileTransformerDispatcherProvider implements Provider<ClassFil
 
     @Override
     public ClassFileTransformerDispatcher get() {
+        logger.debug("dynamicTransformerRegistry--->{}",dynamicTransformerRegistry);
         return new DefaultClassFileTransformerDispatcher(profilerConfig, pluginContextLoadResult, instrumentEngine, dynamicTransformTrigger, dynamicTransformerRegistry);
     }
 }

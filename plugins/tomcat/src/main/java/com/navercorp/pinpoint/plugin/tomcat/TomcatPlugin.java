@@ -14,14 +14,8 @@
  */
 package com.navercorp.pinpoint.plugin.tomcat;
 
-import java.security.ProtectionDomain;
-
 import com.navercorp.pinpoint.bootstrap.async.AsyncTraceIdAccessor;
-import com.navercorp.pinpoint.bootstrap.instrument.InstrumentClass;
-import com.navercorp.pinpoint.bootstrap.instrument.InstrumentException;
-import com.navercorp.pinpoint.bootstrap.instrument.InstrumentMethod;
-import com.navercorp.pinpoint.bootstrap.instrument.MethodFilters;
-import com.navercorp.pinpoint.bootstrap.instrument.Instrumentor;
+import com.navercorp.pinpoint.bootstrap.instrument.*;
 import com.navercorp.pinpoint.bootstrap.instrument.transformer.TransformCallback;
 import com.navercorp.pinpoint.bootstrap.instrument.transformer.TransformTemplate;
 import com.navercorp.pinpoint.bootstrap.instrument.transformer.TransformTemplateAware;
@@ -30,6 +24,8 @@ import com.navercorp.pinpoint.bootstrap.logging.PLoggerFactory;
 import com.navercorp.pinpoint.bootstrap.plugin.ProfilerPlugin;
 import com.navercorp.pinpoint.bootstrap.plugin.ProfilerPluginSetupContext;
 import com.navercorp.pinpoint.bootstrap.resolver.ConditionProvider;
+
+import java.security.ProtectionDomain;
 
 /**
  * @author Jongho Moon
@@ -62,9 +58,12 @@ public class TomcatPlugin implements ProfilerPlugin, TransformTemplateAware {
         TomcatDetector tomcatDetector = new TomcatDetector(config.getTomcatBootstrapMains());
         context.addApplicationTypeDetector(tomcatDetector);
 
+            addStandardHostValveAspectEditor();
+        addRequestFacadeEditor();
+//        addApplicationFilterChainEditor();
         if (shouldAddTransformers(config)) {
             logger.info("Adding Tomcat transformers");
-            addTransformers(config);
+//            addTransformers(config);
         } else {
             logger.info("Not adding Tomcat transfomers");
         }
@@ -130,6 +129,34 @@ public class TomcatPlugin implements ProfilerPlugin, TransformTemplateAware {
                 InstrumentClass target = instrumentor.getInstrumentClass(classLoader, className, classfileBuffer);
                 if (target != null) {
                     target.weave("com.navercorp.pinpoint.plugin.tomcat.aspect.RequestFacadeAspect");
+                    return target.toBytecode();
+                }
+
+                return null;
+            }
+        });
+    }
+
+    private void addStandardHostValveAspectEditor() {
+        transformTemplate.transform("org.apache.catalina.core.StandardHostValve", new TransformCallback() {
+
+            @Override
+            public byte[] doInTransform(Instrumentor instrumentor, ClassLoader classLoader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws InstrumentException {
+                InstrumentClass target = instrumentor.getInstrumentClass(classLoader, className, classfileBuffer);
+                if (target != null) {
+                    target.weave("com.navercorp.pinpoint.plugin.tomcat.aspect.StandardHostValveAspect");
+                    return target.toBytecode();
+                }
+
+                return null;
+            }
+        });
+        transformTemplate.transform("org.mortbay.jetty.handler.HandlerWrapper", new TransformCallback() {
+            @Override
+            public byte[] doInTransform(Instrumentor instrumentor, ClassLoader classLoader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws InstrumentException {
+                InstrumentClass target = instrumentor.getInstrumentClass(classLoader, className, classfileBuffer);
+                if (target != null) {
+                    target.weave("com.navercorp.pinpoint.plugin.tomcat.aspect.ServerHandlerAspect");
                     return target.toBytecode();
                 }
 

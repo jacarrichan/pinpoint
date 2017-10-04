@@ -49,7 +49,7 @@ public abstract class AbstractServerHandleInterceptor implements AroundIntercept
         this.methodDescriptor = descriptor;
         this.excludeUrlFilter = excludeFilter;
 
-        traceContext.cacheApi(JETTY_SYNC_API_TAG);
+//        traceContext.cacheApi(JETTY_SYNC_API_TAG);
     }
 
     protected abstract Request getRequest(Object[] args);
@@ -81,6 +81,7 @@ public abstract class AbstractServerHandleInterceptor implements AroundIntercept
 
 
     private Trace createTrace(Object target, Object[] args) {
+        return null;/*
         final Request request = getRequest(args);
 
         final String requestURI = request.getRequestURI();
@@ -132,6 +133,7 @@ public abstract class AbstractServerHandleInterceptor implements AroundIntercept
             }
             return trace;
         }
+    */
     }
 
     @Override
