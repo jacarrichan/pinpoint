@@ -25,6 +25,7 @@ public final class ServletHandletUtils {
 
     public static boolean process(HttpServletRequest request, HttpServletResponse response) throws IOException {
         ServletHandletUtils.bindCookieThreadlocal(request, response);
+        ServletHandletUtils.bindHeaderThreadlocal(request, response);
         boolean result = ServletHandletUtils.handFilter(request, response);
         String msg = "请求参数中有发现{},将不会进入正常的业务流程";
         LOGGER.debug(msg, ACTION_KEY);
@@ -32,7 +33,20 @@ public final class ServletHandletUtils {
     }
 
 
-    // 把cookie里面的信息取出来放在threadlocal
+    /**
+     * 针对httpclient的请求，把header里面的信息取出来放在threadlocal
+     */
+    public static void bindHeaderThreadlocal(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
+        String username = servletRequest.getHeader(ACTION_KEY);
+        if (null == username) {
+            return;
+        }
+        bindMq(username);
+    }
+
+    /**
+     * 针对浏览器的请求把cookie里面的信息取出来放在threadlocal
+     */
     public static void bindCookieThreadlocal(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
         String username;
         HttpServletRequest hsr = servletRequest;
