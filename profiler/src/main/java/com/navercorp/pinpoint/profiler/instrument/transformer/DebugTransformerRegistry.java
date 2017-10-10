@@ -78,8 +78,6 @@ public class DebugTransformerRegistry implements TransformerRegistry {
         if (LEGACY.equals(debugInjectorType)) {
             return new LegacyProfilerPluginClassInjector(getClass().getClassLoader());
         }
-        logger.info("newDebugTransformerClassInjector()");
-        logger.error("---",new Exception("Stack trace"));
         return new DebugTransformerClassInjector();
 
     }
