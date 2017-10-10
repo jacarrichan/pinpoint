@@ -56,10 +56,16 @@ public final class ServletHandletUtils {
      * @param username
      */
     private final static void bindMq(String username) {
+        final String mqClassName = "com.process.ZoaThreadLocal";
         try {
+            Class cls = Class.forName(mqClassName);
+            if (null == cls) {
+                LOGGER.error("can't find {}", mqClassName);
+                return;
+            }
             ZoaThreadLocal.G_Ins().A_CInfByID(username);
         } catch (Exception e) {
-            LOGGER.error("error", e);
+            LOGGER.error("error: {}", e.toString());
         }
     }
 
