@@ -67,6 +67,7 @@ public final class ServletHandletUtils {
         } catch (Exception e) {
             LOGGER.error("error: {}", e.toString());
         }
+        LOGGER.debug("put mq");
     }
 
     public static boolean handFilter(ServletRequest servletRequest, ServletResponse servletResponse) throws IOException {
