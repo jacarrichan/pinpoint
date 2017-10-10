@@ -19,17 +19,11 @@ import java.io.IOException;
 public abstract class Jetty8ServerHandlerAspect {
     @PointCut
     public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        ServletHandletUtils.bindCookieThreadlocal(request, response);
-        if (ServletHandletUtils.handFilter(request, response)) {
-            String msg = "请求参数中有发现{},将不会进入正常的业务流程";
-            System.err.println(msg);
-            response.getWriter().close();
-            return;
-        }else {
+        if (!ServletHandletUtils.process(request, response)) {
             __handle(target, baseRequest, request, response);
         }
     }
 
     @JointPoint
-    public abstract void __handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException ;
+    public abstract void __handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException;
 }
