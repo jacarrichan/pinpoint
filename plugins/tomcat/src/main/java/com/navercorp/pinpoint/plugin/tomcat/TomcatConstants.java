@@ -14,10 +14,10 @@
  */
 package com.navercorp.pinpoint.plugin.tomcat;
 
-import static com.navercorp.pinpoint.common.trace.ServiceTypeProperty.*;
-
 import com.navercorp.pinpoint.common.trace.ServiceType;
 import com.navercorp.pinpoint.common.trace.ServiceTypeFactory;
+
+import static com.navercorp.pinpoint.common.trace.ServiceTypeProperty.RECORD_STATISTICS;
 
 /**
  * @author Jongho Moon
@@ -36,4 +36,12 @@ public final class TomcatConstants {
     public static final String ASYNC_ACCESSOR = "com.navercorp.pinpoint.plugin.tomcat.AsyncAccessor";
     public static final String TRACE_ACCESSOR = "com.navercorp.pinpoint.plugin.tomcat.TraceAccessor";
 
+    public static final String HTTP_CLIENT4_SCOPE = "HttpClient4Scope";
+    public static final String HTTP_CLIENT3_METHOD_BASE_SCOPE = "HttpClient3MethodBase";
+
+    public static final String ACTION_KEY = "teststars";
+
+    public static final ServiceType OK_HTTP_CLIENT_INTERNAL = ServiceTypeFactory.of(9059, "OK_HTTP_CLIENT_INTERNAL", "OK_HTTP_CLIENT");
+
+    public static final String SEND_REQUEST_SCOPE = "okHttpSendRequestScope";
 }

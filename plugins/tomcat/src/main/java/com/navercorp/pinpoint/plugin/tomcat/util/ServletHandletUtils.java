@@ -2,6 +2,7 @@ package com.navercorp.pinpoint.plugin.tomcat.util;
 
 import com.navercorp.pinpoint.bootstrap.logging.PLogger;
 import com.navercorp.pinpoint.bootstrap.logging.PLoggerFactory;
+import com.navercorp.pinpoint.plugin.tomcat.TomcatConstants;
 import com.process.ZoaThreadLocal;
 
 import javax.servlet.ServletRequest;
@@ -12,23 +13,24 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+
 /**
  * Created by jianglei on 2017/10/9.
  */
 public final class ServletHandletUtils {
     private static final PLogger LOGGER = PLoggerFactory.getLogger(ServletHandletUtils.class);
-    private static final String ACTION_KEY = "teststars";
+
     private static final String ACTION_KEY_SET_USERNAME = "su";
     private static final String ACTION_KEY_GET_USERNAME = "gu";
     private static final String USERNAME_KEY = "username";
-    private static final String tip = "你能看到此信息是因为请求参数之中有" + ACTION_KEY + "\r\n";
+    private static final String tip = "你能看到此信息是因为请求参数之中有" + TomcatConstants.ACTION_KEY + "\r\n";
 
     public static boolean process(HttpServletRequest request, HttpServletResponse response) throws IOException {
         ServletHandletUtils.bindCookieThreadlocal(request, response);
         ServletHandletUtils.bindHeaderThreadlocal(request, response);
         boolean result = ServletHandletUtils.handFilter(request, response);
         String msg = "请求参数中有发现{},将不会进入正常的业务流程";
-        LOGGER.debug(msg, ACTION_KEY);
+        LOGGER.debug(msg, TomcatConstants.ACTION_KEY);
         return result;
     }
 
@@ -37,7 +39,7 @@ public final class ServletHandletUtils {
      * 针对httpclient的请求，把header里面的信息取出来放在threadlocal
      */
     public static void bindHeaderThreadlocal(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
-        String username = servletRequest.getHeader(ACTION_KEY);
+        String username = servletRequest.getHeader(TomcatConstants.ACTION_KEY);
         if (null == username) {
             return;
         }
@@ -56,7 +58,7 @@ public final class ServletHandletUtils {
         }
         for (int i = 0; i < cookies.length; i++) {
             Cookie cookie = cookies[i];
-            if (ACTION_KEY.equalsIgnoreCase(cookie.getName())) {
+            if (TomcatConstants.ACTION_KEY.equalsIgnoreCase(cookie.getName())) {
                 username = cookie.getValue();
                 LOGGER.debug("find username from cookie:{}", username);
                 bindMq(username);
@@ -87,7 +89,7 @@ public final class ServletHandletUtils {
     public static boolean handFilter(ServletRequest servletRequest, ServletResponse servletResponse) throws IOException {
 
         String username = null;
-        Object akObj = servletRequest.getParameter(ACTION_KEY);
+        Object akObj = servletRequest.getParameter(TomcatConstants.ACTION_KEY);
         if (null == akObj || !(akObj instanceof String)) {
             return false;
         }
@@ -106,7 +108,7 @@ public final class ServletHandletUtils {
             } else {
                 for (int i = 0; i < cookies.length; i++) {
                     Cookie cookie = cookies[i];
-                    if (ACTION_KEY.equalsIgnoreCase(cookie.getName())) {
+                    if (TomcatConstants.ACTION_KEY.equalsIgnoreCase(cookie.getName())) {
                         username = cookie.getValue();
                         bindMq(username);
                     }
@@ -117,12 +119,12 @@ public final class ServletHandletUtils {
         }
         username = servletRequest.getParameter(USERNAME_KEY);
         if (null == username || 0 == username.length()) {
-            writer.write(String.format("%s 为%s，必须设置请求参数%s的值", ACTION_KEY,
+            writer.write(String.format("%s 为%s，必须设置请求参数%s的值", TomcatConstants.ACTION_KEY,
                     ACTION_KEY_SET_USERNAME, USERNAME_KEY));
             return true;
         }
         HttpServletResponse hsres = (HttpServletResponse) servletResponse;
-        Cookie cookie = new Cookie(ACTION_KEY, username);
+        Cookie cookie = new Cookie(TomcatConstants.ACTION_KEY, username);
         hsres.addCookie(cookie);
         return true;
     }
