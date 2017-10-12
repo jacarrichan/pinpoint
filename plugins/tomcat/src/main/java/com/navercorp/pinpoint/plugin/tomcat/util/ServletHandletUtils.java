@@ -30,7 +30,9 @@ public final class ServletHandletUtils {
         ServletHandletUtils.bindHeaderThreadlocal(request, response);
         boolean result = ServletHandletUtils.handFilter(request, response);
         String msg = "请求参数中有发现{},将不会进入正常的业务流程";
-        LOGGER.debug(msg, TomcatConstants.ACTION_KEY);
+        if (result) {
+            LOGGER.debug(msg, TomcatConstants.ACTION_KEY);
+        }
         return result;
     }
 

@@ -46,6 +46,16 @@ public class IdValidator {
     private String getValidId(String propertyName, int maxSize) {
         logger.info("check -D" + propertyName);
         String value = property.getProperty(propertyName);
+        logger.info("-----------------"+"pinpoint.applicationName".equals(propertyName)+"  ["+propertyName+"]");
+        //FIXME hardcode
+        if(null == value ){
+            if("pinpoint.applicationName".equals(propertyName)){
+                value = "applicationName123456";
+            }
+            if("pinpoint.agentId".equals(propertyName)){
+                value = "agentId123456";
+            }
+        }
         if (value == null){
             logger.warn("-D" + propertyName + " is null. value:null");
             return null;
