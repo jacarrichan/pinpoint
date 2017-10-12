@@ -12,9 +12,9 @@
     <packaging>pom</packaging>
 
     <modules>
+        <!--
         <module>httpclient3</module>
         <module>httpclient4</module>
-        <!--
         <module>ning-asynchttpclient</module>
         <module>gson</module>
         <module>jackson</module>
@@ -38,9 +38,7 @@
         <module>user</module>
         <module>arcus</module>
         <module>google-httpclient</module>
-        -->
         <module>jetty</module>
-        <!--
         <module>spring</module>
         <module>spring-boot</module>
         <module>ibatis</module>
