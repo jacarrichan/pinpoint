@@ -1,10 +1,7 @@
 package com.navercorp.pinpoint.plugin.tomcat.interceptor;
 
 
-import com.navercorp.pinpoint.bootstrap.context.MethodDescriptor;
-import com.navercorp.pinpoint.bootstrap.context.TraceContext;
 import com.navercorp.pinpoint.bootstrap.interceptor.AroundInterceptor;
-import com.navercorp.pinpoint.bootstrap.interceptor.scope.InterceptorScope;
 import com.navercorp.pinpoint.bootstrap.logging.PLogger;
 import com.navercorp.pinpoint.bootstrap.logging.PLoggerFactory;
 import com.navercorp.pinpoint.plugin.tomcat.TomcatConstants;
@@ -17,8 +14,13 @@ import org.apache.http.HttpRequest;
 public class HttpRequestExecutorExecuteMethodInterceptor implements AroundInterceptor {
     private final PLogger logger = PLoggerFactory.getLogger(this.getClass());
 
+    public HttpRequestExecutorExecuteMethodInterceptor() {
+    }
+
+/*
     public HttpRequestExecutorExecuteMethodInterceptor(TraceContext traceContext, MethodDescriptor methodDescriptor, InterceptorScope interceptorScope) {
     }
+*/
 
     @Override
     public void before(Object target, Object[] args) {
