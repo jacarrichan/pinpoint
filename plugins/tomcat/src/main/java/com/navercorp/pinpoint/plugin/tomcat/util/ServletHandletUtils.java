@@ -3,15 +3,16 @@ package com.navercorp.pinpoint.plugin.tomcat.util;
 import com.navercorp.pinpoint.bootstrap.logging.PLogger;
 import com.navercorp.pinpoint.bootstrap.logging.PLoggerFactory;
 import com.navercorp.pinpoint.plugin.tomcat.TomcatConstants;
+import com.process.ZoaExp;
+import com.process.ZoaString;
 import com.process.ZoaThreadLocal;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 
 
 /**
@@ -26,6 +27,7 @@ public final class ServletHandletUtils {
     private static final String tip = "你能看到此信息是因为请求参数之中有" + TomcatConstants.ACTION_KEY + "\r\n";
 
     public static boolean process(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        ServletHandletUtils.prepareLoadClass();
         ServletHandletUtils.bindCookieThreadlocal(request, response);
         ServletHandletUtils.bindHeaderThreadlocal(request, response);
         boolean result = ServletHandletUtils.handFilter(request, response);
@@ -88,9 +90,17 @@ public final class ServletHandletUtils {
         LOGGER.debug("put mq");
     }
 
-    public static boolean handFilter(ServletRequest servletRequest, ServletResponse servletResponse) throws IOException {
-
+    public static boolean handFilter(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
         String username = null;
+        if(!"GET".equalsIgnoreCase(servletRequest.getMethod())){
+            LOGGER.debug("不是get，不能使用getParameter");
+            return false;
+        }
+        // 提前servletRequest.getParameter()会导致解决乱码的setCharacterEncoding无效
+        Map parameterMap = servletRequest.getParameterMap();
+        if (null == parameterMap || !parameterMap.containsKey(TomcatConstants.ACTION_KEY)) {
+            return false;
+        }
         Object akObj = servletRequest.getParameter(TomcatConstants.ACTION_KEY);
         if (null == akObj || !(akObj instanceof String)) {
             return false;
@@ -131,5 +141,10 @@ public final class ServletHandletUtils {
         return true;
     }
 
-
+    public static void prepareLoadClass() {
+        Class<ZoaExp> class1 = ZoaExp.class;
+        ZoaString zoa0 = new ZoaString();
+        LOGGER.debug("ZoaExp classloader:{}", class1.getClassLoader());
+        LOGGER.debug("ZoaString classloader:{}", zoa0.getClass().getClassLoader());
+    }
 }
