@@ -67,6 +67,7 @@ public class TomcatPlugin implements ProfilerPlugin, TransformTemplateAware {
     }
 
     private void addHttpClientEditor() {
+         logger.info(" adding httpclient interceptor");
         addHttpMethodBaseClass();
         addHttpRequestExecutorClass();
         addRequestBuilder();
@@ -153,6 +154,7 @@ public class TomcatPlugin implements ProfilerPlugin, TransformTemplateAware {
 
                 InstrumentMethod execute = target.getDeclaredMethod("execute", "org.apache.commons.httpclient.HttpState", "org.apache.commons.httpclient.HttpConnection");
                 if (execute != null) {
+                    logger.debug("[http3] Add HttpMethodBase interceptor.");
                     execute.addScopedInterceptor("com.navercorp.pinpoint.plugin.tomcat.interceptor.HttpMethodBaseExecuteMethodInterceptor", TomcatConstants.HTTP_CLIENT3_METHOD_BASE_SCOPE, ExecutionPolicy.ALWAYS);
                 }
                 return target.toBytecode();
@@ -172,6 +174,7 @@ public class TomcatPlugin implements ProfilerPlugin, TransformTemplateAware {
 
                 InstrumentMethod execute = target.getDeclaredMethod("execute", "org.apache.http.HttpRequest", "org.apache.http.HttpClientConnection", "org.apache.http.protocol.HttpContext");
                 if (execute != null) {
+                    logger.debug("[http4] Add HttpRequestExecutor interceptor.");
                     execute.addScopedInterceptor("com.navercorp.pinpoint.plugin.tomcat.interceptor.HttpRequestExecutorExecuteMethodInterceptor", TomcatConstants.HTTP_CLIENT4_SCOPE, ExecutionPolicy.ALWAYS);
                 }
                 return target.toBytecode();
@@ -191,7 +194,7 @@ public class TomcatPlugin implements ProfilerPlugin, TransformTemplateAware {
                 InstrumentMethod buildMethod = target.getDeclaredMethod("build");
                 if (buildMethod != null) {
                     logger.debug("[OkHttp] Add Request.Builder.build interceptor.");
-                    buildMethod.addScopedInterceptor("com.navercorp.pinpoint.plugin.tomcat.interceptor.RequestBuilderBuildMethodInterceptor", TomcatConstants.SEND_REQUEST_SCOPE, ExecutionPolicy.INTERNAL);
+                    buildMethod.addScopedInterceptor("com.navercorp.pinpoint.plugin.tomcat.interceptor.RequestBuilderBuildMethodInterceptor", TomcatConstants.SEND_REQUEST_SCOPE, ExecutionPolicy.ALWAYS);
                 }
 
                 return target.toBytecode();
