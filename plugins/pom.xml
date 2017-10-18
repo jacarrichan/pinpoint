@@ -58,7 +58,7 @@
     </modules>
 
     <dependencies>
-        <dependency>
+   <!--     <dependency>
             <groupId>com.navercorp.pinpoint</groupId>
             <artifactId>pinpoint-httpclient3-plugin</artifactId>
             <version>${project.version}</version>
@@ -68,7 +68,7 @@
             <artifactId>pinpoint-httpclient4-plugin</artifactId>
             <version>${project.version}</version>
         </dependency>
- <!--       <dependency>
+        <dependency>
             <groupId>com.navercorp.pinpoint</groupId>
             <artifactId>pinpoint-ning-asynchttpclient-plugin</artifactId>
             <version>${project.version}</version>
