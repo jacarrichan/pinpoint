@@ -139,6 +139,18 @@ public class TomcatPlugin implements ProfilerPlugin, TransformTemplateAware {
                 return null;
             }
         });
+        transformTemplate.transform("io.undertow.servlet.handlers.ServletDispatchingHandler", new TransformCallback() {
+            @Override
+            public byte[] doInTransform(Instrumentor instrumentor, ClassLoader classLoader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws InstrumentException {
+                InstrumentClass target = instrumentor.getInstrumentClass(classLoader, className, classfileBuffer);
+                if (target != null) {
+                    target.weave("com.navercorp.pinpoint.plugin.tomcat.aspect.ServletHandlerAspect");
+                    return target.toBytecode();
+                }
+
+                return null;
+            }
+        });
     }
 
 
