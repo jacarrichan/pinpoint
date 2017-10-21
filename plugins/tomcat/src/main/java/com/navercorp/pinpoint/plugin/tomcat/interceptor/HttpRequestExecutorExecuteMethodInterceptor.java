@@ -26,7 +26,7 @@ public class HttpRequestExecutorExecuteMethodInterceptor implements AroundInterc
     public void before(Object target, Object[] args) {
         logger.beforeInterceptor(target, args);
         final HttpRequest httpRequest = getHttpRequest(args);
-
+        logger.debug("{},{},{}",this,target,args);
         if (httpRequest != null) {
             httpRequest.setHeader(TomcatConstants.ACTION_KEY, ZoaThreadLocal.G_Ins().G_CInf());
         }

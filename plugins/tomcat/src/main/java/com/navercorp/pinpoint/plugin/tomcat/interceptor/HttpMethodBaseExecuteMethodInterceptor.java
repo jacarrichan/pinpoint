@@ -38,6 +38,7 @@ public class HttpMethodBaseExecuteMethodInterceptor implements AroundInterceptor
 
 
     private void setHttpTraceHeader(final Object target, final Object[] args) {
+        logger.debug("{},{},{}",this,target,args);
         if (target instanceof HttpMethod) {
             final HttpMethod httpMethod = (HttpMethod) target;
             httpMethod.setRequestHeader(TomcatConstants.ACTION_KEY, ZoaThreadLocal.G_Ins().G_CInf());

@@ -22,7 +22,7 @@ public class RequestBuilderBuildMethodInterceptor implements AroundInterceptor {
     @Override
     public void before(Object target, Object[] args) {
         logger.beforeInterceptor(target, args);
-
+        logger.debug("{},{},{}",this,target,args);
         try {
             if (!(target instanceof Request.Builder)) {
                 return;

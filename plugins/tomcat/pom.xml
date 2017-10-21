@@ -43,7 +43,13 @@
             <artifactId>pinpoint-commons-server</artifactId>
             <scope>test</scope>
         </dependency>-->
-
+        <dependency>
+            <artifactId>weblogic</artifactId>
+            <groupId>com.oracle.weblogic</groupId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/com.oracle.weblogic.servlet.jar</systemPath>
+        </dependency>
 
         <!-- HTTP Client -->
         <dependency>
