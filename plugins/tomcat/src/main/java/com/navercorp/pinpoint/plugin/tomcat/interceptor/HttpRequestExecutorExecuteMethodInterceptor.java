@@ -1,11 +1,12 @@
 package com.navercorp.pinpoint.plugin.tomcat.interceptor;
 
 
+import com.navercorp.pinpoint.bootstrap.context.TraceContext;
 import com.navercorp.pinpoint.bootstrap.interceptor.AroundInterceptor;
 import com.navercorp.pinpoint.bootstrap.logging.PLogger;
 import com.navercorp.pinpoint.bootstrap.logging.PLoggerFactory;
 import com.navercorp.pinpoint.plugin.tomcat.TomcatConstants;
-import com.process.ZoaThreadLocal;
+import com.navercorp.pinpoint.plugin.tomcat.util.ServletHandletUtils;
 import org.apache.http.HttpRequest;
 
 /**
@@ -13,23 +14,22 @@ import org.apache.http.HttpRequest;
  */
 public class HttpRequestExecutorExecuteMethodInterceptor implements AroundInterceptor {
     private final PLogger logger = PLoggerFactory.getLogger(this.getClass());
+    private final TraceContext traceContext;
 
-    public HttpRequestExecutorExecuteMethodInterceptor() {
-    }
 
-/*
-    public HttpRequestExecutorExecuteMethodInterceptor(TraceContext traceContext, MethodDescriptor methodDescriptor, InterceptorScope interceptorScope) {
+    public HttpRequestExecutorExecuteMethodInterceptor(TraceContext traceContext/*, MethodDescriptor methodDescriptor, InterceptorScope interceptorScope*/) {
+        this.traceContext = traceContext;
     }
-*/
 
     @Override
     public void before(Object target, Object[] args) {
         logger.beforeInterceptor(target, args);
         final HttpRequest httpRequest = getHttpRequest(args);
-        logger.debug("{},{},{}",this,target,args);
-        if (httpRequest != null) {
-            httpRequest.setHeader(TomcatConstants.ACTION_KEY, ZoaThreadLocal.G_Ins().G_CInf());
+        if (null == httpRequest ) {
+            logger.warn("无法获取HttpRequest，不能将username放在http的请求头中");
+            return;
         }
+        httpRequest.setHeader(TomcatConstants.ACTION_KEY, ServletHandletUtils.getUsernameFromTraceContent(traceContext));
         return;
     }
 

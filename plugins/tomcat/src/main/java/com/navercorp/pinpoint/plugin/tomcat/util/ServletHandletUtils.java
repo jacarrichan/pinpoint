@@ -1,5 +1,7 @@
 package com.navercorp.pinpoint.plugin.tomcat.util;
 
+import com.navercorp.pinpoint.bootstrap.context.Trace;
+import com.navercorp.pinpoint.bootstrap.context.TraceContext;
 import com.navercorp.pinpoint.bootstrap.logging.PLogger;
 import com.navercorp.pinpoint.bootstrap.logging.PLoggerFactory;
 import com.navercorp.pinpoint.plugin.tomcat.TomcatConstants;
@@ -16,7 +18,7 @@ import java.util.Map;
 
 
 /**
- * Created by jianglei on 2017/10/9.
+ * Created by Jacarri on 2017/10/9.
  */
 public final class ServletHandletUtils {
     private static final PLogger LOGGER = PLoggerFactory.getLogger(ServletHandletUtils.class);
@@ -28,7 +30,6 @@ public final class ServletHandletUtils {
 
     public static boolean process(HttpServletRequest request, HttpServletResponse response) throws IOException {
         ServletHandletUtils.prepareLoadClass();
-        ServletHandletUtils.bindCookieThreadlocal(request, response);
         ServletHandletUtils.bindHeaderThreadlocal(request, response);
         boolean result = ServletHandletUtils.handFilter(request, response);
         String msg = "请求参数中有发现{},将不会进入正常的业务流程";
@@ -45,15 +46,17 @@ public final class ServletHandletUtils {
     public static void bindHeaderThreadlocal(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
         String username = servletRequest.getHeader(TomcatConstants.ACTION_KEY);
         if (null == username) {
+            LOGGER.debug("没有读取到上层应用通过HTTP传过来的username信息");
             return;
         }
+            LOGGER.debug("读取到上层应用通过HTTP传过来的username信息:{}",username);
         bindMq(username);
     }
 
     /**
      * 针对浏览器的请求把cookie里面的信息取出来放在threadlocal
      */
-    public static void bindCookieThreadlocal(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
+    public static void bindCookieThreadlocal(HttpServletRequest servletRequest, HttpServletResponse servletResponse, TraceContext traceContext) throws IOException {
         String username;
         HttpServletRequest hsr = servletRequest;
         Cookie[] cookies = hsr.getCookies();
@@ -65,7 +68,7 @@ public final class ServletHandletUtils {
             if (TomcatConstants.ACTION_KEY.equalsIgnoreCase(cookie.getName())) {
                 username = cookie.getValue();
                 LOGGER.debug("find username from cookie:{}", username);
-                bindMq(username);
+                bindMq(username,traceContext);
             }
         }
     }
@@ -76,18 +79,28 @@ public final class ServletHandletUtils {
      * @param username
      */
     private final static void bindMq(String username) {
+        bindMq(username,null);
+    }
+    private final static void bindMq(String username, TraceContext traceContext) {
+        if(null != traceContext){
+            Trace trace = traceContext.currentTraceObject();
+            if(null == trace ){
+                trace = traceContext.newTraceObject();
+            }
+            trace.setTraceAlias(username);
+        }
         final String mqClassName = "com.process.ZoaThreadLocal";
         try {
+            ZoaThreadLocal.G_Ins().A_CInfByID(username);
             Class cls = Class.forName(mqClassName);
             if (null == cls) {
                 LOGGER.error("can't find {}", mqClassName);
                 return;
             }
-            ZoaThreadLocal.G_Ins().A_CInfByID(username);
         } catch (Exception e) {
             LOGGER.error("error: {}", e.toString());
         }
-        LOGGER.debug("put mq");
+        LOGGER.debug("put mq:[{}] ",username);
     }
 
     public static boolean handFilter(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
@@ -146,5 +159,20 @@ public final class ServletHandletUtils {
         ZoaString zoa0 = new ZoaString();
         LOGGER.debug("ZoaExp classloader:{}", class1.getClassLoader());
         LOGGER.debug("ZoaString classloader:{}", zoa0.getClass().getClassLoader());
+    }
+
+    public static String getUsernameFromTraceContent(TraceContext traceContext){
+        String username = "serverhost" ;
+        Trace trace = traceContext.currentTraceObject();
+        if(null == trace){
+            LOGGER.debug("没有获取到trace，不能将username放在http的请求头中");
+            return  username;
+        }
+        username = trace.getTraceAlias();
+        if(null == username){
+            LOGGER.debug("没有获取到username，不能将username放在http的请求头中");
+            return "";
+        }
+        return username;
     }
 }

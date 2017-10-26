@@ -257,6 +257,7 @@ public class DefaultTraceContext implements TraceContext {
         return this.asyncIdGenerator.nextAsyncId();
     }
 
+
 //    @Override
 //    public JdbcContext getJdbcContext() {
 //        return jdbcContext;

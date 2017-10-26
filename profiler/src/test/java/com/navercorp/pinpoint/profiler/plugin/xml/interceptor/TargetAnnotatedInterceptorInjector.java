@@ -154,7 +154,7 @@ public class TargetAnnotatedInterceptorInjector implements ClassRecipe {
         }
 
         final InterceptorArgumentProvider interceptorArgumentProvider = new InterceptorArgumentProvider(/*dataSourceMonitorRegistry, apiMetaDataService,*/ targetClass);
-        AutoBindingObjectFactory filterFactory = new AutoBindingObjectFactory(profilerConfig, /*traceContext,*/ pluginContext, classLoader, interceptorArgumentProvider);
+        AutoBindingObjectFactory filterFactory = new AutoBindingObjectFactory(profilerConfig, traceContext, pluginContext, classLoader, interceptorArgumentProvider);
         MethodFilter filter = (MethodFilter)filterFactory.createInstance(ObjectFactory.byConstructor(type, (Object[]) annotation.constructorArguments()));
         MethodRecipe recipe = annotation.singleton() ? new SharedAnnotatedInterceptorInjector(injector) : injector;
         

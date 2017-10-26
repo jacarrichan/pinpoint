@@ -34,7 +34,8 @@ public class DisableTrace implements Trace {
     private final long startTime;
     private final Thread bindThread;
     private final DefaultTraceScopePool scopePool = new DefaultTraceScopePool();
-    
+    private String traceAlias;
+
     public DisableTrace(long id) {
         this.id = id;
         this.startTime = System.currentTimeMillis();
@@ -143,5 +144,14 @@ public class DisableTrace implements Trace {
     @Override
     public TraceScope addScope(String name) {
         return scopePool.add(name);
+    }
+    @Override
+    public String getTraceAlias() {
+        return traceAlias;
+    }
+
+    @Override
+    public void setTraceAlias(String traceAlias) {
+        this.traceAlias = traceAlias;
     }
 }

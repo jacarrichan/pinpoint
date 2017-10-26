@@ -1,10 +1,11 @@
 package com.navercorp.pinpoint.plugin.tomcat.interceptor;
 
+import com.navercorp.pinpoint.bootstrap.context.TraceContext;
 import com.navercorp.pinpoint.bootstrap.interceptor.AroundInterceptor;
 import com.navercorp.pinpoint.bootstrap.logging.PLogger;
 import com.navercorp.pinpoint.bootstrap.logging.PLoggerFactory;
 import com.navercorp.pinpoint.plugin.tomcat.TomcatConstants;
-import com.process.ZoaThreadLocal;
+import com.navercorp.pinpoint.plugin.tomcat.util.ServletHandletUtils;
 import com.squareup.okhttp.Request;
 
 /**
@@ -12,8 +13,10 @@ import com.squareup.okhttp.Request;
  */
 public class RequestBuilderBuildMethodInterceptor implements AroundInterceptor {
     private final PLogger logger = PLoggerFactory.getLogger(this.getClass());
+    private final TraceContext traceContext;
 
-    public RequestBuilderBuildMethodInterceptor() {
+    public RequestBuilderBuildMethodInterceptor(TraceContext traceContext) {
+        this.traceContext = traceContext;
     }
 
 /*    public RequestBuilderBuildMethodInterceptor(TraceContext traceContext, MethodDescriptor methodDescriptor, InterceptorScope interceptorScope) {
@@ -29,7 +32,7 @@ public class RequestBuilderBuildMethodInterceptor implements AroundInterceptor {
             }
             final Request.Builder builder = ((Request.Builder) target);
             logger.debug("set Sampling flag=false");
-            ((Request.Builder) target).header(TomcatConstants.ACTION_KEY, ZoaThreadLocal.G_Ins().G_CInf());
+            builder.header(TomcatConstants.ACTION_KEY, ServletHandletUtils.getUsernameFromTraceContent(traceContext));
             return;
         } catch (Throwable t) {
             logger.warn("Failed to BEFORE process. {}", t.getMessage(), t);

@@ -70,7 +70,7 @@ public class AnnotatedInterceptorFactoryTest {
     }
 
     private AnnotatedInterceptorFactory newAnnotatedInterceptorFactory() {
-        return new AnnotatedInterceptorFactory(profilerConfig,/* traceContext, dataSourceMonitorRegistry, apiMetaDataService, */pluginContext, false);
+        return new AnnotatedInterceptorFactory(profilerConfig, traceContext,/* dataSourceMonitorRegistry, apiMetaDataService, */pluginContext, false);
     }
 
     private ScopeInfo newEmptyScopeInfo() {

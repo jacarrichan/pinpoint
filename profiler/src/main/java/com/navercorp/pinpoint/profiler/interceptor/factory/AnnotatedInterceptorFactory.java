@@ -17,6 +17,7 @@
 package com.navercorp.pinpoint.profiler.interceptor.factory;
 
 import com.navercorp.pinpoint.bootstrap.config.ProfilerConfig;
+import com.navercorp.pinpoint.bootstrap.context.TraceContext;
 import com.navercorp.pinpoint.bootstrap.instrument.InstrumentClass;
 import com.navercorp.pinpoint.bootstrap.instrument.InstrumentContext;
 import com.navercorp.pinpoint.bootstrap.instrument.InstrumentMethod;
@@ -33,13 +34,13 @@ import com.navercorp.pinpoint.profiler.objectfactory.InterceptorArgumentProvider
  */
 public class AnnotatedInterceptorFactory implements InterceptorFactory {
     private final ProfilerConfig profilerConfig;
-//    private final TraceContext traceContext;
+    private final TraceContext traceContext;
 /*    private final DataSourceMonitorRegistry dataSourceMonitorRegistry;
     private final ApiMetaDataService apiMetaDataService;*/
     private final InstrumentContext pluginContext;
     private final boolean exceptionHandle;
 
-    public AnnotatedInterceptorFactory(ProfilerConfig profilerConfig,/* TraceContext traceContext, DataSourceMonitorRegistry dataSourceMonitorRegistry, ApiMetaDataService apiMetaDataService,*/ InstrumentContext pluginContext, boolean exceptionHandle) {
+    public AnnotatedInterceptorFactory(ProfilerConfig profilerConfig, TraceContext traceContext,/* DataSourceMonitorRegistry dataSourceMonitorRegistry, ApiMetaDataService apiMetaDataService,*/InstrumentContext pluginContext, boolean exceptionHandle) {
         if (profilerConfig == null) {
             throw new NullPointerException("profilerConfig must not be null");
         }
@@ -57,7 +58,7 @@ public class AnnotatedInterceptorFactory implements InterceptorFactory {
             throw new NullPointerException("pluginContext must not be null");
         }
         this.profilerConfig = profilerConfig;
-//        this.traceContext = traceContext;
+        this.traceContext = traceContext;
 //        this.dataSourceMonitorRegistry = dataSourceMonitorRegistry;
 //        this.apiMetaDataService = apiMetaDataService;
         this.pluginContext = pluginContext;
@@ -67,7 +68,7 @@ public class AnnotatedInterceptorFactory implements InterceptorFactory {
     @Override
     public Interceptor getInterceptor(ClassLoader classLoader, String interceptorClassName, Object[] providedArguments, ScopeInfo scopeInfo, InstrumentClass target, InstrumentMethod targetMethod) {
 
-        AutoBindingObjectFactory factory = new AutoBindingObjectFactory(profilerConfig,/* traceContext, */pluginContext, classLoader);
+        AutoBindingObjectFactory factory = new AutoBindingObjectFactory(profilerConfig, traceContext, pluginContext, classLoader);
         ObjectFactory objectFactory = ObjectFactory.byConstructor(interceptorClassName, providedArguments);
         final InterceptorScope interceptorScope = scopeInfo.getInterceptorScope();
         InterceptorArgumentProvider interceptorArgumentProvider = new InterceptorArgumentProvider(/*dataSourceMonitorRegistry, apiMetaDataService, */scopeInfo.getInterceptorScope(), target, targetMethod);

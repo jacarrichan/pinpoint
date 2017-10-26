@@ -21,15 +21,16 @@ import com.google.inject.Scopes;
 import com.google.inject.TypeLiteral;
 import com.navercorp.pinpoint.bootstrap.AgentOption;
 import com.navercorp.pinpoint.bootstrap.config.ProfilerConfig;
+import com.navercorp.pinpoint.bootstrap.context.TraceContext;
 import com.navercorp.pinpoint.bootstrap.instrument.DynamicTransformTrigger;
+import com.navercorp.pinpoint.bootstrap.sampler.Sampler;
 import com.navercorp.pinpoint.common.service.ServiceTypeRegistryService;
 import com.navercorp.pinpoint.common.trace.ServiceType;
 import com.navercorp.pinpoint.profiler.AgentInformation;
 import com.navercorp.pinpoint.profiler.ClassFileTransformerDispatcher;
 import com.navercorp.pinpoint.profiler.DefaultDynamicTransformerRegistry;
 import com.navercorp.pinpoint.profiler.DynamicTransformerRegistry;
-import com.navercorp.pinpoint.profiler.context.DefaultSpanFactory;
-import com.navercorp.pinpoint.profiler.context.SpanFactory;
+import com.navercorp.pinpoint.profiler.context.*;
 import com.navercorp.pinpoint.profiler.context.id.*;
 import com.navercorp.pinpoint.profiler.context.provider.*;
 import com.navercorp.pinpoint.profiler.instrument.InstrumentEngine;
@@ -103,10 +104,11 @@ public class ApplicationContextModule extends AbstractModule {
         /*
         bind(TransactionCounter.class).to(DefaultTransactionCounter.class).in(Scopes.SINGLETON);
 
+        */
         bind(Sampler.class).toProvider(SamplerProvider.class).in(Scopes.SINGLETON);
         bind(TraceContext.class).toProvider(TraceContextProvider.class).in(Scopes.SINGLETON);
-
         bindTraceComponent();
+        /*
 
         bind(ActiveTraceRepository.class).toProvider(ActiveTraceRepositoryProvider.class).in(Scopes.SINGLETON);
         */
@@ -137,15 +139,15 @@ public class ApplicationContextModule extends AbstractModule {
 
     private void bindTraceComponent() {
         bind(TraceIdFactory.class).to(DefaultTraceIdFactory.class).in(Scopes.SINGLETON);
-//        bind(CallStackFactory.class).to(DefaultCallStackFactory.class).in(Scopes.SINGLETON);
+        bind(CallStackFactory.class).to(DefaultCallStackFactory.class).in(Scopes.SINGLETON);
 
       bind(SpanFactory.class).to(DefaultSpanFactory.class).in(Scopes.SINGLETON);
 /*
         bind(SpanChunkFactory.class).to(DefaultSpanChunkFactory.class).in(Scopes.SINGLETON);
 
         bind(RecorderFactory.class).to(DefaultRecorderFactory.class).in(Scopes.SINGLETON);
-        bind(TraceFactory.class).toProvider(TraceFactoryProvider.class).in(Scopes.SINGLETON);
 */
+        bind(TraceFactory.class).toProvider(TraceFactoryProvider.class).in(Scopes.SINGLETON);
     }
 
     private void bindDataTransferComponent() {

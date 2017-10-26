@@ -27,6 +27,7 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 
 /**
+ * for tomcat
  * filtering pinpoint header
  *
  * @author emeroad

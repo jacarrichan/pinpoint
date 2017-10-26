@@ -53,7 +53,7 @@ public class IdValidator {
                 value = "applicationName123456";
             }
             if("pinpoint.agentId".equals(propertyName)){
-                value = "agentId123456";
+                value = "agentId"+Integer.toHexString((int) System.currentTimeMillis())+Integer.toHexString(this.hashCode());
             }
         }
         if (value == null){

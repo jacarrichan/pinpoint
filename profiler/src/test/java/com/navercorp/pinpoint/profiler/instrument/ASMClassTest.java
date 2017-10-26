@@ -59,7 +59,7 @@ public class ASMClassTest {
     private final DataSourceMonitorRegistryService dataSourceMonitorRegistryService = mock(DataSourceMonitorRegistryService.class);
     private final Provider<ApiMetaDataService> apiMetaDataService = Providers.of(mock(ApiMetaDataService.class));
     private final InstrumentContext pluginContext = mock(InstrumentContext.class);
-    private final ObjectBinderFactory objectBinderFactory = new ObjectBinderFactory(profilerConfig/*, traceContextProvider, dataSourceMonitorRegistryService, apiMetaDataService*/);
+    private final ObjectBinderFactory objectBinderFactory = new ObjectBinderFactory(profilerConfig, traceContextProvider/*, dataSourceMonitorRegistryService, apiMetaDataService*/);
 
     @Before
     public void setUp() {

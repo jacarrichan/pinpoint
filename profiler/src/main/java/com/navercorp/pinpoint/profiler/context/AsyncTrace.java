@@ -33,6 +33,7 @@ public class AsyncTrace implements Trace {
     private int asyncId;
     private short asyncSequence;
     private AsyncState asyncState;
+    private String traceAlias;
 
     public AsyncTrace(final Trace trace, final AsyncState asyncState) {
         if (asyncState == null) {
@@ -226,5 +227,15 @@ public class AsyncTrace implements Trace {
     @Override
     public TraceScope addScope(String name) {
         return trace.addScope(name);
+    }
+
+    @Override
+    public String getTraceAlias() {
+        return traceAlias;
+    }
+
+    @Override
+    public void setTraceAlias(String traceAlias) {
+        this.traceAlias = traceAlias;
     }
 }

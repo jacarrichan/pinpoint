@@ -108,6 +108,13 @@ public class TomcatPlugin implements ProfilerPlugin, TransformTemplateAware {
             public byte[] doInTransform(Instrumentor instrumentor, ClassLoader classLoader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws InstrumentException {
                 InstrumentClass target = instrumentor.getInstrumentClass(classLoader, className, classfileBuffer);
                 if (target != null) {
+                    //把cookie写到Threadlocal
+                    InstrumentMethod execute = target.getDeclaredMethod("invoke", "org.apache.catalina.connector.Request", "org.apache.catalina.connector.Response");
+                    if (execute != null) {
+                        logger.debug("[tomcat] Add StandardHostValve interceptor.");
+                        execute.addScopedInterceptor("com.navercorp.pinpoint.plugin.tomcat.interceptor.StandardHostValveInterceptor", TomcatConstants.HTTP_CLIENT3_METHOD_BASE_SCOPE, ExecutionPolicy.ALWAYS);
+                    }
+                    //把username写到cookie
                     target.weave("com.navercorp.pinpoint.plugin.tomcat.aspect.StandardHostValveAspect");
                     return target.toBytecode();
                 }
@@ -164,7 +171,6 @@ public class TomcatPlugin implements ProfilerPlugin, TransformTemplateAware {
             }
         });
     }
-
 
     /**
      * http3

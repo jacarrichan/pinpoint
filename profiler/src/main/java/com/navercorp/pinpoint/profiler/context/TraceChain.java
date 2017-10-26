@@ -160,4 +160,14 @@ public class TraceChain implements TraceWrap {
     public int getCallStackFrameId() {
         return delegate.getCallStackFrameId();
     }
+
+    @Override
+    public String getTraceAlias() {
+        return delegate.getTraceAlias();
+    }
+
+    @Override
+    public void setTraceAlias(String traceAlias) {
+        delegate.setTraceAlias(traceAlias);
+    }
 }

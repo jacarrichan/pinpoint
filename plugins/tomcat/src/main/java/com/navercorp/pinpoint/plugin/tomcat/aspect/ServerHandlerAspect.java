@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * for jetty 7
  * Created by Jacarri on 2017-10-02.
  */
 @Aspect

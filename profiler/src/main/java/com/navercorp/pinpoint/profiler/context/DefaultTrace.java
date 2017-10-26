@@ -54,6 +54,7 @@ public final class DefaultTrace implements Trace {
 
     private Thread bindThread;
     private final DefaultTraceScopePool scopePool = new DefaultTraceScopePool();
+    private String traceAlias;
 
     public DefaultTrace(CallStackFactory callStackFactory, /*Storage storage,*/ TraceId traceId, long localTransactionId, AsyncIdGenerator asyncIdGenerator, boolean sampling,
                         SpanFactory spanFactory) {
@@ -311,5 +312,15 @@ public final class DefaultTrace implements Trace {
     @Override
     public TraceScope addScope(String name) {
         return scopePool.add(name);
+    }
+
+    @Override
+    public String getTraceAlias() {
+        return traceAlias;
+    }
+
+    @Override
+    public void setTraceAlias(String traceAlias) {
+        this.traceAlias = traceAlias;
     }
 }
