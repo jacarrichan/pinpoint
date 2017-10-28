@@ -1,12 +1,10 @@
-package com.navercorp.pinpoint.plugin.tomcat.util;
+package com.navercorp.pinpoint.plugin.container.util;
 
 import com.navercorp.pinpoint.bootstrap.context.Trace;
 import com.navercorp.pinpoint.bootstrap.context.TraceContext;
 import com.navercorp.pinpoint.bootstrap.logging.PLogger;
 import com.navercorp.pinpoint.bootstrap.logging.PLoggerFactory;
-import com.navercorp.pinpoint.plugin.tomcat.TomcatConstants;
-import com.process.ZoaExp;
-import com.process.ZoaString;
+import com.navercorp.pinpoint.plugin.container.ContainerConstants;
 import com.process.ZoaThreadLocal;
 
 import javax.servlet.http.Cookie;
@@ -20,43 +18,53 @@ import java.util.Map;
 /**
  * Created by Jacarri on 2017/10/9.
  */
-public final class ServletHandletUtils {
-    private static final PLogger LOGGER = PLoggerFactory.getLogger(ServletHandletUtils.class);
+public final class ServletHandlerUtils {
+    private static final PLogger LOGGER = PLoggerFactory.getLogger(ServletHandlerUtils.class);
 
     private static final String ACTION_KEY_SET_USERNAME = "su";
     private static final String ACTION_KEY_GET_USERNAME = "gu";
     private static final String USERNAME_KEY = "username";
-    private static final String tip = "你能看到此信息是因为请求参数之中有" + TomcatConstants.ACTION_KEY + "\r\n";
+    private static final String tip = "你能看到此信息是因为请求参数之中有" + ContainerConstants.ACTION_KEY + "\r\n";
 
     public static boolean process(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        ServletHandletUtils.prepareLoadClass();
-        ServletHandletUtils.bindHeaderThreadlocal(request, response);
-        boolean result = ServletHandletUtils.handFilter(request, response);
+        boolean result = handFilter(request, response);
         String msg = "请求参数中有发现{},将不会进入正常的业务流程";
         if (result) {
-            LOGGER.debug(msg, TomcatConstants.ACTION_KEY);
+            LOGGER.debug(msg, ContainerConstants.ACTION_KEY);
         }
         return result;
     }
 
+    /**
+     * 从request中取出cookie或者特定的header
+     *
+     * @param servletRequest
+     * @param servletResponse
+     * @param traceContext
+     * @throws IOException
+     */
+    public static void bindRequestThreadlocal(HttpServletRequest servletRequest, HttpServletResponse servletResponse, TraceContext traceContext) throws IOException {
+        bindHeaderThreadlocal(servletRequest, servletResponse, traceContext);
+        bindCookieThreadlocal(servletRequest, servletResponse, traceContext);
+    }
 
     /**
      * 针对httpclient的请求，把header里面的信息取出来放在threadlocal
      */
-    public static void bindHeaderThreadlocal(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
-        String username = servletRequest.getHeader(TomcatConstants.ACTION_KEY);
+    private static void bindHeaderThreadlocal(HttpServletRequest servletRequest, HttpServletResponse servletResponse, TraceContext traceContext) throws IOException {
+        String username = servletRequest.getHeader(ContainerConstants.ACTION_KEY);
         if (null == username) {
             LOGGER.debug("没有读取到上层应用通过HTTP传过来的username信息");
             return;
         }
-            LOGGER.debug("读取到上层应用通过HTTP传过来的username信息:{}",username);
-        bindMq(username);
+        LOGGER.debug("读取到上层应用通过HTTP传过来的username信息:{}", username);
+        bindMq(username, traceContext);
     }
 
     /**
      * 针对浏览器的请求把cookie里面的信息取出来放在threadlocal
      */
-    public static void bindCookieThreadlocal(HttpServletRequest servletRequest, HttpServletResponse servletResponse, TraceContext traceContext) throws IOException {
+    private static void bindCookieThreadlocal(HttpServletRequest servletRequest, HttpServletResponse servletResponse, TraceContext traceContext) throws IOException {
         String username;
         HttpServletRequest hsr = servletRequest;
         Cookie[] cookies = hsr.getCookies();
@@ -65,10 +73,10 @@ public final class ServletHandletUtils {
         }
         for (int i = 0; i < cookies.length; i++) {
             Cookie cookie = cookies[i];
-            if (TomcatConstants.ACTION_KEY.equalsIgnoreCase(cookie.getName())) {
+            if (ContainerConstants.ACTION_KEY.equalsIgnoreCase(cookie.getName())) {
                 username = cookie.getValue();
                 LOGGER.debug("find username from cookie:{}", username);
-                bindMq(username,traceContext);
+                bindMq(username, traceContext);
             }
         }
     }
@@ -78,43 +86,38 @@ public final class ServletHandletUtils {
      *
      * @param username
      */
-    private final static void bindMq(String username) {
-        bindMq(username,null);
-    }
     private final static void bindMq(String username, TraceContext traceContext) {
-        if(null != traceContext){
+        if (null != traceContext) {
             Trace trace = traceContext.currentTraceObject();
-            if(null == trace ){
+            if (null == trace) {
                 trace = traceContext.newTraceObject();
             }
             trace.setTraceAlias(username);
         }
-        final String mqClassName = "com.process.ZoaThreadLocal";
-        try {
-            ZoaThreadLocal.G_Ins().A_CInfByID(username);
-            Class cls = Class.forName(mqClassName);
-            if (null == cls) {
-                LOGGER.error("can't find {}", mqClassName);
-                return;
-            }
-        } catch (Exception e) {
-            LOGGER.error("error: {}", e.toString());
-        }
-        LOGGER.debug("put mq:[{}] ",username);
+        ZoaThreadLocal.G_Ins().A_CInfByID(username);
+        LOGGER.debug("put mq:[{}] ", username);
     }
 
+    /**
+     * 设置或者取出username
+     *
+     * @param servletRequest
+     * @param servletResponse
+     * @return
+     * @throws IOException
+     */
     public static boolean handFilter(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
         String username = null;
-        if(!"GET".equalsIgnoreCase(servletRequest.getMethod())){
+        if (!"GET".equalsIgnoreCase(servletRequest.getMethod())) {
             LOGGER.debug("不是get，不能使用getParameter");
             return false;
         }
         // 提前servletRequest.getParameter()会导致解决乱码的setCharacterEncoding无效
         Map parameterMap = servletRequest.getParameterMap();
-        if (null == parameterMap || !parameterMap.containsKey(TomcatConstants.ACTION_KEY)) {
+        if (null == parameterMap || !parameterMap.containsKey(ContainerConstants.ACTION_KEY)) {
             return false;
         }
-        Object akObj = servletRequest.getParameter(TomcatConstants.ACTION_KEY);
+        Object akObj = servletRequest.getParameter(ContainerConstants.ACTION_KEY);
         if (null == akObj || !(akObj instanceof String)) {
             return false;
         }
@@ -133,9 +136,8 @@ public final class ServletHandletUtils {
             } else {
                 for (int i = 0; i < cookies.length; i++) {
                     Cookie cookie = cookies[i];
-                    if (TomcatConstants.ACTION_KEY.equalsIgnoreCase(cookie.getName())) {
+                    if (ContainerConstants.ACTION_KEY.equalsIgnoreCase(cookie.getName())) {
                         username = cookie.getValue();
-                        bindMq(username);
                     }
                 }
             }
@@ -144,34 +146,13 @@ public final class ServletHandletUtils {
         }
         username = servletRequest.getParameter(USERNAME_KEY);
         if (null == username || 0 == username.length()) {
-            writer.write(String.format("%s 为%s，必须设置请求参数%s的值", TomcatConstants.ACTION_KEY,
+            writer.write(String.format("%s 为%s，必须设置请求参数%s的值", ContainerConstants.ACTION_KEY,
                     ACTION_KEY_SET_USERNAME, USERNAME_KEY));
             return true;
         }
         HttpServletResponse hsres = (HttpServletResponse) servletResponse;
-        Cookie cookie = new Cookie(TomcatConstants.ACTION_KEY, username);
+        Cookie cookie = new Cookie(ContainerConstants.ACTION_KEY, username);
         hsres.addCookie(cookie);
         return true;
-    }
-
-    public static void prepareLoadClass() {
-        Class<ZoaExp> class1 = ZoaExp.class;
-        LOGGER.debug("ZoaExp classloader:{}", class1.getClassLoader());
-        LOGGER.debug("ZoaString classloader:{}", ZoaString.class.getClassLoader());
-    }
-
-    public static String getUsernameFromTraceContent(TraceContext traceContext){
-        String username = "serverhost" ;
-        Trace trace = traceContext.currentTraceObject();
-        if(null == trace){
-            LOGGER.debug("没有获取到trace，不能将username放在http的请求头中");
-            return  username;
-        }
-        username = trace.getTraceAlias();
-        if(null == username){
-            LOGGER.debug("没有获取到username，不能将username放在http的请求头中");
-            return "";
-        }
-        return username;
     }
 }

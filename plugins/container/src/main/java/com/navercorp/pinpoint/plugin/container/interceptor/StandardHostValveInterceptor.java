@@ -1,9 +1,9 @@
-package com.navercorp.pinpoint.plugin.tomcat.interceptor;
+package com.navercorp.pinpoint.plugin.container.interceptor;
 
 import com.navercorp.pinpoint.bootstrap.context.TraceContext;
 import com.navercorp.pinpoint.bootstrap.logging.PLogger;
 import com.navercorp.pinpoint.bootstrap.logging.PLoggerFactory;
-import com.navercorp.pinpoint.plugin.tomcat.util.ServletHandletUtils;
+import com.navercorp.pinpoint.plugin.container.util.ServletHandlerUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,7 +27,7 @@ public class StandardHostValveInterceptor extends BaseReadCookieInterceptor {
         final HttpServletRequest request = (HttpServletRequest) args[0];
         final HttpServletResponse response = (HttpServletResponse) args[1];
         try {
-            ServletHandletUtils.bindCookieThreadlocal(request, response, traceContext);
+            ServletHandlerUtils.bindRequestThreadlocal(request, response, traceContext);
         } catch (IOException t) {
             logger.warn("Failed to BEFORE process. {}", t.getMessage(), t);
         }
