@@ -90,7 +90,7 @@ public class ContainerPlugin implements ProfilerPlugin, TransformTemplateAware {
                 InstrumentClass target = instrumentor.getInstrumentClass(classLoader, className, classfileBuffer);
                 if (target != null) {
                     //把cookie写到Threadlocal
-                    InstrumentMethod execute = target.getDeclaredMethod("invoke", "org.apache.catalina.connector.Request", "org.apache.catalina.connector.Response");
+                    InstrumentMethod execute = target.getDeclaredMethod("handle", "javax.servlet.http.HttpServletRequest", "javax.servlet.http.HttpServletResponse","int");
                     if (execute != null) {
                         logger.debug("[tomcat] Add StandardHostValve interceptor.");
                         execute.addScopedInterceptor("com.navercorp.pinpoint.plugin.container.interceptor.ServerHandlerInterceptor", ContainerConstants.STANDARD_HOST_VALVE_INTERCEPTOR_SCOPE, ExecutionPolicy.ALWAYS);
@@ -109,9 +109,9 @@ public class ContainerPlugin implements ProfilerPlugin, TransformTemplateAware {
                 InstrumentClass target = instrumentor.getInstrumentClass(classLoader, className, classfileBuffer);
                 if (target != null) {
                     //把cookie写到Threadlocal
-                    InstrumentMethod execute = target.getDeclaredMethod("invoke", "org.apache.catalina.connector.Request", "org.apache.catalina.connector.Response");
+                    InstrumentMethod execute = target.getDeclaredMethod("handle", "java.lang.String","org.eclipse.jetty.server.Request", "javax.servlet.http.HttpServletRequest","javax.servlet.http.HttpServletResponse");
                     if (execute != null) {
-                        logger.debug("[tomcat] Add StandardHostValve interceptor.");
+                        logger.debug("[jetty] Add Jetty8ServerHandlerInterceptor interceptor.");
                         execute.addScopedInterceptor("com.navercorp.pinpoint.plugin.container.interceptor.Jetty8ServerHandlerInterceptor", ContainerConstants.STANDARD_HOST_VALVE_INTERCEPTOR_SCOPE, ExecutionPolicy.ALWAYS);
                     }
                     //把request username写到cookie
@@ -128,9 +128,9 @@ public class ContainerPlugin implements ProfilerPlugin, TransformTemplateAware {
                 InstrumentClass target = instrumentor.getInstrumentClass(classLoader, className, classfileBuffer);
                 if (target != null) {
                     //把cookie写到Threadlocal
-                    InstrumentMethod execute = target.getDeclaredMethod("invoke", "org.apache.catalina.connector.Request", "org.apache.catalina.connector.Response");
+                    InstrumentMethod execute = target.getDeclaredMethod("handleRequest", "io.undertow.server.HttpServerExchange");
                     if (execute != null) {
-                        logger.debug("[tomcat] Add StandardHostValve interceptor.");
+                        logger.debug("[undertow] Add ServletHandlerInterceptor interceptor.");
                         execute.addScopedInterceptor("com.navercorp.pinpoint.plugin.container.interceptor.ServletHandlerInterceptor", ContainerConstants.STANDARD_HOST_VALVE_INTERCEPTOR_SCOPE, ExecutionPolicy.ALWAYS);
                     }
                     //把request username写到cookie
@@ -147,9 +147,9 @@ public class ContainerPlugin implements ProfilerPlugin, TransformTemplateAware {
                 InstrumentClass target = instrumentor.getInstrumentClass(classLoader, className, classfileBuffer);
                 if (target != null) {
                     //把cookie写到Threadlocal
-                    InstrumentMethod execute = target.getDeclaredMethod("invoke", "org.apache.catalina.connector.Request", "org.apache.catalina.connector.Response");
+                    InstrumentMethod execute = target.getDeclaredMethod("execute", "weblogic.servlet.internal.ServletRequestImpl", "weblogic.servlet.internal.ServletResponseImpl");
                     if (execute != null) {
-                        logger.debug("[tomcat] Add WebAppServletContextInterceptor interceptor.");
+                        logger.debug("[weblogic] Add WebAppServletContextInterceptor interceptor.");
                         execute.addScopedInterceptor("com.navercorp.pinpoint.plugin.container.interceptor.WebAppServletContextInterceptor", ContainerConstants.STANDARD_HOST_VALVE_INTERCEPTOR_SCOPE, ExecutionPolicy.ALWAYS);
                     }
                     //把request username写到cookie

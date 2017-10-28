@@ -91,6 +91,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>org.mortbay.jetty</groupId>
+            <artifactId>jetty</artifactId>
+            <version>6.1.26</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>io.undertow</groupId>
             <artifactId>undertow-servlet</artifactId>
             <version>1.3.23.Final</version>
