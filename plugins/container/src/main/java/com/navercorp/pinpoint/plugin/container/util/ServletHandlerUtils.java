@@ -54,10 +54,10 @@ public final class ServletHandlerUtils {
     private static void bindHeaderThreadlocal(HttpServletRequest servletRequest, HttpServletResponse servletResponse, TraceContext traceContext) throws IOException {
         String username = servletRequest.getHeader(ContainerConstants.ACTION_KEY);
         if (null == username) {
-            LOGGER.debug("没有读取到上层应用通过HTTP传过来的username信息");
+            LOGGER.trace("没有读取到上层应用通过HTTP传过来的username信息");
             return;
         }
-        LOGGER.debug("读取到上层应用通过HTTP传过来的username信息:{}", username);
+        LOGGER.debug("读取到上层应用通过HTTP header传过来的username信息:{}", username);
         bindMq(username, traceContext);
     }
 
