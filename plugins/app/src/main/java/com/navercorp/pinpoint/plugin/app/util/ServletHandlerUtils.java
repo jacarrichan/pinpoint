@@ -22,12 +22,12 @@ public final class ServletHandlerUtils {
         String username = "serverhost";
         Trace trace = traceContext.currentTraceObject();
         if (null == trace) {
-            LOGGER.debug("没有获取到trace，不能将username放在http的请求头中");
+            LOGGER.trace("没有获取到trace，不能将username放在http的请求头中");
             return username;
         }
         username = trace.getTraceAlias();
         if (null == username) {
-            LOGGER.debug("没有获取到username，不能将username放在http的请求头中");
+            LOGGER.trace("没有获取到username，不能将username放在http的请求头中");
             return "";
         }
         return username;

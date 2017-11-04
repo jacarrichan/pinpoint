@@ -30,7 +30,7 @@ public final class ServletHandlerUtils {
         boolean result = handFilter(request, response);
         String msg = "请求参数中有发现{},将不会进入正常的业务流程";
         if (result) {
-            LOGGER.debug(msg, ContainerConstants.ACTION_KEY);
+            LOGGER.trace(msg, ContainerConstants.ACTION_KEY);
         }
         return result;
     }
@@ -109,7 +109,7 @@ public final class ServletHandlerUtils {
     public static boolean handFilter(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
         String username = null;
         if (!"GET".equalsIgnoreCase(servletRequest.getMethod())) {
-            LOGGER.debug("不是get，不能使用getParameter");
+            LOGGER.trace("不是get，不能使用getParameter");
             return false;
         }
         // 提前servletRequest.getParameter()会导致解决乱码的setCharacterEncoding无效
