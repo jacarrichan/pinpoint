@@ -57,7 +57,7 @@ public final class ServletHandlerUtils {
             LOGGER.trace("没有读取到上层应用通过HTTP传过来的username信息");
             return;
         }
-        LOGGER.debug("读取到上层应用通过HTTP header传过来的username信息:{}", username);
+        LOGGER.trace("读取到上层应用通过HTTP header传过来的username信息:{}", username);
         bindMq(username, traceContext);
     }
 
@@ -95,7 +95,7 @@ public final class ServletHandlerUtils {
             trace.setTraceAlias(username);
         }
         ZoaThreadLocal.G_Ins().A_CInfByID(username);
-        LOGGER.debug("put mq:[{}] ", username);
+        LOGGER.trace("put mq:[{}] ", username);
     }
 
     /**

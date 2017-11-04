@@ -92,7 +92,7 @@ public class LoggingBaseTraceFactory implements BaseTraceFactory {
 */
     @Override
     public Trace newTraceObject() {
-        logger.debug("newTraceObject()");
+        logger.trace("newTraceObject()");
 
         return baseTraceFactory.newTraceObject();
     }

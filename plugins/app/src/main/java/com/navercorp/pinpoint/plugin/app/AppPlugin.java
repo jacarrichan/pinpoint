@@ -123,7 +123,7 @@ public class AppPlugin implements ProfilerPlugin, TransformTemplateAware {
             @Override
             public byte[] doInTransform(Instrumentor instrumentor, ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws InstrumentException {
                 InstrumentClass target = instrumentor.getInstrumentClass(loader, className, classfileBuffer);
-                InstrumentMethod buildMethod = target.getDeclaredMethod("createRequest");
+                InstrumentMethod buildMethod = target.getDeclaredMethod("createRequest","java.net.URI","org.springframework.http.HttpMethod");
                 if (buildMethod != null) {
                     logger.debug("[HttpAccessor] Add createRequest interceptor.");
                     buildMethod.addScopedInterceptor("com.navercorp.pinpoint.plugin.app.interceptor.HttpAccessorCreateRequestMethodInterceptor", AppConstants.SEND_REQUEST_SCOPE, ExecutionPolicy.ALWAYS);

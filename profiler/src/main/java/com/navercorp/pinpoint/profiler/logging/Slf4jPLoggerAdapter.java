@@ -85,7 +85,7 @@ public class Slf4jPLoggerAdapter implements PLogger {
         StringBuilder sb = new StringBuilder(BUFFER_SIZE);
         sb.append("BEFORE ");
         logMethod(sb, target, className, methodName, parameterDescription, args);
-        logger.debug(sb.toString());
+        logger.trace(sb.toString());
     }
 
     @Override
@@ -93,7 +93,7 @@ public class Slf4jPLoggerAdapter implements PLogger {
         StringBuilder sb = new StringBuilder(BUFFER_SIZE);
         sb.append("BEFORE ");
         logMethod(sb, target, args);
-        logger.debug(sb.toString());
+        logger.trace(sb.toString());
     }
 
     @Override
@@ -103,9 +103,9 @@ public class Slf4jPLoggerAdapter implements PLogger {
         logMethod(sb, target, className, methodName, parameterDescription, args);
         logResult(sb, result, throwable);
         if (throwable == null) {
-            logger.debug(sb.toString());
+            logger.trace(sb.toString());
         } else {
-            logger.debug(sb.toString(), throwable);
+            logger.trace(sb.toString(), throwable);
         }
     }
 
