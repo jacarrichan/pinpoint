@@ -48,10 +48,11 @@ public class AppPlugin implements ProfilerPlugin, TransformTemplateAware {
     }
 
     private void addHttpClientEditor() {
-         logger.info(" adding httpclient interceptor");
+        logger.info(" adding httpclient interceptor");
         addHttpMethodBaseClass();
         addHttpRequestExecutorClass();
         addRequestBuilder();
+        addCreateRequest();
     }
 
     /**
@@ -107,6 +108,25 @@ public class AppPlugin implements ProfilerPlugin, TransformTemplateAware {
                 if (buildMethod != null) {
                     logger.debug("[OkHttp] Add Request.Builder.build interceptor.");
                     buildMethod.addScopedInterceptor("com.navercorp.pinpoint.plugin.app.interceptor.RequestBuilderBuildMethodInterceptor", AppConstants.SEND_REQUEST_SCOPE, ExecutionPolicy.ALWAYS);
+                }
+
+                return target.toBytecode();
+            }
+        });
+    }
+    /**
+     * for  org.springframework.http.client.support.HttpAccessor
+     */
+    private void addCreateRequest() {
+        transformTemplate.transform("org.springframework.http.client.support.HttpAccessor", new TransformCallback() {
+
+            @Override
+            public byte[] doInTransform(Instrumentor instrumentor, ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws InstrumentException {
+                InstrumentClass target = instrumentor.getInstrumentClass(loader, className, classfileBuffer);
+                InstrumentMethod buildMethod = target.getDeclaredMethod("createRequest");
+                if (buildMethod != null) {
+                    logger.debug("[HttpAccessor] Add createRequest interceptor.");
+                    buildMethod.addScopedInterceptor("com.navercorp.pinpoint.plugin.app.interceptor.HttpAccessorCreateRequestMethodInterceptor", AppConstants.SEND_REQUEST_SCOPE, ExecutionPolicy.ALWAYS);
                 }
 
                 return target.toBytecode();
