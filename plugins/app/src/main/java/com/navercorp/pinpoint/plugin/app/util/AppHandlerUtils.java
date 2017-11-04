@@ -10,8 +10,8 @@ import com.navercorp.pinpoint.plugin.app.AppConstants;
 /**
  * Created by Jacarri on 2017/10/9.
  */
-public final class ServletHandlerUtils {
-    private static final PLogger LOGGER = PLoggerFactory.getLogger(ServletHandlerUtils.class);
+public final class AppHandlerUtils {
+    private static final PLogger LOGGER = PLoggerFactory.getLogger(AppHandlerUtils.class);
 
     private static final String ACTION_KEY_SET_USERNAME = "su";
     private static final String ACTION_KEY_GET_USERNAME = "gu";

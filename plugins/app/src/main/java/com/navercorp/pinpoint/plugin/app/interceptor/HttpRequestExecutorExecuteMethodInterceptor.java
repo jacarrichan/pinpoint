@@ -8,7 +8,7 @@ import com.navercorp.pinpoint.bootstrap.logging.PLoggerFactory;
 import com.navercorp.pinpoint.plugin.app.AppConstants;
 import org.apache.http.HttpRequest;
 
-import static com.navercorp.pinpoint.plugin.app.util.ServletHandlerUtils.getUsernameFromTraceContent;
+import static com.navercorp.pinpoint.plugin.app.util.AppHandlerUtils.getUsernameFromTraceContent;
 
 /**
  * for  apache http-client4
