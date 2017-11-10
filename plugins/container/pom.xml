@@ -54,7 +54,6 @@
             <groupId>org.zeromq</groupId>
             <artifactId>jeromq</artifactId>
             <version>0.3.0</version>
-            <scope>provided</scope>
         </dependency>
         <!--JavaParser-j2ee.jar 重命名为JavaParser.jar，然后删掉lib目录并执行以下命令
         mvn install:install-file -Dfile=JavaParser.jar -DgroupId=com.zoa -DartifactId=JavaParser  -Dversion=1.0 -Dclassifier=j2ee -Dpackaging=jar-->
@@ -63,7 +62,6 @@
             <artifactId>JavaParser</artifactId>
             <version>1.0</version>
             <classifier>j2ee</classifier>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>

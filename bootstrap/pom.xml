@@ -45,19 +45,6 @@
             <artifactId>commons-io</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.zeromq</groupId>
-            <artifactId>jeromq</artifactId>
-            <version>0.3.0</version>
-        </dependency>
-        <!--JavaParser-j2ee.jar 重命名为JavaParser.jar，然后删掉lib目录并执行以下命令
-mvn install:install-file -Dfile=JavaParser.jar -DgroupId=com.zoa -DartifactId=JavaParser  -Dversion=1.0 -Dclassifier=j2ee -Dpackaging=jar-->
-        <dependency>
-            <groupId>com.zoa</groupId>
-            <artifactId>JavaParser</artifactId>
-            <version>1.0</version>
-            <classifier>j2ee</classifier>
-        </dependency>
     </dependencies>
 
 
@@ -81,28 +68,6 @@ mvn install:install-file -Dfile=JavaParser.jar -DgroupId=com.zoa -DartifactId=Ja
                         </manifestEntries>
                     </archive>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.4.3</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <artifactSet>
-                                <includes>
-                                    <include>org.jeromq</include>
-                                    <include>zmq</include>
-                                    <include>com.zoa</include>
-                                </includes>
-                            </artifactSet>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
