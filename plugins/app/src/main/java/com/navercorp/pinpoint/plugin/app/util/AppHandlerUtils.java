@@ -10,8 +10,8 @@ import com.navercorp.pinpoint.plugin.app.AppConstants;
 /**
  * Created by Jacarri on 2017/10/9.
  */
-public final class ServletHandlerUtils {
-    private static final PLogger LOGGER = PLoggerFactory.getLogger(ServletHandlerUtils.class);
+public final class AppHandlerUtils {
+    private static final PLogger LOGGER = PLoggerFactory.getLogger(AppHandlerUtils.class);
 
     private static final String ACTION_KEY_SET_USERNAME = "su";
     private static final String ACTION_KEY_GET_USERNAME = "gu";
@@ -22,12 +22,12 @@ public final class ServletHandlerUtils {
         String username = "serverhost";
         Trace trace = traceContext.currentTraceObject();
         if (null == trace) {
-            LOGGER.debug("没有获取到trace，不能将username放在http的请求头中");
+            LOGGER.trace("没有获取到trace，不能将username放在http的请求头中");
             return username;
         }
         username = trace.getTraceAlias();
         if (null == username) {
-            LOGGER.debug("没有获取到username，不能将username放在http的请求头中");
+            LOGGER.trace("没有获取到username，不能将username放在http的请求头中");
             return "";
         }
         return username;
