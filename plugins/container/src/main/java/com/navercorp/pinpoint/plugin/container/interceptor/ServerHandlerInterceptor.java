@@ -4,8 +4,6 @@ import com.navercorp.pinpoint.bootstrap.context.TraceContext;
 import com.navercorp.pinpoint.bootstrap.logging.PLogger;
 import com.navercorp.pinpoint.bootstrap.logging.PLoggerFactory;
 import com.navercorp.pinpoint.plugin.container.util.ServletHandlerUtils;
-import weblogic.servlet.internal.ServletRequestImpl;
-import weblogic.servlet.internal.ServletResponseImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,8 +23,8 @@ public class ServerHandlerInterceptor extends BaseReadCookieInterceptor {
     @Override
     public void before(Object target, Object[] args) {
         logger.beforeInterceptor(target, args);
-        final HttpServletRequest request = (ServletRequestImpl) args[1];
-        final HttpServletResponse response = (ServletResponseImpl) args[2];
+        final HttpServletRequest request = (HttpServletRequest) args[2];
+        final HttpServletResponse response = (HttpServletResponse) args[3];
         try {
             ServletHandlerUtils.bindRequestThreadlocal(request, response, traceContext);
         } catch (IOException t) {
