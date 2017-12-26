@@ -160,6 +160,28 @@ public class ContainerPlugin implements ProfilerPlugin, TransformTemplateAware {
                 return null;
             }
         });
+        String webspherePoint = "com.ibm.ws.webcontainer.servlet.CacheServletWrapper";
+//        webspherePoint = "com.ibm.ws.webcontainer.WSWebContainer";
+        transformTemplate.transform(webspherePoint, new TransformCallback() {
+            @Override
+            public byte[] doInTransform(Instrumentor instrumentor, ClassLoader classLoader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws InstrumentException {
+                InstrumentClass target = instrumentor.getInstrumentClass(classLoader, className, classfileBuffer);
+                if (target != null) {
+                    //把cookie写到Threadlocal
+                    InstrumentMethod execute = target.getDeclaredMethod("handleRequest", "javax.servlet.ServletRequest", "javax.servlet.ServletResponse");
+                    //InstrumentMethod execute = target.getDeclaredMethod("handleRequest", "com.ibm.websphere.servlet.request.IRequest", "com.ibm.websphere.servlet.response.IResponse");
+                    if (execute != null) {
+                        logger.debug("[websphere ] Add WebAppServletContextInterceptor interceptor.");
+                        execute.addScopedInterceptor("com.navercorp.pinpoint.plugin.container.interceptor.WebAppServletContextInterceptor", ContainerConstants.STANDARD_HOST_VALVE_INTERCEPTOR_SCOPE, ExecutionPolicy.ALWAYS);
+                    }
+                    //把request username写到cookie
+                    target.weave("com.navercorp.pinpoint.plugin.container.aspect.WebAppServletContextAspect");
+                    return target.toBytecode();
+                }
+
+                return null;
+            }
+        });
     }
 
     @Override
