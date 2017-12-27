@@ -172,10 +172,10 @@ public class ContainerPlugin implements ProfilerPlugin, TransformTemplateAware {
                     //InstrumentMethod execute = target.getDeclaredMethod("handleRequest", "com.ibm.websphere.servlet.request.IRequest", "com.ibm.websphere.servlet.response.IResponse");
                     if (execute != null) {
                         logger.debug("[websphere ] Add WebAppServletContextInterceptor interceptor.");
-                        execute.addScopedInterceptor("com.navercorp.pinpoint.plugin.container.interceptor.WebAppServletContextInterceptor", ContainerConstants.STANDARD_HOST_VALVE_INTERCEPTOR_SCOPE, ExecutionPolicy.ALWAYS);
+                        execute.addScopedInterceptor("com.navercorp.pinpoint.plugin.container.interceptor.CacheServletWrapperInterceptor", ContainerConstants.STANDARD_HOST_VALVE_INTERCEPTOR_SCOPE, ExecutionPolicy.ALWAYS);
                     }
                     //把request username写到cookie
-                    target.weave("com.navercorp.pinpoint.plugin.container.aspect.WebAppServletContextAspect");
+                    target.weave("com.navercorp.pinpoint.plugin.container.aspect.CacheServletWrapperAspect");
                     return target.toBytecode();
                 }
 
