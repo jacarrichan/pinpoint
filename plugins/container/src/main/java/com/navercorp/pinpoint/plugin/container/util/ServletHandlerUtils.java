@@ -4,6 +4,7 @@ import com.navercorp.pinpoint.bootstrap.context.Trace;
 import com.navercorp.pinpoint.bootstrap.context.TraceContext;
 import com.navercorp.pinpoint.bootstrap.logging.PLogger;
 import com.navercorp.pinpoint.bootstrap.logging.PLoggerFactory;
+import com.navercorp.pinpoint.bootstrap.util.StringUtils;
 import com.navercorp.pinpoint.plugin.container.ContainerConstants;
 import com.process.ZoaThreadLocal;
 
@@ -13,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
+
+import static com.navercorp.pinpoint.plugin.container.util.ConfigUtil.getUsernameFromConfig;
 
 
 /**
@@ -65,7 +68,7 @@ public final class ServletHandlerUtils {
      * 针对浏览器的请求把cookie里面的信息取出来放在threadlocal
      */
     private static void bindCookieThreadlocal(HttpServletRequest servletRequest, HttpServletResponse servletResponse, TraceContext traceContext) throws IOException {
-        String username;
+        String username = null;
         HttpServletRequest hsr = servletRequest;
         Cookie[] cookies = hsr.getCookies();
         if (null == cookies) {
@@ -76,9 +79,14 @@ public final class ServletHandlerUtils {
             if (ContainerConstants.ACTION_KEY.equalsIgnoreCase(cookie.getName())) {
                 username = cookie.getValue();
                 LOGGER.debug("find username from cookie:{}", username);
-                bindMq(username, traceContext);
+                break;
             }
         }
+        if(null == username ){
+            username = getUsernameFromConfig(traceContext.getProfilerConfig());
+        }
+        if(StringUtils.isEmpty(username)){return;}//没有就不绑定了
+                bindMq(username, traceContext);
     }
 
     /**

@@ -17,9 +17,24 @@
 
 package com.navercorp.pinpoint.plugin.container;
 
+import com.navercorp.pinpoint.bootstrap.config.ProfilerConfig;
+import com.navercorp.pinpoint.bootstrap.logging.PLogger;
+import com.navercorp.pinpoint.bootstrap.logging.PLoggerFactory;
+
+import static com.navercorp.pinpoint.plugin.container.util.ConfigUtil.getUsernameFromConfig;
+
 /**
  * @author Woonduk Kang(emeroad)
  */
 public class ContainerConfig {
+    private final PLogger logger = PLoggerFactory.getLogger(this.getClass());
+    private String username;
 
+    public ContainerConfig(ProfilerConfig config) {
+        this.username = getUsernameFromConfig(config);
+    }
+
+    public String getUsername() {
+        return username;
+    }
 }

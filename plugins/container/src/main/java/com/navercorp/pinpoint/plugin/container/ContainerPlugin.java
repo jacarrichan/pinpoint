@@ -42,6 +42,7 @@ public class ContainerPlugin implements ProfilerPlugin, TransformTemplateAware {
      */
     @Override
     public void setup(ProfilerPluginSetupContext context) {
+        ContainerConfig config = new ContainerConfig(context.getConfig());
         logger.debug("Load Container plugin......");
         addStandardHostValveAspectEditor();
         addRequestFacadeEditor();
